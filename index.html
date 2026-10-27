@@ -507,6 +507,78 @@ button{font-family:inherit;color:inherit}
 .sheetfoot .field{height:50px}
 .sheet__body input.field{flex:none}
 
+/* ---------- Lock screen mockups ---------- */
+.lock{position:absolute;inset:0;z-index:85;color:#fff;overflow:hidden;animation:fadein .3s both}
+.phone.lockon .statusbar{color:#fff}
+.lock__wall{position:absolute;inset:0;background:radial-gradient(120% 70% at 20% 0%,#2f4aa8 0%,transparent 60%),radial-gradient(90% 60% at 100% 100%,#1b2a63 0%,transparent 70%),linear-gradient(180deg,#0E1634,#070A1A)}
+.lock__wall::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,#ffffff08 0 1px,transparent 1px 38px)}
+.lock__top{position:absolute;top:calc(var(--safe-top) + 6px);left:0;right:0;display:flex;flex-direction:column;align-items:center}
+.lock__top .i{width:18px;height:18px;opacity:.9}
+.lock__date{margin-top:8px;font:600 19px/24px var(--font-sans);opacity:.85}
+.lock__time{font:700 92px/96px var(--font-sans);letter-spacing:-.03em;margin-top:-2px;font-variant-numeric:tabular-nums}
+.lock__stack{position:absolute;left:12px;right:12px;top:calc(var(--safe-top) + 170px);display:flex;flex-direction:column;gap:8px;max-height:calc(100% - var(--safe-top) - 290px);overflow:hidden}
+.ncard{display:flex;gap:11px;width:100%;text-align:left;border:0;cursor:pointer;color:#fff;padding:12px 14px;border-radius:24px;background:#ffffff26;-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);box-shadow:inset 0 0 0 .5px #ffffff38,0 8px 24px #0004;animation:rise .5s var(--ease) both;font-family:var(--font-sans)}
+.ncard:nth-child(2){animation-delay:.07s}.ncard:nth-child(3){animation-delay:.14s}.ncard:nth-child(4){animation-delay:.21s}
+.ncard:active{transform:scale(.985)}
+.nicon{position:relative;width:38px;height:38px;border-radius:9px;flex:none;background:linear-gradient(145deg,#0E1634,#2f4aa8);display:flex;align-items:center;justify-content:center;font:700 22px/1 var(--font-serif);color:#fff;box-shadow:inset 0 0 0 .5px #ffffff40}
+.nicon i{position:absolute;top:8px;right:8px;width:5px;height:5px;border-radius:50%;background:#FF6A45}
+.ncard__tx{flex:1;min-width:0}
+.ncard__hd{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.ncard__hd b{font:600 15px/20px var(--font-sans)}
+.ncard__hd span{font:400 12.5px/16px var(--font-sans);opacity:.7;flex:none}
+.ncard p{margin:1px 0 0;font:400 14.5px/19px var(--font-sans);opacity:.92;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ncard--x{padding:16px;border-radius:28px}.ncard--x .nicon{width:44px;height:44px}.ncard--x p{-webkit-line-clamp:6}
+.nact{display:flex;gap:8px}.nact button{flex:1;height:46px;border-radius:9999px;border:0;background:#ffffff26;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);color:#fff;font:600 14px/1 var(--font-sans);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:inset 0 0 0 .5px #ffffff38}
+.lock__bot{position:absolute;left:0;right:0;bottom:calc(var(--safe-bot) + 22px);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.lock__btn{width:50px;height:50px;border-radius:50%;background:#ffffff26;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .5px #ffffff38}
+.lock__hint{background:none;border:0;color:#fff;opacity:.75;font:500 13px/1 var(--font-sans);cursor:pointer;padding:12px 8px;animation:nudge 2.4s ease-in-out infinite}
+
+/* Pro */
+.procard{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;width:100%;text-align:left;border:0;cursor:pointer;color:var(--ink);background:linear-gradient(135deg,var(--accent-soft),var(--surface));box-shadow:inset 0 0 0 1px var(--accent);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:22px}
+.procard__t{font:600 16px/22px var(--font-sans);display:flex;gap:10px;align-items:baseline}
+.procard__t em{font:600 12px/16px var(--font-sans);font-style:normal;color:var(--accent)}
+.procard__s{grid-column:1;font:400 13px/18px var(--font-sans);color:var(--ink-secondary)}
+.procard .chev{grid-row:1/3;grid-column:2;color:var(--ink-secondary)}
+.pro__hero{display:flex;flex-direction:column;gap:6px}
+.pro__lede{color:var(--ink-secondary)}
+.pro__price{display:flex;align-items:baseline;gap:6px;margin-top:6px}
+.pro__price b{font:600 40px/44px var(--font-serif);letter-spacing:-.02em}
+.pro__price span{font:500 15px/20px var(--font-sans);color:var(--ink-secondary)}
+.pro__sub{font:400 13px/18px var(--font-sans);color:var(--ink-secondary)}
+.pro__tbl{background:var(--surface);border-radius:var(--radius-lg);overflow:hidden}
+.pro__hd,.pro__row{display:grid;grid-template-columns:1fr 52px 64px;align-items:center;gap:4px;padding:11px 12px 11px 16px}
+.pro__hd{font:600 12px/16px var(--font-sans);color:var(--ink-secondary);text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.pro__row{border-top:1px solid var(--hairline)}
+.pro__row b{display:block;font:600 14px/19px var(--font-sans)}
+.pro__row small{display:block;font:400 12px/16px var(--font-sans);color:var(--ink-secondary)}
+.pro__row>span,.pro__hd>span{text-align:center;justify-self:center}
+.pro__col{background:var(--accent-soft);align-self:stretch;display:flex;align-items:center;justify-content:center;width:100%;margin:-11px 0;padding:11px 0;color:var(--accent)}
+.pro__hd .pro__col{margin:-11px 0;color:var(--accent)}
+.pt{display:inline-flex;align-items:center;justify-content:center}
+.pt--y{color:var(--accent)}.pt--n{color:var(--ink-tertiary,var(--ink-secondary));opacity:.5}
+.pt--t{font:600 12px/16px var(--font-sans);color:var(--accent)}
+.pt .i{width:18px;height:18px}
+.pro__tbl,.pro__hero{flex:none}
+
+/* Flat header (WSJ-style): wordmark, then underlined text tabs */
+.topbar{top:0;left:0;right:0;height:auto;border-radius:0;display:block;padding:var(--safe-top) 0 0;background:var(--bg);box-shadow:none;border-bottom:1px solid var(--hairline)}
+.topbar .wm{height:38px;display:flex;align-items:center;justify-content:center;font:700 21px/1 var(--font-serif);letter-spacing:-.02em}
+.topbar .wm i{width:5px;height:5px;border-radius:50%;background:var(--new-dot);margin:8px 0 0 2px}
+.topbar .pills{gap:0;padding:0 8px;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.topbar .pill{height:44px;padding:0 12px;border-radius:0;font:500 14.5px/1 var(--font-sans);position:relative;background:none}
+.topbar .pill[aria-pressed=true]{background:none;color:var(--ink);font-weight:700}
+.topbar .pill[aria-pressed=true]::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:2px;background:var(--ink);border-radius:2px}
+.topbar .pill .meta{font-size:11px;opacity:.55}
+.pad{padding-top:calc(var(--safe-top) + 102px)}
+
+/* WSJ-style tabs: larger, left-aligned, no fade pill, heavier active underline */
+.topbar .pills{padding:0 4px 0 12px;gap:2px}
+.topbar .pill{height:46px;padding:0 12px;font:500 15.5px/1 var(--font-sans);color:var(--ink-secondary)}
+.topbar .pill[aria-pressed=true]{color:var(--ink);font-weight:700}
+.topbar .pill[aria-pressed=true]::after{height:3px;left:12px;right:12px;border-radius:0}
+.topbar{border-bottom:1px solid var(--hairline-strong)}
+.dateline+.feed{margin-top:16px}
+
 </style>
 </head>
 <body>
@@ -523,6 +595,7 @@ button{font-family:inherit;color:inherit}
         <div id="overlay"></div>
         <div id="alerts"></div>
         <div id="toast"></div>
+        <div class="lock" id="lock" hidden></div>
         <div class="island"></div>
         <div class="statusbar"><span>9:41</span><span style="display:flex;gap:6px;align-items:center">
           <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
@@ -801,7 +874,7 @@ sliders:'<path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M1
 sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
 linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
 whats:'<path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/>',
-quote:'<path d="M3 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/><path d="M15 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',pen:'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>',dots:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
+quote:'<path d="M3 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/><path d="M15 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',pen:'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>',flash:'<path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"/><path d="M6 6h12"/>',cam:'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',dots:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
 };
 const ic=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg>`;
 const APPLE='<svg class="brand" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>';
@@ -812,7 +885,7 @@ const FADE='<div class="statusfade"></div>';
 /* ---------- State ---------- */
 let appearance='dark',cardStyle='text';
 let S;
-function fresh(){return{method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,
+function fresh(){return{method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
  others:[],opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
@@ -835,6 +908,7 @@ function briefIds(){
   return STORIES.filter(s=>s.id<=10).map((s,i)=>({s,i,k:sc(s)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(x=>x.s.id);
 }
 const ixMatch=s=>(s.ix||[]).filter(x=>S.others.some(o=>o.toLowerCase()===x.toLowerCase()));
+function topicIds(t){return [...briefIds().filter(i=>byId[i].t1===t),...moreIds(t)]}
 function moreIds(t){return STORIES.filter(s=>s.id>10&&s.id<100&&s.t1===t).map(s=>s.id)}
 function picksIds(){
   const sc=s=>(S.themes.includes(s.t1)?2:0)+(S.where.some(w=>s.t2.includes(w))?1:0);
@@ -916,7 +990,7 @@ function viewWelcome(){
   <div class="brandmark">FomoTech<i></i></div><div class="label by">Powered by Netscribes</div>
   <h1 class="display">Tech news that tells you what it means. Free.</h1>
   <p class="lede">A finite daily brief for technology leaders. Eight to ten stories, named sources and a clear reason each one matters.</p>
-  <div class="freecard"><b class="hd">${ic('shield')} Free. Nothing behind a paywall.</b><ul>
+  <div class="freecard"><b class="hd">${ic('shield')} The daily brief is free.</b><ul>
    <li>${ic('check')}<span><strong>A finite daily brief.</strong> It ends when you are caught up.</span></li>
    <li>${ic('check')}<span><strong>Named sources</strong> and clearly labelled AI summaries.</span></li>
    <li>${ic('check')}<span><strong>Prepared analysis</strong> on every story, ready when you tap.</span></li></ul></div>
@@ -1015,16 +1089,15 @@ function renderToday(){
   const mins=Math.round(ids.reduce((a,i)=>a+byId[i].listen,0)/60);
   const anim=S.anim;S.anim=false;
   el.innerHTML=FADE+`<div class="scroll"><div class="pad">
-   <h1 class="greet">${greeting()}</h1>
+   ${S.filter==='all'?`<h1 class="greet">Daily Brief</h1>
    <div class="dateline">${dateline()} · Your ${S.briefTime.replace(':00','')} brief · ${total} stories</div>
    <div class="progress"><div class="progress__track"><div class="progress__fill" style="width:${rd/total*100}%"></div></div><span class="meta num">${rd} of ${total}</span></div>
-   <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>
-   ${S.filter==='all'?'':`<div class="sec-h"><span>In today's brief</span><span class="meta num">${list.length}</span></div>`}<div class="feed ${anim?'anim':''}">${list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join('')}</div>
-   ${mo.length?`<div class="sec-h" style="margin-top:26px"><span>More in ${esc(T1[S.filter])}</span><span class="meta num">${mo.length}</span></div><div class="feed ${anim?'anim':''}">${mo.map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>`:''}
-   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief. Pick a theme above for more.`:`${list.length} in the brief · ${mo.length} more`}</div>`}
+   <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>`:`<h1 class="greet">${esc(T1[S.filter])}</h1><div class="dateline">${list.length+mo.length} stories</div>`}
+   <div class="feed ${anim?'anim':''}">${S.filter==='all'?list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join(''):[...list,...mo].map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>
+   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief. Pick a theme above for more.`:''}</div>`}
   </div></div>
-  <div class="topbar glass"><div class="pills" role="tablist">
-   <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">All<span class="meta num">${total}</span></button>
+  <div class="topbar"><div class="wm">FomoTech<i></i></div><div class="pills" role="tablist">
+   <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">Daily brief<span class="meta num">${total}</span></button>
    ${pf.map(t=>`<button class="pill" data-a="filter" data-k="${t}" aria-pressed="${S.filter===t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}</div></div>`;
   const sc=$('.scroll',el);sc.scrollTop=top;
 }
@@ -1042,7 +1115,7 @@ const opCount=o=>o.cc+(OPC[o.id]||[]).length;
 function opCardHTML(o,n){
   return `<article class="card" role="button" tabindex="0" data-a="openop" data-id="${o.id}" style="--n:${n}">
    <div class="card__top"><span class="avatar sm">${esc(initials(o.au))}</span><div class="who"><b>${esc(o.au)}</b><span>${esc(o.role)}, ${esc(o.org)}</span></div></div>
-   <span class="label" style="color:var(--accent)">Opinion · ${esc(T1[o.t1])}</span>
+   <span class="label" style="color:var(--accent)">${esc(T1[o.t1])}</span>
    <h3 style="margin-top:-4px">${esc(o.h)}</h3><p>${esc(o.s)}</p>
    <div class="card__foot"><span class="meta">${o.age} · ${o.min} min read · ${opCount(o)} comments</span><button class="iconbtn" data-a="save" data-id="${o.id}" aria-pressed="${isSaved(o.id)}" aria-label="Save piece">${ic('bookmark')}</button></div></article>`;
 }
@@ -1055,11 +1128,10 @@ function renderOpinion(){
   el.innerHTML=FADE+`<div class="scroll"><div class="pad"><h1 class="pagehead" style="margin-bottom:6px">Opinion</h1>
    <p class="note" style="margin:0 0 18px;font-size:13.5px;line-height:19px">Perspectives from technology professionals. Contributed by members and reviewed by FomoTech editors before posting.</p>
    ${conv?`<button class="feat" data-a="openop" data-id="${conv.id}"><div class="feat__art">${art(conv.id+3)}</div><span class="feat__tag">The Conversation · Monthly</span><span class="feat__play">${ic('play','fill')}</span><div class="feat__tx"><h3>${esc(conv.h)}</h3><span>${esc(conv.au)}, ${esc(conv.role)}, ${esc(conv.org)} · ${conv.min} min</span></div></button>`:''}
-   <div class="sec-h" style="margin-top:${conv?24:0}px"><span>Latest pieces</span><span class="meta num">${pieces.length}</span></div>
-   <div class="feed ${anim?'anim':''}">${pieces.length?pieces.map((o,n)=>opCardHTML(o,n)).join(''):`<div class="empty"><div class="ring">${ic('quote')}</div><h4>No pieces on this theme yet</h4><p>Check back soon, or share your own view.</p></div>`}</div>
+   <div class="feed ${anim?'anim':''}" style="margin-top:${conv?16:0}px">${pieces.length?pieces.map((o,n)=>opCardHTML(o,n)).join(''):`<div class="empty"><div class="ring">${ic('quote')}</div><h4>No pieces on this theme yet</h4><p>Check back soon, or share your own view.</p></div>`}</div>
    <div class="writecard"><span class="ring">${ic('pen')}</span><h4>Share your perspective</h4><p>Working in technology? Submit a piece for editorial review. We check for quality and clarity, not for position.</p><button class="btn btn--secondary" data-a="writeop">Write for FomoTech</button></div>
   </div></div>
-  <div class="topbar glass"><div class="pills" role="tablist"><button class="pill" data-a="opfilter" data-k="all" aria-pressed="${S.opFilter==='all'}">All<span class="meta num">${OPS.length}</span></button>${pf.map(t=>`<button class="pill" data-a="opfilter" data-k="${t}" aria-pressed="${S.opFilter===t}">${esc(T1[t])}<span class="meta num">${OPS.filter(o=>o.t1===t).length}</span></button>`).join('')}</div></div>`;
+  <div class="topbar"><div class="wm">FomoTech<i></i></div><div class="pills" role="tablist"><button class="pill" data-a="opfilter" data-k="all" aria-pressed="${S.opFilter==='all'}">All pieces<span class="meta num">${OPS.length}</span></button>${pf.map(t=>`<button class="pill" data-a="opfilter" data-k="${t}" aria-pressed="${S.opFilter===t}">${esc(T1[t])}<span class="meta num">${OPS.filter(o=>o.t1===t).length}</span></button>`).join('')}</div></div>`;
   $('.scroll',el).scrollTop=top;
 }
 function opinionParts(s){
@@ -1125,6 +1197,32 @@ function renderForYou(){
   $('.scroll',el).scrollTop=top;
 }
 
+
+/* ---------- Pro ---------- */
+const PRICE=999;
+const PRO_ROWS=[
+ ['The daily brief','8 to 10 stories, ends when you are done',1,1],
+ ['Named sources, AI summaries','Labelled on every story',1,1],
+ ['Why it matters, ELI5','Prepared analysis on every story',1,1],
+ ['Hype check, Bias checker','Evidence, not a score',1,1],
+ ['AI audio brief','Listen to the whole brief',1,1],
+ ['Saved stories and collections','Free: 2 collections',1,'Unlimited'],
+ ['Industry lens','Talking points for your sector',0,1],
+ ['Industry x technology alerts','Notify me on Banking x Agentic AI',0,1],
+ ['Archive search','Find stories older than 7 days',0,1],
+ ['Offline audio','Download the brief before you travel',0,1],
+ ['Team sharing','Shared collections for your team',0,1]];
+function proSheet(why){
+  const mk=v=>v===1?`<span class="pt pt--y">${ic('check','sm')}</span>`:v===0?`<span class="pt pt--n">${ic('minus','sm')}</span>`:`<span class="pt pt--t">${v}</span>`;
+  openSheet({title:S.pro?'You are on Pro':'FomoTech Pro',eyebrow:why||'Optional upgrade',tall:true,
+   body:`<div class="pro__hero"><p class="pro__lede">Everything in the daily brief stays free. Pro adds tools for people who use FomoTech to prepare, not just to read.</p>
+    <div class="pro__price"><b>₹${PRICE}</b><span>/ year</span></div><span class="pro__sub">Billed annually. About ₹${Math.round(PRICE/12)} a month.</span></div>
+    <div class="pro__tbl" role="table" aria-label="Free and Pro features"><div class="pro__hd" role="row"><span></span><span>Free</span><span class="pro__col">Pro</span></div>
+    ${PRO_ROWS.map(r=>`<div class="pro__row" role="row"><div><b>${r[0]}</b><small>${r[1]}</small></div>${mk(r[2])}<span class="pro__col">${mk(r[3])}</span></div>`).join('')}</div>
+    <p class="note">Prototype only. The feature split and price are samples for discussion. No payment is taken.</p>`,
+   foot:S.pro?'<button class="btn btn--secondary" data-a="unpro" style="flex:1">Switch back to Free (demo)</button>':`<button class="btn btn--primary" data-a="gopro" style="flex:1">Get Pro · ₹${PRICE}/year</button><button class="btn btn--text" data-a="closesheet">Not now</button>`});
+}
+
 /* ---------- Profile ---------- */
 function prow(icon,label,val,act,k){return `<button class="row" data-a="${act}" ${k!=null?`data-k="${k}"`:''}><span class="ic">${ic(icon)}</span>${label}<span class="val">${val}</span>${ic('chevR','chev')}</button>`}
 function renderProfile(){
@@ -1134,15 +1232,16 @@ function renderProfile(){
   const li=S.linkedin?S.linkedin.replace(/^https?:\/\/(www\.)?/,''):'Add link';
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
    <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
+   <button class="procard" data-a="pro"><span class="procard__t">${S.pro?'FomoTech Pro':'Get Pro'}<em>${S.pro?'Active':'₹'+PRICE+' / year'}</em></span><span class="procard__s">${S.pro?'Industry lens, alerts, archive and more':'Industry lens, alerts, archive search and more'}</span>${ic('chevR','chev')}</button>
    <div class="group"><span class="label">Your brief</span><div class="rows">
     ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added':'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
-    <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button></div></div>
+    <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
     ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
     <p class="note" style="margin:8px 4px 0">Used to tailor Industry lens. Nothing is imported from LinkedIn.</p></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
    <div class="group"><div class="rows">${prow('users','Invite your team','Share FomoTech','invite')}</div></div>
-   <div class="freeline">${ic('shield')}Free. Nothing behind a paywall.</div>
+   <div class="freeline">${ic('shield')}The daily brief is free.</div>
    <div class="group" style="margin-top:22px"><div class="rows"><button class="row" data-a="signout"><span class="ic">${ic('logout')}</span>Sign out</button><button class="row" data-a="delete" style="color:var(--new-dot)"><span class="ic" style="color:inherit">${ic('trash')}</span>Delete account</button></div></div>
    <p class="footnote">FomoTech by Netscribes · Interactive prototype with sample content</p>
   </div></div>`;
@@ -1199,7 +1298,7 @@ const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
 function storyParts(){
   const id=curId(),s=byId[id];if(s.op)return opinionParts(s);
-  const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'More'}[kind]||'Story';
+  const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'Story'}[kind]||'Story';
   const listening=A.active&&A.id===id,nid=S.ctx.ids[S.i+1],ns=nid&&byId[nid];
   const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${word} <b class="num">${S.i+1}</b> of ${n}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</button>`;
   const bot=`<button class="act" data-a="save" data-id="${id}" aria-pressed="${isSaved(id)}">${ic('bookmark')}Save</button><button class="act" data-a="share" data-id="${id}">${ic('share')}Share</button><button class="btn btn--primary" data-a="next">${last?(kind==='brief'?'Finish brief':'Done'):'Next story'} ${ic('arrowR')}</button>`;
@@ -1320,6 +1419,7 @@ function organiseSheet(id){
   organiseSheet.draw=draw;
 }
 function newCollSheet(){
+  if(!S.pro&&S.colls.length>=2)return proSheet('Free includes 2 collections');
   openSheet({title:'New collection',eyebrow:'Group saved stories',body:`<input class="field" id="nc-in" placeholder="For example, Board prep" maxlength="28"><button class="btn btn--primary btn--block" data-a="addcoll">Create collection</button>`});
 }
 function toggleSave(id){
@@ -1377,9 +1477,48 @@ function editSheet(k){
   if(k==='linkedin')return openSheet({title:'LinkedIn profile link',eyebrow:'Optional',body:`<input class="field" id="li-in" type="url" placeholder="linkedin.com/in/your-name" value="${esc(S.linkedin)}" autocomplete="off"><p class="note">Display only. FomoTech does not read or import anything from LinkedIn.</p>`,foot:`<button class="btn btn--primary" data-a="savelinkedin" style="flex:1">Save</button>${S.linkedin?'<button class="btn btn--text" data-a="clearlinkedin">Remove</button>':''}`});
 }
 
+
+/* ---------- Lock screen notification mockups ---------- */
+function notifData(){
+  const ids=briefIds(),mins=Math.round(ids.reduce((x,i)=>x+byId[i].listen,0)/60);
+  const N={
+    brief:{title:'Your brief is ready',body:`${ids.length} stories on ${themeNames()}. ${mins} min to listen.`,when:'now',target:'today'},
+    top:{title:'Top story today',body:byId[ids[0]].h,when:'now',target:'story'},
+    opinion:{title:'New in Opinion',body:`${OPS[0].au}, ${OPS[0].org}: ${OPS[0].h}`,when:'now',target:'opinion'},
+    reminder:{title:"3 stories left in today's brief",body:`About 4 minutes to finish. Your next brief is tomorrow at ${S.briefTime}.`,when:'now',target:'today'}
+  };
+  return N;
+}
+const NSCEN={brief:{label:'Daily brief',time:()=>S.briefTime,keys:['brief']},top:{label:'Top story',time:()=>S.briefTime,keys:['top']},opinion:{label:'Opinion',time:()=>'1:30 PM',keys:['opinion']},reminder:{label:'Evening reminder',time:()=>'6:00 PM',keys:['reminder']},stack:{label:'Stacked',time:()=>'6:00 PM',keys:['reminder','opinion','top','brief']},expanded:{label:'Expanded',time:()=>S.briefTime,keys:['brief'],x:1}};
+const NICON='<span class="nicon">F<i></i></span>';
+function showLock(kind){
+  const sc=NSCEN[kind],N=notifData(),l=$('#lock');closeSheet(true);
+  const tm=sc.time().replace(/ ?[AP]M/,''),ages={brief:'8:00 AM',top:'8:00 AM',opinion:'1:30 PM',reminder:'6:00 PM'};
+  const card=(k,x)=>{const n=N[k];return `<button class="ncard ${x?'ncard--x':''}" data-a="notifopen" data-t="${n.target}">${NICON}<div class="ncard__tx"><div class="ncard__hd"><b>${esc(n.title)}</b><span>${kind==='stack'||x?ages[k]:'now'}</span></div><p>${esc(n.body)}</p></div></button>`};
+  const cards=sc.keys.map(k=>card(k,sc.x)).join('')+(sc.x?`<div class="nact"><button data-a="notifopen" data-t="listen">${ic('phones','sm')}Listen to brief</button><button data-a="notifopen" data-t="today">Open</button></div>`:'');
+  l.hidden=false;$('#phone').classList.add('lockon');
+  l.innerHTML=`<div class="lock__wall"></div><div class="lock__top">${ic('lock')}<div class="lock__date">${dateline()}</div><div class="lock__time">${tm}</div></div><div class="lock__stack ${sc.x?'is-x':''}">${cards}</div><div class="lock__bot"><span class="lock__btn">${ic('flash')}</span><button class="lock__hint" data-a="unlock">Swipe up to open</button><span class="lock__btn">${ic('cam')}</span></div>`;
+}
+function hideLock(){const l=$('#lock');l.hidden=true;l.innerHTML='';$('#phone').classList.remove('lockon')}
+async function lockOpen(t){
+  hideLock();
+  if(S.phase!=='main'){await jump('today');await wait(300)}
+  popAll&&$('#stack').children.length&&popAll();
+  if(t==='story'){const ids=briefIds();if($('#stack').children.length)await wait(350);openStory(ids[0],'brief',ids)}
+  else if(t==='opinion'){setTab('opinion');await wait(100);openStory(101,'opinion',opList().map(o=>o.id))}
+  else if(t==='listen'){setTab('today');const ids=briefIds();audioStart(ids[0],ids);openPlayer()}
+  else setTab('today');
+}
+(function(){
+  const l=$('#lock');let y0=null;
+  const pt=e=>e.touches?e.touches[0].clientY:e.clientY;
+  const end=e=>{if(y0==null)return;const y=e.changedTouches?e.changedTouches[0].clientY:e.clientY;const d=y0-y;y0=null;if(d>90)lockOpen('today')};
+  l.addEventListener('touchstart',e=>{y0=pt(e)},{passive:true});l.addEventListener('touchend',end);
+  l.addEventListener('mousedown',e=>{y0=pt(e)});window.addEventListener('mouseup',end);
+})();
 /* ---------- Reset / jump ---------- */
 function clearTabs(){$$('#base>.layer').forEach(l=>{l.innerHTML=''});$('#stack').innerHTML='';$('#base').className='';$('#base').style.cssText='';}
-function resetUI(){clearInterval(A.timer);Object.assign(A,{active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[]});closeSheet(true);$('#alerts').innerHTML='';$('#toast').innerHTML='';const st=$('#stack');$$('#stack>.layer').forEach(l=>l._ac&&l._ac.abort());st.innerHTML='';const b=$('#base');b.classList.remove('under');b.style.cssText=''}
+function resetUI(){hideLock();clearInterval(A.timer);Object.assign(A,{active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[]});closeSheet(true);$('#alerts').innerHTML='';$('#toast').innerHTML='';const st=$('#stack');$$('#stack>.layer').forEach(l=>l._ac&&l._ac.abort());st.innerHTML='';const b=$('#base');b.classList.remove('under');b.style.cssText=''}
 function resetAll(){resetUI();S=fresh();clearTabs();syncChrome();viewWelcome()}
 async function jump(name){
   resetUI();clearTabs();S=fresh();$('#auth').hidden=true;
@@ -1390,7 +1529,7 @@ async function jump(name){
   if(name==='more')S.filter=0;
   if(name==='foryou-saved'){S.saved=[2,6,3];S.colls[0].ids=[2,6];S.colls[1].ids=[3];S.read=new Set([1])}
   if(name==='caught'){S.read=new Set(briefIds())}
-  const tab=name==='opinion'||name==='opinion-read'||name==='comments'?'opinion':name==='foryou-empty'||name==='foryou-saved'||name==='picks'?'foryou':name==='profile'?'profile':'today';
+  const tab=name==='opinion'||name==='opinion-read'||name==='comments'?'opinion':name==='foryou-empty'||name==='foryou-saved'||name==='picks'?'foryou':name==='profile'||name==='pro'?'profile':'today';
   if(name==='picks')S.fySeg='picks';
   enterMain(tab);
   const ids=briefIds();
@@ -1402,16 +1541,19 @@ async function jump(name){
   if(name==='opinion-read'||name==='comments'){await wait(80);openStory(101,'opinion',opList().map(o=>o.id));await wait(480);if(name==='comments')commentsSheet(101)}
   if(name==='audio'){await wait(80);audioStart(ids[0],ids);A.pos=22;openPlayer()}
   if(name==='caught'){await wait(80);openCaught()}
+  if(name==='pro'){await wait(300);proSheet()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['picks','Picks'],['profile','Profile']];
+const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['picks','Picks'],['profile','Profile'],['pro','Get Pro']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1>FomoTech<i></i></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
+  <div><h2>Notifications</h2><div class="jump">${Object.entries(NSCEN).map(([k,v])=>`<button data-n="${k}">${v.label}</button>`).join('')}</div><p class="note" style="margin-top:8px">Lock screen mockups. Tap a notification to open the app.</p></div>
   <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
   <div><h2>Try these</h2><p class="note">Tap a story. Swipe up at the bottom for the next one, swipe right to go back. Open the tools row. Tap Listen to your brief. Save a story, then organise it into a collection.</p></div>
   <button class="btn btn--secondary" id="reset" style="min-height:40px;font-size:13px;align-self:flex-start">Restart from the welcome screen</button>`;
   $$('[data-j]').forEach(b=>b.onclick=()=>jump(b.dataset.j));
+  $$('[data-n]').forEach(b=>b.onclick=()=>showLock(b.dataset.n));
   $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
@@ -1432,7 +1574,7 @@ const ACT={
   openctx:t=>{const k=t.dataset.ctx,id=+t.dataset.id;let ids;
     if(k==='saved'){const c=S.fyColl==='all'?null:S.colls.find(c=>c.id===S.fyColl);ids=c?S.saved.filter(x=>c.ids.includes(x)):S.saved.slice();const op=!!byId[id].op;ids=ids.filter(x=>!!byId[x].op===op)}else ids=picksIds();
     openStory(id,byId[id].op?'opinion':k,ids)},
-  openmore:t=>{const id=+t.dataset.id;openStory(id,'topic',moreIds(byId[id].t1))},
+  openmore:t=>{const id=+t.dataset.id;openStory(id,'topic',topicIds(byId[id].t1))},
   openop:t=>{const id=+t.dataset.id;openStory(id,'opinion',opList().map(o=>o.id))},
   opfilter:t=>{S.opFilter=t.dataset.k==='all'?'all':+t.dataset.k;renderOpinion()},
   comments:t=>commentsSheet(+t.dataset.id),
@@ -1450,6 +1592,7 @@ const ACT={
   copylink:t=>{try{navigator.clipboard.writeText('https://'+t.dataset.u)}catch(e){}toast('Link copied')},
   shareto:t=>{closeSheet();toast('Shared to '+t.dataset.n+' (prototype)')},
   closesheet:()=>closeSheet(),
+  pro:()=>proSheet(),gopro:()=>{S.pro=true;closeSheet();if(S.tab==='profile')renderProfile();toast('Welcome to Pro (demo, no payment taken)')},unpro:()=>{S.pro=false;closeSheet();if(S.tab==='profile')renderProfile();toast('Back on Free')},
   caught:()=>openCaught(),home:()=>{popAll();setTimeout(()=>setTab('today'),340)},tosaved:()=>{popAll();setTimeout(()=>setTab('foryou'),340)},
   jumpstory:t=>{const ids=briefIds();popAll();setTimeout(()=>{if(S.tab!=='today')setTab('today');openStory(+t.dataset.id,'brief',ids)},360)},
   settime:t=>{S.briefTime=t.dataset.t;$$('#notif .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.t===S.briefTime));const nb=$('#nb span');if(nb)nb.textContent=nextBriefLine()},
@@ -1478,6 +1621,7 @@ const ACT={
   listenbrief:()=>{if(A.active)return openPlayer();const ids=briefIds();audioStart(ids[0],ids);openPlayer()},
   listenstory:()=>{const id=curId();if(A.active&&A.id===id){A.playing=!A.playing;runTimer();audioChanged()}else audioStart(id,S.ctx.ids)},
   openplayer:()=>openPlayer(),
+  notifopen:t=>lockOpen(t.dataset.t),unlock:()=>lockOpen('today'),lockpreview:()=>showLock('brief'),
   playpause:()=>{if(A.pos>=byId[A.id].listen-.3){A.pos=0}A.playing=!A.playing;runTimer();audioChanged()},
   stopaudio:()=>{clearInterval(A.timer);A.active=false;A.playing=false;closeSheet();syncChrome();refreshStoryBars();renderToday()},
   speed:()=>{A.speed=SPEEDS[(SPEEDS.indexOf(A.speed)+1)%SPEEDS.length];renderPlayer()},
@@ -1493,7 +1637,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='oth-q'){e.preventDefault();const b=$('#oth-list [data-a=addother]');b&&b.click();return}
   if(e.key==='Enter'&&e.target.id==='cm-in'){e.preventDefault();const b=$('[data-a=postcomment]');b&&b.click();return}
   if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-a]')){e.preventDefault();e.target.click()}
-  if(e.key==='Escape'){if(sheetEl)closeSheet();else if($('#stack').children.length)pop()}
+  if(e.key==='Escape'){if(!$('#lock').hidden)hideLock();else if(sheetEl)closeSheet();else if($('#stack').children.length)pop()}
 });
 
 /* ---------- Fit and boot ---------- */
