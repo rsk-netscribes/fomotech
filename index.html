@@ -579,6 +579,18 @@ button{font-family:inherit;color:inherit}
 .topbar{border-bottom:1px solid var(--hairline-strong)}
 .dateline+.feed{margin-top:16px}
 
+/* Minimal list: no card chrome, hairline-separated, headline-led (WSJ-like) */
+.feed{gap:0}
+.feed .card{background:none;box-shadow:none;border-radius:0;padding:20px 0 6px;gap:10px;border-bottom:1px solid var(--hairline)}
+.feed .card:active{background:none;transform:none;opacity:.7}
+.feed .card h3{font:600 24px/29px var(--font-serif);letter-spacing:-.015em}
+.feed .card p{font:400 15px/22px var(--font-sans);-webkit-line-clamp:3}
+.feed .card .card__top .dot{width:7px;height:7px;border-radius:50%;background:var(--new-dot);flex:none}
+.feed .card__foot{border-top:0;padding-top:0;margin-bottom:0;gap:4px}
+.feed .card__foot .meta{font-size:12.5px}
+.feed .card__foot .iconbtn{margin:0 -10px 0 0}
+.feed .card .photo{border-radius:6px;overflow:hidden}
+
 </style>
 </head>
 <body>
@@ -1072,11 +1084,11 @@ function enterMain(tab){
 function cardHTML(s,pos,n){
   const read=S.read.has(s.id),isNew=s.isNew&&!read;
   return `<article class="card ${read?'card--read':''}" role="button" tabindex="0" data-a="${pos==null?'openmore':'open'}" data-id="${s.id}" style="--n:${n}">
-   <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}<span class="card__tags">${esc(tagLine(s))}</span></div>
+   <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}${isNew?'<i class="dot"></i>':''}<span class="card__tags">${esc(tagLine(s))}</span></div>
+   <h3>${esc(s.h)}</h3>
    ${cardStyle==='photo'?`<div class="photo">${art(s.id)}</div>`:''}
-   <div class="card__new" style="${isNew?'':'color:var(--ink-muted);text-transform:none;letter-spacing:.02em;font-weight:500'}">${isNew?'<i class="dot"></i>New':''}<span class="meta num" style="${isNew?'margin-left:0':''}">${isNew?'· ':''}${s.age} · ${s.min} min read</span></div>
-   <h3>${esc(s.h)}</h3><p>${esc(s.s)}</p>
-   <div class="card__foot"><span class="meta">${esc(s.src[0][0])} · ${s.src.length} sources</span><span class="ai">AI summary</span><button class="iconbtn" data-a="save" data-id="${s.id}" aria-pressed="${isSaved(s.id)}" aria-label="Save story">${ic('bookmark')}</button></div></article>`;
+   <p>${esc(s.s)}</p>
+   <div class="card__foot"><span class="meta">${esc(s.src[0][0])} · ${s.age} · ${s.min} min · AI summary</span><button class="iconbtn" data-a="save" data-id="${s.id}" aria-pressed="${isSaved(s.id)}" aria-label="Save story">${ic('bookmark')}</button></div></article>`;
 }
 function renderToday(){
   const el=$('#tab-today'),old=$('.scroll',el),top=old?old.scrollTop:0;
@@ -1092,12 +1104,12 @@ function renderToday(){
    ${S.filter==='all'?`<h1 class="greet">Daily Brief</h1>
    <div class="dateline">${dateline()} · Your ${S.briefTime.replace(':00','')} brief · ${total} stories</div>
    <div class="progress"><div class="progress__track"><div class="progress__fill" style="width:${rd/total*100}%"></div></div><span class="meta num">${rd} of ${total}</span></div>
-   <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>`:`<h1 class="greet">${esc(T1[S.filter])}</h1><div class="dateline">${list.length+mo.length} stories</div>`}
+   <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>`:``}
    <div class="feed ${anim?'anim':''}">${S.filter==='all'?list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join(''):[...list,...mo].map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>
    ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief. Pick a theme above for more.`:''}</div>`}
   </div></div>
   <div class="topbar"><div class="wm">FomoTech<i></i></div><div class="pills" role="tablist">
-   <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">Daily brief<span class="meta num">${total}</span></button>
+   <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">Daily Brief<span class="meta num">${total}</span></button>
    ${pf.map(t=>`<button class="pill" data-a="filter" data-k="${t}" aria-pressed="${S.filter===t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}</div></div>`;
   const sc=$('.scroll',el);sc.scrollTop=top;
 }
