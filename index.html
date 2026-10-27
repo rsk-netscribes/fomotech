@@ -443,6 +443,70 @@ button{font-family:inherit;color:inherit}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+/* ---------- v2: tiles, others, more-in-theme, opinion ---------- */
+.tiles{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.tile{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:var(--radius-lg);padding:14px 14px 14px 18px;min-height:76px;box-shadow:var(--shadow-card);width:100%;text-align:left;border:0;color:var(--ink);cursor:pointer;font-family:var(--font-sans);position:relative;overflow:hidden;transition:background .2s,transform .12s}
+.tile:active{transform:scale(.985)}
+.tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform .25s var(--ease)}
+.tile[aria-pressed=true]::before{transform:scaleY(1)}
+.tile__tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.tile__tx b{font:600 15px/20px var(--font-sans);letter-spacing:-.005em}
+.tile__tx span{font:400 13px/18px var(--font-sans);color:var(--ink-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile__ck{width:30px;height:30px;border-radius:50%;background:var(--surface-elevated);color:var(--ink-secondary);display:flex;align-items:center;justify-content:center;flex:none;transition:background .25s,color .25s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+.tile__ck .i{width:16px;height:16px}
+.tile[aria-pressed=true] .tile__ck{background:var(--accent);color:var(--on-accent);transform:scale(1.05)}
+.stepblock{margin-top:30px}
+.h2s{font:700 24px/30px var(--font-serif)!important;margin-top:6px!important}
+.search{display:flex;align-items:center;gap:10px;height:50px;padding:0 14px;border-radius:var(--radius-md);background:var(--surface-elevated);color:var(--ink-muted);box-shadow:inset 0 0 0 1px transparent;transition:box-shadow .2s}
+.search:focus-within{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.search input{flex:1;min-width:0;border:0;background:none;outline:none;color:var(--ink);font:400 16px/1 var(--font-sans)}
+.search input::placeholder{color:var(--ink-muted)}
+.oth-h{margin:16px 0 8px;font:600 11px/14px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-secondary)}
+.chip em{font-style:normal;opacity:.55;margin:0 1px}
+.chip .tc{font-weight:600}
+.chip:not([aria-pressed=true]) .tc{color:var(--ink)}
+.addreq{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;margin-top:10px;padding:0 14px;border-radius:var(--radius-lg);border:1px dashed var(--hairline-strong);background:none;color:var(--accent);font:500 14px/1.2 var(--font-sans);cursor:pointer;text-align:left}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 12px;font:600 11px/14px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-secondary)}
+.ixline{display:flex;align-items:center;gap:6px;margin-top:10px;font:500 12.5px/16px var(--font-sans);color:var(--accent)}
+.ixline em{font-style:normal;opacity:.6}.ixline .tc{font-weight:600}
+.avatar.sm{width:36px;height:36px;font-size:13px}
+.card__top .who{display:flex;flex-direction:column;min-width:0}
+.card__top .who b{font:600 14px/18px var(--font-sans)}
+.card__top .who span{font:400 12.5px/16px var(--font-sans);color:var(--ink-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat{display:block;width:100%;position:relative;border:0;border-radius:var(--radius-lg);overflow:hidden;min-height:196px;text-align:left;cursor:pointer;color:#F2F3F5;background:linear-gradient(135deg,#0E1634,#2f4aa8 80%,#96B4FF);box-shadow:var(--shadow-card);padding:0}
+.feat:active{transform:scale(.99)}
+.feat__art{position:absolute;inset:0;opacity:.55}
+.feat__art svg{width:100%;height:100%}
+.feat__tag{position:absolute;top:14px;left:14px;font:600 10.5px/14px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;background:#0008;padding:5px 10px;border-radius:9999px}
+.feat__play{position:absolute;top:50%;left:50%;width:54px;height:54px;margin:-34px 0 0 -27px;border-radius:50%;background:#ffffffd9;color:#0E1634;display:flex;align-items:center;justify-content:center}
+.feat__play .i{width:22px;height:22px;margin-left:3px}
+.feat__tx{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;background:linear-gradient(transparent,#0B1230e6);display:flex;flex-direction:column;gap:4px}
+.feat__tx h3{margin:0;font:700 18px/23px var(--font-serif);letter-spacing:-.01em}
+.feat__tx span{font:500 12px/16px var(--font-sans);color:#cfd8f5}
+.writecard{margin-top:26px;background:var(--surface);border-radius:var(--radius-lg);padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;box-shadow:var(--shadow-card)}
+.writecard h4{margin:4px 0 0;font:600 18px/24px var(--font-serif)}
+.writecard p{margin:0;font:400 13.5px/19px var(--font-sans);color:var(--ink-secondary);max-width:280px}
+.writecard .ring{width:44px;height:44px}.writecard .btn{margin-top:8px}
+.author{display:flex;align-items:center;gap:12px;margin-top:16px}
+.author b{display:block;font:600 15px/20px var(--font-sans)}
+.author span.t,.author div span{font:400 13px/18px var(--font-sans);color:var(--ink-secondary)}
+.standfirst{font:600 19px/27px var(--font-serif);letter-spacing:-.01em;margin:20px 0 0;color:var(--ink)}
+.oparas{margin-top:18px}
+.oparas p{font:400 17px/28px var(--font-serif);margin:0 0 18px}
+.oparas p.qa{font:400 13.5px/19px var(--font-sans);color:var(--ink-secondary);margin:0 0 6px}
+.oparas p.qa b{display:block;font:600 11px/14px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.story .callout{background:var(--surface);border-radius:var(--radius-lg);padding:14px 16px;font:400 13px/19px var(--font-sans);color:var(--ink-secondary);display:flex;gap:10px;margin-top:6px}
+.story .callout .i{color:var(--accent);margin-top:2px}
+.discuss{display:flex;align-items:center;gap:10px;width:100%;margin-top:14px;min-height:54px;padding:0 16px;border-radius:var(--radius-lg);border:0;background:var(--surface);color:var(--ink);font:600 14.5px/1 var(--font-sans);cursor:pointer;text-align:left}
+.discuss .i{color:var(--accent)}.discuss span:nth-child(2){flex:1}.discuss .chev{color:var(--ink-muted);width:16px;height:16px}
+.clist{display:flex;flex-direction:column;gap:16px}
+.cmt{display:flex;gap:12px;align-items:flex-start}
+.cmt b{font:600 14px/18px var(--font-sans)}
+.cmt p{margin:4px 0 0!important;font-size:14px!important;line-height:20px!important}
+.field.area{height:150px;padding:12px 14px;resize:none;line-height:22px}
+.sheetfoot .field{height:50px}
+.sheet__body input.field{flex:none}
+
 </style>
 </head>
 <body>
@@ -452,7 +516,7 @@ button{font-family:inherit;color:inherit}
     <div class="device" id="device">
       <div class="device__bezel"></div>
       <div class="phone" id="phone" data-mini="0">
-        <div id="base"><div class="layer" id="tab-today"></div><div class="layer" id="tab-foryou" hidden></div><div class="layer" id="tab-profile" hidden></div></div>
+        <div id="base"><div class="layer" id="tab-today"></div><div class="layer" id="tab-opinion" hidden></div><div class="layer" id="tab-foryou" hidden></div><div class="layer" id="tab-profile" hidden></div></div>
         <div id="stack"></div>
         <div id="chrome"></div>
         <div class="layer" id="auth" hidden></div>
@@ -623,6 +687,60 @@ const STORIES=[
  src:[["Kestrel Health","First report","Rehab robots enter procurement plans","3 days ago"],["Northgate Journal","Analysis","Reimbursement decides the pace","3 days ago"],["Harbour Business","Confirmation","Pilot results support wider use","3 days ago"]]}
 ];
 
+
+/* More stories per theme (readable beyond the daily brief). Lorem-level placeholders. */
+const OUT=["Harbour Business","Meridian Tech Wire","The Ledger Review","Circuit Daily","Northgate Journal","Signal & Standard","Atlas Policy Brief","Kestrel Security"];
+const E_BY_T1=["Software helpers are being given real jobs, and companies are working out how to check their work.","Attackers are finding easier ways in, so companies are tightening who can get through the door.","The way people build software is changing, and teams are adjusting how they work together.","Companies are getting better at using their information, and stricter about who can see it.","The machines that run AI need more parts, and some of those parts are running short.","Powering computers takes a lot of electricity, and planners are adjusting to it.","Machines that move and act in the real world are leaving the lab and starting real jobs."];
+const MORE_SRC=[
+[16,0,[4],"Enterprises shift from AI pilots to a small set of production use cases","Large firms are narrowing AI work to a handful of use cases that show measurable results, and retiring pilots that did not. Leaders say fewer, better-governed projects are easier to fund and defend.","Narrow focus is replacing broad experimentation, which changes how AI budgets are justified."],
+[17,0,[1],"Model evaluation becomes a procurement requirement for large buyers","Large buyers are asking vendors for evaluation results on their own data before signing. Procurement teams are hiring specialists to read the reports and set pass marks.","Evaluation evidence is becoming a condition of sale, not a marketing extra."],
+[18,1,[0],"Identity systems become the main target as attackers avoid malware","Incident reports show attackers increasingly log in with stolen credentials instead of deploying malware. Security teams are shifting spend to identity monitoring and tighter session controls.","Defences built around malware miss attackers who simply sign in."],
+[19,1,[1],"Boards ask for plain-language reporting on cyber risk","Directors are asking security chiefs for short, non-technical risk reports tied to business impact. Some firms now run annual exercises where the board practises a response.","Boards want decisions they can make, not technical detail, and that reshapes security reporting."],
+[20,1,[2],"Software supply-chain checks move from guidance to contract terms","Buyers are writing software supply-chain requirements into contracts, including lists of components and patch timelines. Smaller suppliers say the paperwork is the hard part.","What was advice is becoming a contractual duty, and suppliers will feel it first."],
+[21,2,[0],"Platform teams consolidate internal tools to cut developer friction","Engineering groups are replacing overlapping internal tools with a single developer platform. Early adopters report faster onboarding and fewer support requests.","Fewer, better tools can matter more to delivery speed than any single new one."],
+[22,2,[4],"Junior developer roles change as AI handles routine tasks","Hiring managers say entry-level roles now focus on review, testing and understanding systems rather than writing routine code. Training programmes are being rewritten to match.","The first rung of the career ladder is changing shape, with effects on how teams grow talent."],
+[23,2,[1],"Open-source maintainers weigh licence changes for AI training","Several maintainers are discussing licence terms that address AI model training. Companies that depend on the projects are watching for legal clarity.","Licence choices now affect how AI companies and software buyers can use shared code."],
+[24,3,[0],"Real-time analytics moves closer to where data is created","Firms are processing more data at the edge so they can act on it within seconds. Vendors are adding lightweight analytics to devices and gateways.","Speed of decision is becoming a data-architecture question, not only a dashboard one."],
+[25,3,[4],"Analyst teams adopt natural-language querying with guardrails","Analyst teams are trialling tools that let colleagues ask questions of company data in plain language. Guardrails limit which tables and figures can be reached.","More people can ask data questions, so definitions and access rules matter more."],
+[26,4,[2],"Memory supply tightens as accelerators demand more bandwidth","High-bandwidth memory is in short supply as accelerator designs call for more of it per chip. Suppliers are expanding lines but say demand is ahead of capacity.","Memory is joining packaging as a limit on how fast AI hardware can ship."],
+[27,4,[0],"Networking becomes the next constraint inside AI clusters","Cluster builders report that moving data between chips now limits performance as much as the chips themselves. Network vendors are releasing faster links and new designs.","The speed of the connections is becoming as important as the speed of the chips."],
+[28,5,[6],"Heat reuse from data centres gains ground in northern cities","Several northern cities are connecting data-centre waste heat to district heating. Planners say the model works best when agreed early in the design.","Waste heat is turning from a cost into a resource, if planned before construction."],
+[29,5,[1],"Nuclear developers court technology buyers for long-term power","Developers of new nuclear plants are talking to technology companies about long-term power agreements. Timelines and approvals remain the main uncertainty.","Long-dated power deals may decide which clean-energy projects get built."],
+[30,6,[4],"Autonomous trucking pilots focus on fixed, repeatable routes","Pilot programmes are limited to highway routes where conditions are predictable. Operators say route choice matters more than vehicle capability at this stage.","Narrow routes make early deployments practical and set the template for expansion."],
+[31,6,[5],"Surgical robotics vendors add AI guidance with clinician control","Vendors are adding AI guidance to surgical systems, with the surgeon retaining control at every step. Hospitals ask for clear records of what the AI suggested.","Assistive AI in surgery depends on trust, records and clinician authority."]
+];
+MORE_SRC.forEach(([id,t1,t2,h,s,w])=>{
+  const age=id%3?"Yesterday":"2 days ago";
+  STORIES.push({id,t1,t2,h,s,w,e:E_BY_T1[t1],age,min:2+id%3,listen:60+(id*7)%30,
+    src:[[OUT[id%8],"First report",h,age],[OUT[(id+3)%8],"Confirmation","Coverage and background",age],[OUT[(id+5)%8],"Analysis","What it means for buyers",age]]});
+});
+const IX={1:["Banking x Agentic AI"],2:["Utilities x Data-centre power"],7:["Chemicals x ERP","Pharma x Data platforms"],8:["Manufacturing x Humanoid robots"],9:["Healthcare x Ambient AI"],10:["Banking x Post-quantum security"]};
+STORIES.forEach(s=>{if(IX[s.id])s.ix=IX[s.id]});
+const OTHERS_SUGGEST=["Chemicals x ERP","Banking x Agentic AI","Pharma x Data platforms","Healthcare x Ambient AI","Manufacturing x Humanoid robots","Utilities x Data-centre power","Banking x Post-quantum security"];
+const T1_DESC=["Frontier models, agent architectures, enterprise adoption","Zero trust, threat vectors, enterprise defence","DevOps, code synthesis, cloud infrastructure","Vector databases, data pipelines, modern BI","Silicon, GPU clusters, 6G, data-centre networks","Grid-scale storage, nuclear, cooling, power demand","Humanoids, autonomous freight, computer vision"];
+
+/* Opinion pieces: contributed by named professionals (fictional), reviewed by editors before posting. */
+const OPS=[
+{id:101,op:1,kind:"piece",t1:0,t2:[0],au:"Priya Nair",role:"Chief Risk Officer",org:"Halden Bank",age:"2 days ago",min:6,cc:12,
+ h:"Agentic AI will be judged on its audit trail, not its demo",s:"The pilots that survive will be the ones a regulator can follow end to end. Risk teams should ask for the logs before they ask for the features."},
+{id:102,op:1,kind:"piece",t1:1,t2:[0],au:"Daniel Okafor",role:"CISO",org:"Brightwater Health",age:"3 days ago",min:5,cc:8,
+ h:"Your phishing training is solving last year's problem",s:"Spotting typos no longer protects anyone. The better defence is a process that makes a convincing message harmless."},
+{id:103,op:1,kind:"piece",t1:2,t2:[4],au:"Mei Tanaka",role:"VP Engineering",org:"Orbit Commerce",age:"4 days ago",min:7,cc:21,
+ h:"Code review is the new bottleneck, and that is a leadership problem",s:"Tools write code faster than teams can read it. Leaders who treat review as a first-class job will ship faster than those who add more assistants."},
+{id:104,op:1,kind:"piece",t1:5,t2:[6],au:"Rahul Deshmukh",role:"Head of Infrastructure",org:"Meridian Utilities",age:"5 days ago",min:6,cc:15,
+ h:"Power is the real AI roadmap",s:"Chip supply gets the headlines, but the sites that can secure electricity will decide where capacity lands. Plan the grid connection before the building."},
+{id:105,op:1,kind:"piece",t1:3,t2:[1],au:"Elena Rossi",role:"Chief Data Officer",org:"Solace Insurance",age:"1 week ago",min:5,cc:6,
+ h:"Data governance is a product, not a policy",s:"Teams follow rules that make their work easier. Treat governance as something people choose to use and adoption follows."},
+{id:106,op:1,kind:"piece",t1:6,t2:[4],au:"Tomás Herrera",role:"Operations Director",org:"Pacific Freight Co.",age:"1 week ago",min:4,cc:9,
+ h:"Humanoids will earn their place one dull task at a time",s:"The first useful robots will carry totes, not conversations. Measure uptime across a full shift before measuring anything else."},
+{id:107,op:1,kind:"interview",t1:0,t2:[0],au:"Dr. Ananya Rao",role:"Chair",org:"Applied AI Council",age:"This month",min:24,cc:18,
+ h:"Why most AI pilots stall after the demo",s:"A monthly conversation with a senior leader on what is changing in their corner of technology."}
+];
+OPS.forEach(o=>{o.src=[[o.au+", "+o.org,"Opinion","",""]];o.w=o.s;o.count=1;STORIES.push(o)});
+const COMMENT_POOL=[["Arjun Mehta","Director of IT, Vertex Foods","Fair point on logging. In our case the harder part was agreeing who owns the log once the vendor changes."],["Sofia Alvarez","Product Lead, Tidewater Labs","We saw the same pattern. A small, boring scope shipped; the ambitious one is still in review."],["Kenji Watanabe","Architect, Northfield Systems","Would add that the cost side matters too. Nobody wants to be the first to publish their numbers."],["Hannah Brooks","COO, Lumen Logistics","Useful framing for a board discussion. Sharing this with my team."]];
+const OP_PARAS=["The conversation about this topic usually starts with capability. It should start with accountability. Leaders who ask what happens when the system is wrong tend to make better early decisions than those who ask what it can do on its best day.","In the organisations I speak to, the pattern repeats. A promising pilot meets a review process that was never designed for it, and months pass. The technology is rarely the cause. The missing piece is an agreed owner and a clear definition of done.","There is a reasonable counter-argument: that moving slowly carries its own risk, and competitors will not wait. That is true, and it is a reason to narrow scope, not to skip the checks. A small deployment with real controls teaches more than a broad one without.","What would I do on Monday? Pick one workflow, name one accountable person, and write down the measure that would make you stop. Then publish the result internally, whatever it shows.","None of this is new. Every earlier wave of enterprise technology went through the same cycle. The firms that did well treated the unglamorous parts, such as ownership, records and measurement, as the work itself."];
+const MORE_INFO=null;
+
 /* Generic tool content for archive stories that have no hand-written analysis. */
 STORIES.forEach(s=>{
   if(!s.wim)s.wim=["The developments described in the summary change what teams can do or must plan for.","Teams in the themes above, and the vendors that serve them.","Follow-up reports and any statements from regulators or major buyers."];
@@ -683,10 +801,11 @@ sliders:'<path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M1
 sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
 linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
 whats:'<path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/>',
-dots:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
+quote:'<path d="M3 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/><path d="M15 21c3 0 7-1 7-8V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h4"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',pen:'<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/>',dots:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
 };
 const ic=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg>`;
 const APPLE='<svg class="brand" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>';
+const LINKEDIN='<svg class="brand" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
 const GOOGLE='<svg class="brand" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
 const FADE='<div class="statusfade"></div>';
 
@@ -695,7 +814,7 @@ let appearance='dark',cardStyle='text';
 let S;
 function fresh(){return{method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
- filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
+ others:[],opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
 const SPEEDS=[1,1.25,1.5,2];
 S=fresh();
@@ -712,12 +831,14 @@ mq.addEventListener&&mq.addEventListener('change',()=>{if(appearance==='system')
 /* ---------- Content helpers ---------- */
 const tagLine=(s,all)=>T1[s.t1]+' · '+(all?s.t2.map(i=>T2[i]).join(' · '):T2[s.t2[0]]);
 function briefIds(){
-  const sc=s=>(S.themes.includes(s.t1)?2:0)+(S.where.some(w=>s.t2.includes(w))?1:0);
+  const sc=s=>(S.themes.includes(s.t1)?2:0)+(S.where.some(w=>s.t2.includes(w))?1:0)+(ixMatch(s).length?1:0);
   return STORIES.filter(s=>s.id<=10).map((s,i)=>({s,i,k:sc(s)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(x=>x.s.id);
 }
+const ixMatch=s=>(s.ix||[]).filter(x=>S.others.some(o=>o.toLowerCase()===x.toLowerCase()));
+function moreIds(t){return STORIES.filter(s=>s.id>10&&s.id<100&&s.t1===t).map(s=>s.id)}
 function picksIds(){
   const sc=s=>(S.themes.includes(s.t1)?2:0)+(S.where.some(w=>s.t2.includes(w))?1:0);
-  return STORIES.filter(s=>s.id>10).map((s,i)=>({s,i,k:sc(s)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(x=>x.s.id);
+  return STORIES.filter(s=>s.id>10&&s.id<100).map((s,i)=>({s,i,k:sc(s)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(x=>x.s.id);
 }
 const isSaved=id=>S.saved.includes(id);
 function greeting(){const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening'}
@@ -769,7 +890,7 @@ function dragSheet(sh){
 }
 
 /* ---------- Chrome (tab bar, mini player) ---------- */
-const TABS=[['today','Today','today'],['foryou','For You','foryou'],['profile','Profile','user']];
+const TABS=[['today','Today','today'],['opinion','Opinion','quote'],['foryou','For You','foryou'],['profile','Profile','user']];
 function syncChrome(){
   const main=S.phase==='main',stackN=$('#stack').children.length;
   const ph=$('#phone');ph.dataset.mini=(A.active&&main)?'1':'0';
@@ -785,7 +906,7 @@ function setTab(k){
   S.tab=k;$$('#base>.layer').forEach(l=>l.hidden=l.id!=='tab-'+k);
   renderTab(k);syncChrome();
 }
-function renderTab(k){({today:renderToday,foryou:renderForYou,profile:renderProfile})[k]()}
+function renderTab(k){({today:renderToday,opinion:renderOpinion,foryou:renderForYou,profile:renderProfile})[k]()}
 function refreshTabs(){renderTab(S.tab)}
 
 /* ---------- Auth: welcome, sign-in, themes, prep ---------- */
@@ -801,9 +922,9 @@ function viewWelcome(){
    <li>${ic('check')}<span><strong>Prepared analysis</strong> on every story, ready when you tap.</span></li></ul></div>
   <div class="cta" style="padding-top:22px">
    <button class="btn btn--apple btn--block" data-a="signin" data-m="Apple">${APPLE} Continue with Apple</button>
-   <button class="btn btn--secondary btn--block" data-a="signin" data-m="Google">${GOOGLE} Continue with Google</button>
+   <button class="btn btn--secondary btn--block" data-a="signin" data-m="LinkedIn">${LINKEDIN} Continue with LinkedIn</button>
    <div class="or">OR</div>
-   <button class="btn btn--secondary btn--block" data-a="email">${ic('mail')} Continue with email or phone</button>
+   <button class="btn btn--secondary btn--block" data-a="email">${ic('mail')} Continue with work email</button>
    <p class="legal">By continuing, you agree to our <u>Terms of Service</u> and <u>Privacy Policy</u>.</p></div></div>`);
 }
 function doSignin(method,btn){
@@ -812,44 +933,52 @@ function doSignin(method,btn){
   setTimeout(()=>{closeSheet(true);viewThemes()},btn?750:150);
 }
 function openEmail(){
-  let mode='Email',step=1;
-  const body=()=>step===1?`<div class="seg" id="em-seg">${['Email','Phone'].map(m=>`<button data-m="${m}" aria-pressed="${m===mode}">${m}</button>`).join('')}</div>
-    <input class="field" id="em-in" ${mode==='Email'?'type="email" value="you@company.com" autocomplete="email"':'type="tel" value="+91 98765 43210" autocomplete="tel"'} aria-label="${mode}">
-    <button class="btn btn--primary btn--block" id="em-go">Continue</button><p class="note" style="text-align:center">We will send a one-time code. No password to remember.</p>`
-   :`<p style="color:var(--ink-secondary)">Enter the 4-digit code sent to <b style="color:var(--ink)">${mode==='Email'?'your email':'your phone'}</b>.</p><div class="codebox" id="em-code"><i class="cur"></i><i></i><i></i><i></i></div><p class="note" style="text-align:center">Prototype: the code fills in automatically.</p>`;
-  const draw=sh=>{$('.sheet__body',sh).innerHTML=body();wire(sh)};
+  let step=1;
+  const body=()=>step===1?`<input class="field" id="em-in" type="email" value="you@company.com" autocomplete="email" aria-label="Work email"><button class="btn btn--primary btn--block" id="em-go">Continue</button><p class="note" style="text-align:center">Use your work email. We will send a one-time code. No password to remember.</p>`
+   :`<p style="color:var(--ink-secondary)">Enter the 4-digit code sent to <b style="color:var(--ink)">your work email</b>.</p><div class="codebox" id="em-code"><i class="cur"></i><i></i><i></i><i></i></div><p class="note" style="text-align:center">Prototype: the code fills in automatically.</p>`;
   const wire=sh=>{
-    if(step===1){
-      $$('#em-seg button',sh).forEach(b=>b.onclick=()=>{mode=b.dataset.m;draw(sh)});
-      $('#em-go',sh).onclick=async()=>{step=2;draw(sh);const boxes=$$('#em-code i',sh);
-        for(let i=0;i<4;i++){await wait(320);if(!sheetEl)return;boxes[i].textContent='1234'[i];boxes[i].classList.remove('cur');if(boxes[i+1])boxes[i+1].classList.add('cur')}
-        await wait(350);if(!sheetEl)return;S.method=mode;closeSheet(true);viewThemes()};
-    }
+    if(step!==1)return;
+    $('#em-go',sh).onclick=async()=>{step=2;$('.sheet__body',sh).innerHTML=body();const boxes=$$('#em-code i',sh);
+      for(let i=0;i<4;i++){await wait(320);if(!sheetEl)return;boxes[i].textContent='1234'[i];boxes[i].classList.remove('cur');if(boxes[i+1])boxes[i+1].classList.add('cur')}
+      await wait(350);if(!sheetEl)return;S.method='work email';closeSheet(true);viewThemes()};
   };
-  openSheet({title:'Continue with email or phone',body:body(),init:wire});
-  // wire needs sheet element: openSheet calls init(sheet)
+  openSheet({title:'Continue with work email',eyebrow:'Sign in',body:body(),init:wire});
 }
-const BUB=[[0,92,76,62,7],[1,122,196,80,8.5],[2,128,108,196,9],[3,96,300,58,6.5],[4,124,252,205,7.5],[5,112,90,326,8],[6,132,240,338,9.5]];
+/* Industry x technology search ("Others"), used in onboarding and Profile */
+const comboHTML=x=>{const p=x.split(/ x /i);return p.length===2?`<span>${esc(p[0])}</span><em> x </em><span class="tc">${esc(p[1])}</span>`:`<span>${esc(x)}</span>`};
+function othersMount(root){
+  root.innerHTML=`<div id="oth-sel" class="chips" style="margin-bottom:12px"></div><label class="search">${ic('search')}<input id="oth-q" type="search" placeholder="Search, for example Chemicals x ERP" autocomplete="off" enterkeyhint="done"></label><div class="oth-h" id="oth-h"></div><div id="oth-list"></div><p class="note" style="margin-top:12px">Format: industry x technology. Requests help us decide what to cover next.</p>`;
+  othersPaint('');
+}
+function othersPaint(q){
+  q=(q||'').trim();const ql=q.toLowerCase(),sel=S.others;
+  $('#oth-sel').innerHTML=sel.map(x=>`<button class="chip" aria-pressed="true" data-a="remother" data-v="${esc(x)}" aria-label="Remove ${esc(x)}">${comboHTML(x)}${ic('x')}</button>`).join('');
+  $('#oth-sel').style.display=sel.length?'flex':'none';
+  const sug=OTHERS_SUGGEST.filter(x=>!sel.some(s=>s.toLowerCase()===x.toLowerCase())&&(!ql||x.toLowerCase().includes(ql)));
+  const exact=[...OTHERS_SUGGEST,...sel].some(x=>x.toLowerCase()===ql);
+  $('#oth-h').textContent=ql?'Matches':'Suggested combinations';
+  $('#oth-list').innerHTML=`<div class="chips">${sug.map(x=>`<button class="chip" data-a="addother" data-v="${esc(x)}">${ic('plus')}${comboHTML(x)}</button>`).join('')||(ql?'':'<span class="note">All suggestions added.</span>')}</div>${ql&&!exact?`<button class="addreq" data-a="addother" data-v="${esc(q)}">${ic('plus')}<span>Add “${esc(q)}” as a request</span></button>`:''}`;
+}
 function viewThemes(){
   S.phase='auth';
   showAuth(`<div class="setup fade">
-  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of 2</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
+  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of 3</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
   <div class="setup__body" id="th-body">
-   <h2>Choose your themes</h2><p class="sub">Pick up to five areas of technology. Your brief leads with these.</p>
-   <div class="bubbles" id="bubbles">${BUB.map(([i,d,x,y,dur],n)=>`<button class="bubble" data-a="bub" data-i="${i}" aria-pressed="${S.themes.includes(i)}" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px;animation-delay:${n*70}ms"><span class="bubble__in" style="--d:${dur}s;--fx:${(n%2?-1:1)*4}px;--fy:${-4-n%3*2}px;animation-delay:-${n*1.3}s"><span class="tick">${ic('check')}</span>${esc(T1[i])}</span></button>`).join('')}</div>
-   <div style="margin-top:22px"><div class="stepcap" style="padding:0 4px"><i class="dot" style="background:var(--accent)"></i>Step 2 of 2</div><h2 style="font-size:24px;line-height:30px;margin-top:6px">Where do you want to see it?</h2><p class="sub" style="margin-bottom:14px">Optional. Pick where technology meets your world.</p>
-   <div class="chips" id="t2chips">${T2.map((t,i)=>`<button class="chip" data-a="t2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${ic(S.where.includes(i)?'check':'plus')}${esc(t)}</button>`).join('')}</div></div>
+   <h2>Choose your themes</h2><p class="sub">Select up to 5 technology areas for your daily brief.</p>
+   <div class="tiles" id="tiles">${T1.map((t,i)=>`<button class="tile" data-a="tile" data-i="${i}" aria-pressed="${S.themes.includes(i)}"><span class="tile__tx"><b>${esc(t)}</b><span>${esc(T1_DESC[i])}</span></span><span class="tile__ck">${ic('plus')}</span></button>`).join('')}</div>
+   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of 3</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional · Pick how tech intersects your industry</p>
+   <div class="chips" id="t2chips" style="margin-top:14px">${T2.map((t,i)=>`<button class="chip" data-a="t2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${ic(S.where.includes(i)?'check':'plus')}${esc(t)}</button>`).join('')}</div></div>
+   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional · Search for a specific industry and technology</p><div id="oth" style="margin-top:14px"></div></div>
    <div class="fine">${ic('sliders')}<span>Your picks decide which stories lead your brief. Change them anytime in Profile.</span></div>
   </div>
   <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="themesdone" id="th-go"></button></div></div>`);
-  updThemes();fitBubbles();
+  othersMount($('#oth'));updThemes();
 }
-function fitBubbles(){const b=$('#bubbles'),body=$('#th-body');if(!b||!body)return;const avail=body.clientWidth-32,k=Math.min(1,avail/358);b.style.transformOrigin='top left';b.style.transform=k<1?`scale(${k})`:'';b.style.margin=`6px 0 ${-(420*(1-k))}px ${Math.max(0,(avail-358*k)/2)}px`}
 function updThemes(){
   const n=S.themes.length,c=$('#th-count');if(!c)return;
   c.textContent=n+' of 5 selected';
   $('#th-go').innerHTML=n?'Continue '+ic('arrowR'):'Skip and show everything';
-  $$('#bubbles .bubble').forEach(b=>b.setAttribute('aria-pressed',S.themes.includes(+b.dataset.i)));
+  $$('#tiles .tile').forEach(b=>{const on=S.themes.includes(+b.dataset.i);b.setAttribute('aria-pressed',on);b.querySelector('.tile__ck').innerHTML=ic(on?'check':'plus')});
   $$('#t2chips .chip').forEach(b=>{const on=S.where.includes(+b.dataset.i);b.setAttribute('aria-pressed',on);b.querySelector('svg').outerHTML=ic(on?'check':'plus')});
 }
 async function viewPrep(){
@@ -868,8 +997,8 @@ function enterMain(tab){
 /* ---------- Today ---------- */
 function cardHTML(s,pos,n){
   const read=S.read.has(s.id),isNew=s.isNew&&!read;
-  return `<article class="card ${read?'card--read':''}" role="button" tabindex="0" data-a="open" data-id="${s.id}" style="--n:${n}">
-   <div class="card__top"><span class="card__idx">${pos+1}</span><span class="card__tags">${esc(tagLine(s))}</span></div>
+  return `<article class="card ${read?'card--read':''}" role="button" tabindex="0" data-a="${pos==null?'openmore':'open'}" data-id="${s.id}" style="--n:${n}">
+   <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}<span class="card__tags">${esc(tagLine(s))}</span></div>
    ${cardStyle==='photo'?`<div class="photo">${art(s.id)}</div>`:''}
    <div class="card__new" style="${isNew?'':'color:var(--ink-muted);text-transform:none;letter-spacing:.02em;font-weight:500'}">${isNew?'<i class="dot"></i>New':''}<span class="meta num" style="${isNew?'margin-left:0':''}">${isNew?'· ':''}${s.age} · ${s.min} min read</span></div>
    <h3>${esc(s.h)}</h3><p>${esc(s.s)}</p>
@@ -880,8 +1009,9 @@ function renderToday(){
   const ids=briefIds(),total=ids.length,rd=ids.filter(i=>S.read.has(i)).length;
   const pf=S.themes.length?S.themes:[0,1,2,3,4,5,6];
   if(S.filter!=='all'&&!pf.includes(S.filter))S.filter='all';
-  const cnt=t=>ids.filter(i=>byId[i].t1===t).length;
+  const cnt=t=>ids.filter(i=>byId[i].t1===t).length+moreIds(t).length;
   const list=S.filter==='all'?ids:ids.filter(i=>byId[i].t1===S.filter);
+  const mo=S.filter==='all'?[]:moreIds(S.filter);
   const mins=Math.round(ids.reduce((a,i)=>a+byId[i].listen,0)/60);
   const anim=S.anim;S.anim=false;
   el.innerHTML=FADE+`<div class="scroll"><div class="pad">
@@ -889,8 +1019,9 @@ function renderToday(){
    <div class="dateline">${dateline()} · Your ${S.briefTime.replace(':00','')} brief · ${total} stories</div>
    <div class="progress"><div class="progress__track"><div class="progress__fill" style="width:${rd/total*100}%"></div></div><span class="meta num">${rd} of ${total}</span></div>
    <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>
-   <div class="feed ${anim?'anim':''}">${list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join('')}</div>
-   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief`:`Showing ${list.length} of ${total} stories`}</div>`}
+   ${S.filter==='all'?'':`<div class="sec-h"><span>In today's brief</span><span class="meta num">${list.length}</span></div>`}<div class="feed ${anim?'anim':''}">${list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join('')}</div>
+   ${mo.length?`<div class="sec-h" style="margin-top:26px"><span>More in ${esc(T1[S.filter])}</span><span class="meta num">${mo.length}</span></div><div class="feed ${anim?'anim':''}">${mo.map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>`:''}
+   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief. Pick a theme above for more.`:`${list.length} in the brief · ${mo.length} more`}</div>`}
   </div></div>
   <div class="topbar glass"><div class="pills" role="tablist">
    <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">All<span class="meta num">${total}</span></button>
@@ -898,12 +1029,82 @@ function renderToday(){
   const sc=$('.scroll',el);sc.scrollTop=top;
 }
 
+/* ---------- Opinion ---------- */
+const OPC={};
+const initials=n=>n.replace(/^Dr\.\s*/,'').split(' ').map(x=>x[0]).slice(0,2).join('');
+function opList(){
+  const sc=o=>S.themes.includes(o.t1)?1:0;
+  let l=OPS.map((o,i)=>({o,i})).sort((a,b)=>sc(b.o)-sc(a.o)||a.i-b.i).map(x=>x.o);
+  if(S.opFilter!=='all')l=l.filter(o=>o.t1===S.opFilter);
+  return l;
+}
+const opCount=o=>o.cc+(OPC[o.id]||[]).length;
+function opCardHTML(o,n){
+  return `<article class="card" role="button" tabindex="0" data-a="openop" data-id="${o.id}" style="--n:${n}">
+   <div class="card__top"><span class="avatar sm">${esc(initials(o.au))}</span><div class="who"><b>${esc(o.au)}</b><span>${esc(o.role)}, ${esc(o.org)}</span></div></div>
+   <span class="label" style="color:var(--accent)">Opinion · ${esc(T1[o.t1])}</span>
+   <h3 style="margin-top:-4px">${esc(o.h)}</h3><p>${esc(o.s)}</p>
+   <div class="card__foot"><span class="meta">${o.age} · ${o.min} min read · ${opCount(o)} comments</span><button class="iconbtn" data-a="save" data-id="${o.id}" aria-pressed="${isSaved(o.id)}" aria-label="Save piece">${ic('bookmark')}</button></div></article>`;
+}
+function renderOpinion(){
+  const el=$('#tab-opinion'),old=$('.scroll',el),top=old?old.scrollTop:0;
+  const pf=(S.themes.length?S.themes:[0,1,2,3,4,5,6]).filter(t=>OPS.some(o=>o.t1===t));
+  if(S.opFilter!=='all'&&!pf.includes(S.opFilter))S.opFilter='all';
+  const list=opList(),conv=list.find(o=>o.kind==='interview'),pieces=list.filter(o=>o.kind!=='interview');
+  const anim=S.opAnim!==false;S.opAnim=false;
+  el.innerHTML=FADE+`<div class="scroll"><div class="pad"><h1 class="pagehead" style="margin-bottom:6px">Opinion</h1>
+   <p class="note" style="margin:0 0 18px;font-size:13.5px;line-height:19px">Perspectives from technology professionals. Contributed by members and reviewed by FomoTech editors before posting.</p>
+   ${conv?`<button class="feat" data-a="openop" data-id="${conv.id}"><div class="feat__art">${art(conv.id+3)}</div><span class="feat__tag">The Conversation · Monthly</span><span class="feat__play">${ic('play','fill')}</span><div class="feat__tx"><h3>${esc(conv.h)}</h3><span>${esc(conv.au)}, ${esc(conv.role)}, ${esc(conv.org)} · ${conv.min} min</span></div></button>`:''}
+   <div class="sec-h" style="margin-top:${conv?24:0}px"><span>Latest pieces</span><span class="meta num">${pieces.length}</span></div>
+   <div class="feed ${anim?'anim':''}">${pieces.length?pieces.map((o,n)=>opCardHTML(o,n)).join(''):`<div class="empty"><div class="ring">${ic('quote')}</div><h4>No pieces on this theme yet</h4><p>Check back soon, or share your own view.</p></div>`}</div>
+   <div class="writecard"><span class="ring">${ic('pen')}</span><h4>Share your perspective</h4><p>Working in technology? Submit a piece for editorial review. We check for quality and clarity, not for position.</p><button class="btn btn--secondary" data-a="writeop">Write for FomoTech</button></div>
+  </div></div>
+  <div class="topbar glass"><div class="pills" role="tablist"><button class="pill" data-a="opfilter" data-k="all" aria-pressed="${S.opFilter==='all'}">All<span class="meta num">${OPS.length}</span></button>${pf.map(t=>`<button class="pill" data-a="opfilter" data-k="${t}" aria-pressed="${S.opFilter===t}">${esc(T1[t])}<span class="meta num">${OPS.filter(o=>o.t1===t).length}</span></button>`).join('')}</div></div>`;
+  $('.scroll',el).scrollTop=top;
+}
+function opinionParts(s){
+  const id=s.id,n=S.ctx.ids.length,last=S.i===n-1,ns=!last&&byId[S.ctx.ids[S.i+1]],iv=s.kind==='interview';
+  const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">Opinion <b class="num">${S.i+1}</b> of ${n}</div><button class="iconbtn" data-a="comments" data-id="${id}" aria-label="Discussion" style="color:var(--ink)">${ic('msg')}</button>`;
+  const bot=`<button class="act" data-a="save" data-id="${id}" aria-pressed="${isSaved(id)}">${ic('bookmark')}Save</button><button class="act" data-a="share" data-id="${id}">${ic('share')}Share</button><button class="btn btn--primary" data-a="next">${last?'Done':'Next piece'} ${ic('arrowR')}</button>`;
+  const qs=["What do leaders get wrong about the first ninety days?","Where does the real delay sit: the technology, or the decision to rely on it?","What would you tell a peer starting this week?"];
+  const paras=iv?qs.map((q,i)=>`<p class="qa"><b>FomoTech</b>${esc(q)}</p><p>${esc(OP_PARAS[(i*2+s.id)%OP_PARAS.length])}</p>`).join(''):OP_PARAS.map((p,i)=>`<p>${esc(OP_PARAS[(i+s.id)%OP_PARAS.length])}</p>`).join('');
+  const body=`<div class="tags"><span class="label" style="color:var(--accent)">${iv?'The Conversation':'Opinion'} · ${esc(T1[s.t1])}</span></div>
+   <h1>${esc(s.h)}</h1>
+   <div class="author"><span class="avatar">${esc(initials(s.au))}</span><div><b>${esc(s.au)}</b><span>${esc(s.role)}, ${esc(s.org)}</span></div></div>
+   <div class="byline" style="margin-top:14px"><span class="meta">${s.age} · ${s.min} ${iv?'min':'min read'}</span><span class="ai">Contributed</span></div>
+   ${iv?`<button class="feat" data-a="playconv" style="margin-top:18px"><div class="feat__art">${art(s.id+3)}</div><span class="feat__play">${ic('play','fill')}</span><div class="feat__tx"><span>Watch the full conversation · ${s.min} min</span></div></button>`:''}
+   <p class="standfirst">${esc(s.s)}</p>
+   <div class="oparas">${paras}</div>
+   <div class="callout">${ic('check','sm')}<span>Contributed by a FomoTech member and reviewed by editors before posting. Views are the author's own.</span></div>
+   <button class="discuss" data-a="comments" data-id="${id}">${ic('msg')}<span>Discussion</span><span class="meta num">${opCount(s)} comments</span>${ic('chevR','chev')}</button>
+   <button class="upnext" data-a="next"><span class="label">${last?'End of Opinion':'Up next · Opinion '+(S.i+2)+' of '+n}</span><h4>${last?'That is the last piece in this list.':esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
+   <p class="footnote">Sample pieces and authors for this prototype.</p>`;
+  return{top,bot,body};
+}
+function commentsDraw(id,sh){
+  const s=byId[id],seeds=COMMENT_POOL.slice(0,Math.min(4,s.cc)).map(c=>({au:c[0],role:c[1],txt:c[2],when:'2 days ago'})),all=[...seeds,...(OPC[id]||[])];
+  $('.sheet__body',sh).innerHTML=`<div class="clist">${all.map(c=>`<div class="cmt"><span class="avatar sm">${esc(initials(c.au))}</span><div><b>${esc(c.au)}</b><span class="meta"> ${esc(c.role)} · ${c.when}</span><p>${esc(c.txt)}</p></div></div>`).join('')}</div><p class="note">Showing a sample of ${opCount(s)} comments. Comments are visible to other members.</p>`;
+  const t=$('.sheet__head h4',sh);if(t)t.textContent='Discussion · '+opCount(s);
+  const b=$('.sheet__body',sh);b.scrollTop=b.scrollHeight;
+}
+function commentsSheet(id){
+  openSheet({title:'Discussion',eyebrow:'Opinion',tall:true,body:'',
+   foot:`<div style="display:flex;gap:8px;width:100%"><input class="field" id="cm-in" placeholder="Add a comment" maxlength="240" style="flex:1" autocomplete="off"><button class="btn btn--primary" data-a="postcomment" data-id="${id}" style="min-height:50px">Post</button></div>`,
+   init:sh=>commentsDraw(id,sh),onClose:()=>{if(S.tab==='opinion')renderOpinion()}});
+}
+function writeSheet(){
+  let theme=0;
+  openSheet({title:'Write for FomoTech',eyebrow:'Submit for editorial review',tall:true,
+   body:`<input class="field" placeholder="Working title" maxlength="90"><span class="label">Theme</span><div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickwt" aria-pressed="${i===0}">${esc(t)}</button>`).join('')}</div><textarea class="field area" placeholder="Your view in a few paragraphs. Opinions, trends and impacts. Not news reports."></textarea><p class="note">Pieces are reviewed by FomoTech editors for quality and clarity before they appear. We do not edit for position. Your name, role and company are shown.</p>`,
+   foot:'<button class="btn btn--primary" data-a="submitop" style="flex:1">Submit for review</button>'});
+}
+
 /* ---------- For You ---------- */
 function collsOf(id){return S.colls.filter(c=>c.ids.includes(id))}
 function rowHTML(s,ctx,showFolder,n){
   const cs=collsOf(s.id).map(c=>c.name);
   return `<div class="minirow" role="button" tabindex="0" data-a="openctx" data-id="${s.id}" data-ctx="${ctx}" style="--n:${n}">
-   <div class="tx"><span class="label" style="font-size:10.5px;line-height:14px">${esc(tagLine(s))}</span><h4>${esc(s.h)}</h4><span class="meta">${esc(s.src[0][0])} · ${s.age}${cs.length&&showFolder?' · '+esc(cs.join(', ')):''}</span></div>
+   <div class="tx"><span class="label" style="font-size:10.5px;line-height:14px">${s.op?'Opinion · '+esc(T1[s.t1]):esc(tagLine(s))}</span><h4>${esc(s.h)}</h4><span class="meta">${s.op?esc(s.au+', '+s.org):esc(s.src[0][0])} · ${s.age}${cs.length&&showFolder?' · '+esc(cs.join(', ')):''}</span></div>
    ${showFolder?`<button class="iconbtn" data-a="organise" data-id="${s.id}" aria-label="Add to collection">${ic('folder')}</button>`:''}
    <button class="iconbtn" data-a="save" data-id="${s.id}" aria-pressed="${isSaved(s.id)}" aria-label="Save story">${ic('bookmark')}</button></div>`;
 }
@@ -934,10 +1135,10 @@ function renderProfile(){
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
    <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
    <div class="group"><span class="label">Your brief</span><div class="rows">
-    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
+    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added':'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button></div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
-    ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
+    ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
     <p class="note" style="margin:8px 4px 0">Used to tailor Industry lens. Nothing is imported from LinkedIn.</p></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
    <div class="group"><div class="rows">${prow('users','Invite your team','Share FomoTech','invite')}</div></div>
@@ -997,12 +1198,14 @@ const TOOLS=[['wim','Why it matters','trend'],['eli5','ELI5','bulb'],['hype','Hy
 const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
 function storyParts(){
-  const id=curId(),s=byId[id],n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word=kind==='brief'?'Story':kind==='saved'?'Saved':'Pick';
+  const id=curId(),s=byId[id];if(s.op)return opinionParts(s);
+  const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'More'}[kind]||'Story';
   const listening=A.active&&A.id===id,nid=S.ctx.ids[S.i+1],ns=nid&&byId[nid];
   const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${word} <b class="num">${S.i+1}</b> of ${n}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</button>`;
   const bot=`<button class="act" data-a="save" data-id="${id}" aria-pressed="${isSaved(id)}">${ic('bookmark')}Save</button><button class="act" data-a="share" data-id="${id}">${ic('share')}Share</button><button class="btn btn--primary" data-a="next">${last?(kind==='brief'?'Finish brief':'Done'):'Next story'} ${ic('arrowR')}</button>`;
   const isNew=s.isNew&&!S.read.has(id);
   const body=`<div class="tags"><span class="label">${esc(tagLine(s,true))}</span>${isNew?'<span class="card__new"><i class="dot"></i>New</span>':''}</div>
+   ${ixMatch(s).length?`<div class="ixline">${ic('check','sm')}Matches your interest: ${comboHTML(ixMatch(s)[0])}</div>`:''}
    <h1>${esc(s.h)}</h1>
    <div class="byline"><span class="meta">${esc(s.src[0][0])} · ${s.src.length} sources</span><span class="meta">${s.age} · ${s.min} min read</span><span class="ai">AI summary</span></div>
    <p class="summary">${esc(s.s)}</p>
@@ -1102,8 +1305,9 @@ function toolSheet(k){
 function shareSheet(id,invite){
   const s=byId[id],url=SHARE_URL+(id*7919).toString(36).slice(0,5);
   const card=invite?`<div class="sharecard"><div class="brand"><span>FomoTech<i></i></span></div><span class="stag">Free daily tech brief</span><h5>Tech news that tells you what it means.</h5><div class="why2">Eight to ten stories a day, named sources and a clear reason each one matters. Nothing behind a paywall.</div><div class="ft"><span>Invitation from a colleague</span><span>fomotech.app</span></div></div>`
+  :s.op?`<div class="sharecard"><div class="brand"><span>FomoTech<i></i></span></div><span class="stag">Opinion · ${esc(T1[s.t1])}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.s)}</div><div class="ft"><span>${esc(s.au+', '+s.org)}</span><span>fomotech.app</span></div></div>`
   :`<div class="sharecard"><div class="brand"><span>FomoTech<i></i></span></div><span class="stag">${esc(tagLine(s))}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.w)}</div><div class="ft"><span>${s.src.length} named sources · AI summary</span><span>fomotech.app</span></div></div>`;
-  openSheet({title:invite?'Invite your team':'Share story',eyebrow:invite?'Invite preview':'Share card preview',tall:false,
+  openSheet({title:invite?'Invite your team':(s.op?'Share piece':'Share story'),eyebrow:invite?'Invite preview':'Share card preview',tall:false,
    body:`${card}<div class="linkrow">${ic('link')}<span>${url}</span><button class="btn btn--primary" data-a="copylink" data-u="${url}">Copy</button></div>
    <div class="targets">${[['msg','Messages'],['whats','WhatsApp'],['mail','Mail'],['linkedin','LinkedIn']].map(t=>`<button class="target" data-a="shareto" data-n="${t[1]}"><span class="ic">${ic(t[0])}</span>${t[1]}</button>`).join('')}</div>`});
 }
@@ -1163,6 +1367,7 @@ function editSheet(k){
     const draw=sh=>{$('.sheet__body',sh).innerHTML=`<div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickt1" data-i="${i}" aria-pressed="${S.themes.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note" id="t1n">${S.themes.length} of 5 selected. Your brief leads with these.</p>`};
     return openSheet({title:'Themes',eyebrow:'Up to five',body:'',init:draw,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:()=>{S.filter='all';refreshTabs()}});
   }
+  if(k==='others')return openSheet({title:'Industry x technology',eyebrow:'Optional',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='where')return openSheet({title:'Where you want to see it',eyebrow:'Optional',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note">Stories matching both a theme and a place lead your brief.</p>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='time')return openSheet({title:'Brief time',eyebrow:'Your local time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div><p class="note">Your brief is ready at this time every day.</p>`});
   if(k==='industry'||k==='role'){
@@ -1179,11 +1384,13 @@ function resetAll(){resetUI();S=fresh();clearTabs();syncChrome();viewWelcome()}
 async function jump(name){
   resetUI();clearTabs();S=fresh();$('#auth').hidden=true;
   if(name==='welcome'){return viewWelcome()}
-  if(name==='themes'){S.method='Apple';return viewThemes()}
-  S.method='Apple';S.themes=[0,1,2];S.where=[0,1];
+  if(name==='themes'){S.method='LinkedIn';return viewThemes()}
+  if(name==='others'){S.method='LinkedIn';S.themes=[0,1];viewThemes();await wait(900);const o=$('#oth');o.scrollIntoView({block:'center'});return}
+  S.method='LinkedIn';S.themes=[0,1,2];S.where=[0,1];S.others=['Banking x Agentic AI'];
+  if(name==='more')S.filter=0;
   if(name==='foryou-saved'){S.saved=[2,6,3];S.colls[0].ids=[2,6];S.colls[1].ids=[3];S.read=new Set([1])}
   if(name==='caught'){S.read=new Set(briefIds())}
-  const tab=name==='foryou-empty'||name==='foryou-saved'||name==='picks'?'foryou':name==='profile'?'profile':'today';
+  const tab=name==='opinion'||name==='opinion-read'||name==='comments'?'opinion':name==='foryou-empty'||name==='foryou-saved'||name==='picks'?'foryou':name==='profile'?'profile':'today';
   if(name==='picks')S.fySeg='picks';
   enterMain(tab);
   const ids=briefIds();
@@ -1192,10 +1399,11 @@ async function jump(name){
     if(['wim','eli5','hype','bias','lens'].includes(name))toolSheet(name);
     if(name==='reader')openReader(0);
     if(name==='share')shareSheet(ids[0]);}
+  if(name==='opinion-read'||name==='comments'){await wait(80);openStory(101,'opinion',opList().map(o=>o.id));await wait(480);if(name==='comments')commentsSheet(101)}
   if(name==='audio'){await wait(80);audioStart(ids[0],ids);A.pos=22;openPlayer()}
   if(name==='caught'){await wait(80);openCaught()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['picks','Picks'],['profile','Profile']];
+const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['picks','Picks'],['profile','Profile']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1>FomoTech<i></i></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
@@ -1213,15 +1421,26 @@ function syncSide(){$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed
 /* ---------- Actions ---------- */
 const ACT={
   signin:(t)=>doSignin(t.dataset.m,t),email:()=>openEmail(),
-  bub:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5){const c=$('#th-count');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');return toast('Pick up to five themes')}else S.themes.push(i);updThemes()},
+  tile:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5){const c=$('#th-count');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');return toast('Pick up to five themes')}else S.themes.push(i);updThemes()},
+  addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Noted. Requests help us decide what to cover next.');q&&q.focus({preventScroll:true})},
+  remother:t=>{S.others=S.others.filter(x=>x!==t.dataset.v);const q=$('#oth-q');othersPaint(q?q.value:'')},
   t2:t=>{const i=+t.dataset.i;S.where=S.where.includes(i)?S.where.filter(x=>x!==i):[...S.where,i];updThemes()},
   skipthemes:()=>{S.themes=[];S.where=[];viewPrep()},themesdone:()=>viewPrep(),
   tab:t=>{if($('#stack').children.length){popAll();setTimeout(()=>setTab(t.dataset.k),340)}else if(S.tab===t.dataset.k){const sc=$('#tab-'+t.dataset.k+' .scroll');sc&&sc.scrollTo({top:0,behavior:'smooth'})}else setTab(t.dataset.k)},
   filter:t=>{S.filter=t.dataset.k==='all'?'all':+t.dataset.k;renderToday();const p=$('#tab-today .pill[aria-pressed=true]');p&&p.scrollIntoView({inline:'center',block:'nearest'})},
   open:t=>{const ids=briefIds();openStory(+t.dataset.id,'brief',ids)},
   openctx:t=>{const k=t.dataset.ctx,id=+t.dataset.id;let ids;
-    if(k==='saved'){const c=S.fyColl==='all'?null:S.colls.find(c=>c.id===S.fyColl);ids=c?S.saved.filter(x=>c.ids.includes(x)):S.saved.slice()}else ids=picksIds();
-    openStory(id,k,ids)},
+    if(k==='saved'){const c=S.fyColl==='all'?null:S.colls.find(c=>c.id===S.fyColl);ids=c?S.saved.filter(x=>c.ids.includes(x)):S.saved.slice();const op=!!byId[id].op;ids=ids.filter(x=>!!byId[x].op===op)}else ids=picksIds();
+    openStory(id,byId[id].op?'opinion':k,ids)},
+  openmore:t=>{const id=+t.dataset.id;openStory(id,'topic',moreIds(byId[id].t1))},
+  openop:t=>{const id=+t.dataset.id;openStory(id,'opinion',opList().map(o=>o.id))},
+  opfilter:t=>{S.opFilter=t.dataset.k==='all'?'all':+t.dataset.k;renderOpinion()},
+  comments:t=>commentsSheet(+t.dataset.id),
+  postcomment:t=>{const id=+t.dataset.id,inp=$('#cm-in'),v=inp&&inp.value.trim();if(!v)return inp&&inp.focus();(OPC[id]=OPC[id]||[]).push({au:'You',role:S.role||'FomoTech member',txt:v,when:'Just now'});commentsDraw(id,sheetEl)},
+  writeop:()=>writeSheet(),
+  submitop:()=>{closeSheet();toast('Submitted for editorial review. You will hear back by email.')},
+  playconv:()=>toast('Video and audio playback is simulated in this prototype'),
+  pickwt:t=>{$$('#overlay .chip').forEach(c=>c.setAttribute('aria-pressed',c===t))},
   save:t=>toggleSave(+t.dataset.id),
   back:()=>pop(),next:()=>nextStory(),
   tool:t=>toolSheet(t.dataset.k),
@@ -1269,7 +1488,10 @@ const ACT={
   seek:(t,e)=>seek(e)
 };
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||!$('#phone').contains(t))return;const f=ACT[t.dataset.a];if(f){e.stopPropagation();f(t,e)}});
+document.addEventListener('input',e=>{if(e.target.id==='oth-q')othersPaint(e.target.value)});
 document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.id==='oth-q'){e.preventDefault();const b=$('#oth-list [data-a=addother]');b&&b.click();return}
+  if(e.key==='Enter'&&e.target.id==='cm-in'){e.preventDefault();const b=$('[data-a=postcomment]');b&&b.click();return}
   if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-a]')){e.preventDefault();e.target.click()}
   if(e.key==='Escape'){if(sheetEl)closeSheet();else if($('#stack').children.length)pop()}
 });
@@ -1281,7 +1503,7 @@ function fit(){
   if(mobileMQ.matches){w.style.width=w.style.height='';d.style.transform='';return}
   const sc=Math.min(1,(innerHeight-56)/844);d.style.transform=`scale(${sc})`;w.style.width=390*sc+'px';w.style.height=844*sc+'px';
 }
-addEventListener('resize',()=>{fit();fitBubbles()});
+addEventListener('resize',fit);
 applyTheme();buildSide();syncSide();fit();viewWelcome();
 window.__fomo={jump,get S(){return S},A};
 })();
