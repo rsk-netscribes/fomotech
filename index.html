@@ -613,6 +613,15 @@ button{font-family:inherit;color:inherit}
 .feed .card .card__tags,.story .tags .label{font-family:var(--font-head);font-weight:400;font-size:15px;line-height:20px;letter-spacing:0;text-transform:none}
 .feed .card__top{align-items:baseline}
 
+/* Player: smoother fill, cleaner header */
+.pl-wave{position:relative;display:block;height:64px}
+.pl-bars{position:absolute;inset:0;display:flex;align-items:center;gap:3px}
+.pl-bars i{flex:1;border-radius:2px;background:var(--hairline-strong);min-height:4px}
+.pl-fill{pointer-events:none;clip-path:inset(0 100% 0 0);transition:clip-path .25s linear}
+.pl-fill i{background:var(--accent)}
+.plcat{font:400 15px/20px var(--font-head);color:var(--accent)}
+.plhead{margin:0;font:400 26px/32px var(--font-head);letter-spacing:0}
+
 </style>
 </head>
 <body>
@@ -1479,20 +1488,20 @@ function audioChanged(){syncChrome();refreshStoryBars();if(sheetEl&&$('#pl-wave'
 function paintAudio(){
   if(!A.active)return;const s=byId[A.id],r=A.pos/s.listen;
   const bar=$('.player__bar');if(bar)bar.style.width=r*100+'%';
-  const w=$('#pl-wave');if(w){const bars=$$('i',w),on=Math.round(r*bars.length);bars.forEach((b,i)=>b.classList.toggle('on',i<on));$('#pl-a').textContent=fmt(A.pos);$('#pl-b').textContent='-'+fmt(s.listen-A.pos)}
+  const w=$('#pl-wave');if(w){const f=$('#pl-fill');if(f)f.style.clipPath=`inset(0 ${(100-r*100).toFixed(2)}% 0 0)`;$('#pl-a').textContent=fmt(A.pos);$('#pl-b').textContent='-'+fmt(s.listen-A.pos)}
 }
 function playerBody(){
   const s=byId[A.id],i=A.list.indexOf(A.id),up=A.list.slice(i+1,i+4);
-  const bars=Array.from({length:44},(_,k)=>`<i style="height:${16+Math.round((Math.sin(k*.62+s.id)*.5+.5)*58+(Math.sin(k*1.7+s.id*2)*.5+.5)*26)}%"></i>`).join('');
-  return `<div style="display:flex;flex-direction:column;gap:8px"><span class="label">${i+1} of ${A.list.length} · AI voice</span><span class="label" style="color:var(--accent)">${esc(tagLine(s))}</span><h3 style="font:700 22px/28px var(--font-serif);letter-spacing:-.015em;margin:0">${esc(s.h)}</h3></div>
-  <div><div class="pl-wave" id="pl-wave" data-a="seek" role="slider" aria-label="Seek">${bars}</div><div class="pl-time" style="margin-top:8px"><span id="pl-a">0:00</span><span id="pl-b"></span></div></div>
+  const bars=Array.from({length:60},(_,k)=>`<i style="height:${16+Math.round((Math.sin(k*.62+s.id)*.5+.5)*58+(Math.sin(k*1.7+s.id*2)*.5+.5)*26)}%"></i>`).join('');
+  return `<div style="display:flex;flex-direction:column;gap:8px"><span class="plcat">${esc(tagLine(s))}</span><h3 class="plhead">${esc(s.h)}</h3></div>
+  <div><div class="pl-wave" id="pl-wave" data-a="seek" role="slider" aria-label="Seek"><div class="pl-bars">${bars}</div><div class="pl-bars pl-fill" id="pl-fill">${bars}</div></div><div class="pl-time" style="margin-top:8px"><span id="pl-a">0:00</span><span id="pl-b"></span></div></div>
   <div class="pl-ctrl"><button class="speed" data-a="speed" aria-label="Playback speed">${A.speed}×</button><button class="iconbtn" data-a="aprev" style="color:var(--ink)" aria-label="Previous">${ic('prev','lg')}</button><button class="bigplay" data-a="playpause" aria-label="${A.playing?'Pause':'Play'}">${ic(A.playing?'pause':'play')}</button><button class="iconbtn" data-a="anext" style="color:var(--ink)" aria-label="Next">${ic('next','lg')}</button><button class="iconbtn" data-a="stopaudio" aria-label="Stop and close">${ic('stop')}</button></div>
   <button class="switch" role="switch" aria-checked="${A.auto}" data-a="autoadv"><span class="tg"></span>Auto-advance to the next story</button>
-  ${up.length?`<div><span class="label">Up next</span><div style="margin-top:6px">${up.map((id,k)=>`<button class="uprow" data-a="aplay" data-id="${id}"><span class="n num">${i+k+2}</span><h5>${esc(byId[id].h)}</h5><span class="meta num">${fmt(byId[id].listen)}</span></button>`).join('')}</div></div>`:''}
+  ${up.length?`<div><span class="plcat" style="color:var(--ink-secondary)">Up next</span><div style="margin-top:6px">${up.map((id,k)=>`<button class="uprow" data-a="aplay" data-id="${id}"><span class="n num">${i+k+2}</span><h5>${esc(byId[id].h)}</h5><span class="meta num">${fmt(byId[id].listen)}</span></button>`).join('')}</div></div>`:''}
   <p class="note">AI-generated voice reading the AI summary. Sample audio is simulated in this prototype.</p>`;
 }
 function renderPlayer(){const b=$('.sheet__body',sheetEl);if(b){const t=b.scrollTop;b.innerHTML=playerBody();b.scrollTop=t}}
-function openPlayer(){openSheet({title:'Listening',eyebrow:'Daily brief audio',tall:true,body:playerBody(),init:()=>paintAudio()})}
+function openPlayer(){openSheet({title:'Listening',tall:true,body:playerBody(),init:()=>paintAudio()})}
 function seek(e){const w=$('#pl-wave'),r=w.getBoundingClientRect(),x=Math.min(1,Math.max(0,((e.touches?e.touches[0].clientX:e.clientX)-r.left)/r.width));A.pos=x*byId[A.id].listen;paintAudio()}
 
 /* ---------- Profile editing ---------- */
