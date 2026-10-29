@@ -621,6 +621,19 @@ button{font-family:inherit;color:inherit}
 .pl-fill i{background:var(--accent)}
 .plcat{font:400 15px/20px var(--font-head);color:var(--accent)}
 .plhead{margin:0;font:400 26px/32px var(--font-head);letter-spacing:0}
+/* Tab bar: editorial icons, soft fill + dot when active, no pill */
+.tab[aria-current=page]{background:none}
+.tab{position:relative}
+.tab svg{stroke-width:1.6}
+.tab[aria-current=page] svg{fill:color-mix(in srgb,var(--accent) 28%,transparent)}
+.tab[aria-current=page]::after{content:"";position:absolute;bottom:0;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+/* Lock preview controls (prototype only, not part of the lock screen) */
+.lock__back{position:absolute;z-index:3;top:calc(var(--safe-top) + 8px);left:12px;height:34px;padding:0 14px 0 8px;display:inline-flex;align-items:center;gap:2px;border:0;border-radius:99px;background:#ffffff26;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);color:#fff;font:600 13px/1 var(--font-sans);cursor:pointer}
+.lock__back .i{width:16px;height:16px}
+.lock__pick{position:absolute;z-index:3;left:0;right:0;bottom:calc(var(--safe-bot) + 92px);display:flex;gap:6px;overflow-x:auto;padding:0 12px;scrollbar-width:none;touch-action:pan-x}
+.lock__pick::-webkit-scrollbar{display:none}
+.lock__pick button{flex:none;height:34px;padding:0 14px;border:0;border-radius:99px;background:#ffffff1f;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);color:#ffffffcc;font:500 13px/1 var(--font-sans);cursor:pointer;white-space:nowrap}
+.lock__pick button[aria-pressed=true]{background:#fff;color:#0B1B4D;font-weight:600}
 
 </style>
 </head>
@@ -886,6 +899,10 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 /* ---------- Icons (line, 1.5 stroke; stand-ins for SF Symbols) ---------- */
 const ICONS={
+tabToday:'<path d="M12 3v2.5M4.6 7.6l1.8 1.5M19.4 7.6l-1.8 1.5M2.5 15.5h19M6.5 15.5a5.5 5.5 0 0 1 11 0M5 19.5h14"/>',
+tabOpinion:'<path d="M17 3.5a2.1 2.1 0 0 1 3 3L8 18.5l-4.5 1 1-4.5Z"/><path d="M14.5 6l3.5 3.5"/>',
+tabLayers:'<path d="m12 3 9.5 4.8L12 12.6 2.5 7.8Z"/><path d="m2.5 12.2 9.5 4.8 9.5-4.8"/><path d="m2.5 16.4 9.5 4.8 9.5-4.8"/>',
+tabUser:'<circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3"/><path d="M6.8 18.6a5.6 5.6 0 0 1 10.4 0"/>',
 chevL:'<path d="m15 18-6-6 6-6"/>',chevU:'<path d="m18 15-6-6-6 6"/>',chevR:'<path d="m9 18 6-6-6-6"/>',arrowR:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
 check:'<path d="M20 6 9 17l-5-5"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',minus:'<path d="M5 12h14"/>',
 bookmark:'<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>',
@@ -1007,7 +1024,7 @@ function dragSheet(sh){
 }
 
 /* ---------- Chrome (tab bar, mini player) ---------- */
-const TABS=[['today','Today','today'],['opinion','Opinion','quote'],['foryou','For You','foryou'],['profile','Profile','user']];
+const TABS=[['today','Today','tabToday'],['opinion','Opinion','tabOpinion'],['foryou','For You','tabLayers'],['profile','Profile','tabUser']];
 function syncChrome(){
   const main=S.phase==='main',stackN=$('#stack').children.length;
   const ph=$('#phone');ph.dataset.mini=(A.active&&main)?'1':'0';
@@ -1059,7 +1076,7 @@ function openEmail(){
       for(let i=0;i<4;i++){await wait(320);if(!sheetEl)return;boxes[i].textContent='1234'[i];boxes[i].classList.remove('cur');if(boxes[i+1])boxes[i+1].classList.add('cur')}
       await wait(350);if(!sheetEl)return;S.method='work email';closeSheet(true);viewThemes()};
   };
-  openSheet({title:'Continue with work email',eyebrow:'Sign in',body:body(),init:wire});
+  openSheet({title:'Continue with work email',body:body(),init:wire});
 }
 /* Industry x technology search ("Others"), used in onboarding and Profile */
 const comboHTML=x=>{const p=x.split(/ x /i);return p.length===2?`<span>${esc(p[0])}</span><em> x </em><span class="tc">${esc(p[1])}</span>`:`<span>${esc(x)}</span>`};
@@ -1203,13 +1220,13 @@ function commentsDraw(id,sh){
   const b=$('.sheet__body',sh);b.scrollTop=b.scrollHeight;
 }
 function commentsSheet(id){
-  openSheet({title:'Discussion',eyebrow:'Opinion',tall:true,body:'',
+  openSheet({title:'Discussion',tall:true,body:'',
    foot:`<div style="display:flex;gap:8px;width:100%"><input class="field" id="cm-in" placeholder="Add a comment" maxlength="240" style="flex:1" autocomplete="off"><button class="btn btn--primary" data-a="postcomment" data-id="${id}" style="min-height:50px">Post</button></div>`,
    init:sh=>commentsDraw(id,sh),onClose:()=>{if(S.tab==='opinion')renderOpinion()}});
 }
 function writeSheet(){
   let theme=0;
-  openSheet({title:'Write for FomoTech',eyebrow:'Submit for editorial review',tall:true,
+  openSheet({title:'Write for FomoTech',tall:true,
    body:`<input class="field" placeholder="Working title" maxlength="90"><span class="label">Theme</span><div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickwt" aria-pressed="${i===0}">${esc(t)}</button>`).join('')}</div><textarea class="field area" placeholder="Your view in a few paragraphs. Opinions, trends and impacts. Not news reports."></textarea><p class="note">Pieces are reviewed by FomoTech editors for quality and clarity before they appear. We do not edit for position. Your name, role and company are shown.</p>`,
    foot:'<button class="btn btn--primary" data-a="submitop" style="flex:1">Submit for review</button>'});
 }
@@ -1257,8 +1274,8 @@ const PRO_ROWS=[
  ['Team sharing','Shared collections for your team',0,1]];
 function proSheet(why){
   const mk=v=>v===1?`<span class="pt pt--y">${ic('check','sm')}</span>`:v===0?`<span class="pt pt--n">${ic('minus','sm')}</span>`:`<span class="pt pt--t">${v}</span>`;
-  openSheet({title:S.pro?'You are on Pro':'FomoTech Pro',eyebrow:why||'Optional upgrade',tall:true,
-   body:`<div class="pro__hero"><p class="pro__lede">Everything in the daily brief stays free. Pro adds tools for people who use FomoTech to prepare, not just to read.</p>
+  openSheet({title:S.pro?'You are on Pro':'FomoTech Pro',tall:true,
+   body:`<div class="pro__hero"><p class="pro__lede">${why?why+'. ':''}Everything in the daily brief stays free. Pro adds tools for people who use FomoTech to prepare, not just to read.</p>
     <div class="pro__price"><b>₹${PRICE}</b><span>/ year</span></div><span class="pro__sub">Billed annually. About ₹${Math.round(PRICE/12)} a month.</span></div>
     <div class="pro__tbl" role="table" aria-label="Free and Pro features"><div class="pro__hd" role="row"><span></span><span>Free</span><span class="pro__col">Pro</span></div>
     ${PRO_ROWS.map(r=>`<div class="pro__row" role="row"><div><b>${r[0]}</b><small>${r[1]}</small></div>${mk(r[2])}<span class="pro__col">${mk(r[3])}</span></div>`).join('')}</div>
@@ -1449,7 +1466,7 @@ function shareSheet(id,invite){
   const card=invite?`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">Free daily tech brief</span><h5>Tech news that tells you what it means.</h5><div class="why2">Eight to ten stories a day, named sources and a clear reason each one matters. Nothing behind a paywall.</div><div class="ft"><span>Invitation from a colleague</span><span>fomotech.app</span></div></div>`
   :s.op?`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">Opinion · ${esc(T1[s.t1])}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.s)}</div><div class="ft"><span>${esc(s.au+', '+s.org)}</span><span>fomotech.app</span></div></div>`
   :`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">${esc(tagLine(s))}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.w)}</div><div class="ft"><span>${s.src.length} named sources</span><span>fomotech.app</span></div></div>`;
-  openSheet({title:invite?'Invite your team':(s.op?'Share piece':'Share story'),eyebrow:invite?'Invite preview':'Share card preview',tall:false,
+  openSheet({title:invite?'Invite your team':(s.op?'Share piece':'Share story'),tall:false,
    body:`${card}<div class="linkrow">${ic('link')}<span>${url}</span><button class="btn btn--primary" data-a="copylink" data-u="${url}">Copy</button></div>
    <div class="targets">${[['msg','Messages'],['whats','WhatsApp'],['mail','Mail'],['linkedin','LinkedIn']].map(t=>`<button class="target" data-a="shareto" data-n="${t[1]}"><span class="ic">${ic(t[0])}</span>${t[1]}</button>`).join('')}</div>`});
 }
@@ -1458,12 +1475,12 @@ function shareSheet(id,invite){
 function organiseSheet(id){
   const draw=sh=>{$('.sheet__body',sh).innerHTML=`<p style="color:var(--ink-secondary)" class="note">${esc(byId[id].h)}</p><div class="list">${S.colls.map(c=>`<button class="opt-row" data-a="tcoll" data-id="${id}" data-c="${c.id}" aria-pressed="${c.ids.includes(id)}">${ic('folder')}${esc(c.name)}<span class="meta" style="margin-left:4px">${c.ids.length}</span><span class="ck">${ic('check')}</span></button>`).join('')}</div>
    <div style="display:flex;gap:8px"><input class="field" id="nc-in" placeholder="New collection name" maxlength="28" style="flex:1"><button class="btn btn--secondary" data-a="addcoll" data-id="${id}" style="min-height:50px">Add</button></div>`};
-  openSheet({title:'Add to collection',eyebrow:'Group saved stories',body:'',foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',init:draw,onClose:()=>{if(S.tab==='foryou'&&!$('#stack').children.length)renderForYou()}});
+  openSheet({title:'Add to collection',body:'',foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',init:draw,onClose:()=>{if(S.tab==='foryou'&&!$('#stack').children.length)renderForYou()}});
   organiseSheet.draw=draw;
 }
 function newCollSheet(){
   if(!S.pro&&S.colls.length>=2)return proSheet('Free includes 2 collections');
-  openSheet({title:'New collection',eyebrow:'Group saved stories',body:`<input class="field" id="nc-in" placeholder="For example, Board prep" maxlength="28"><button class="btn btn--primary btn--block" data-a="addcoll">Create collection</button>`});
+  openSheet({title:'New collection',body:`<input class="field" id="nc-in" placeholder="For example, Board prep" maxlength="28"><button class="btn btn--primary btn--block" data-a="addcoll">Create collection</button>`});
 }
 function toggleSave(id){
   if(isSaved(id)){S.saved=S.saved.filter(x=>x!==id);S.colls.forEach(c=>c.ids=c.ids.filter(x=>x!==id));toast('Removed from saved')}
@@ -1508,16 +1525,16 @@ function seek(e){const w=$('#pl-wave'),r=w.getBoundingClientRect(),x=Math.min(1,
 function editSheet(k){
   if(k==='themes'){
     const draw=sh=>{$('.sheet__body',sh).innerHTML=`<div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickt1" data-i="${i}" aria-pressed="${S.themes.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note" id="t1n">${S.themes.length} of 5 selected. Your brief leads with these.</p>`};
-    return openSheet({title:'Themes',eyebrow:'Up to five',body:'',init:draw,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:()=>{S.filter='all';refreshTabs()}});
+    return openSheet({title:'Themes',body:'',init:draw,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:()=>{S.filter='all';refreshTabs()}});
   }
-  if(k==='others')return openSheet({title:'Industry x technology',eyebrow:'Optional',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
-  if(k==='where')return openSheet({title:'Where you want to see it',eyebrow:'Optional',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note">Stories matching both a theme and a place lead your brief.</p>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
-  if(k==='time')return openSheet({title:'Brief time',eyebrow:'Your local time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div><p class="note">Your brief is ready at this time every day.</p>`});
+  if(k==='others')return openSheet({title:'Industry x technology',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
+  if(k==='where')return openSheet({title:'Where you want to see it',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note">Stories matching both a theme and a place lead your brief.</p>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
+  if(k==='time')return openSheet({title:'Brief time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div><p class="note">Your brief is ready at this time every day.</p>`});
   if(k==='industry'||k==='role'){
     const list=k==='industry'?INDUSTRIES:ROLES,cur=S[k];
-    return openSheet({title:k==='industry'?'Industry':'Role',eyebrow:'Optional',body:`<div class="list">${['Not set',...list].map(o=>`<button class="opt-row" data-a="pickopt" data-f="${k}" data-v="${esc(o)}" aria-pressed="${(cur||'Not set')===o}">${esc(o)}<span class="ck">${ic('check')}</span></button>`).join('')}</div>`});
+    return openSheet({title:k==='industry'?'Industry':'Role',body:`<div class="list">${['Not set',...list].map(o=>`<button class="opt-row" data-a="pickopt" data-f="${k}" data-v="${esc(o)}" aria-pressed="${(cur||'Not set')===o}">${esc(o)}<span class="ck">${ic('check')}</span></button>`).join('')}</div>`});
   }
-  if(k==='linkedin')return openSheet({title:'LinkedIn profile link',eyebrow:'Optional',body:`<input class="field" id="li-in" type="url" placeholder="linkedin.com/in/your-name" value="${esc(S.linkedin)}" autocomplete="off"><p class="note">Display only. FomoTech does not read or import anything from LinkedIn.</p>`,foot:`<button class="btn btn--primary" data-a="savelinkedin" style="flex:1">Save</button>${S.linkedin?'<button class="btn btn--text" data-a="clearlinkedin">Remove</button>':''}`});
+  if(k==='linkedin')return openSheet({title:'LinkedIn profile link',body:`<input class="field" id="li-in" type="url" placeholder="linkedin.com/in/your-name" value="${esc(S.linkedin)}" autocomplete="off"><p class="note">Display only. FomoTech does not read or import anything from LinkedIn.</p>`,foot:`<button class="btn btn--primary" data-a="savelinkedin" style="flex:1">Save</button>${S.linkedin?'<button class="btn btn--text" data-a="clearlinkedin">Remove</button>':''}`});
 }
 
 
@@ -1540,7 +1557,8 @@ function showLock(kind){
   const card=(k,x)=>{const n=N[k];return `<button class="ncard ${x?'ncard--x':''}" data-a="notifopen" data-t="${n.target}">${NICON}<div class="ncard__tx"><div class="ncard__hd"><b>${esc(n.title)}</b><span>${kind==='stack'||x?ages[k]:'now'}</span></div><p>${esc(n.body)}</p></div></button>`};
   const cards=sc.keys.map(k=>card(k,sc.x)).join('')+(sc.x?`<div class="nact"><button data-a="notifopen" data-t="listen">${ic('phones','sm')}Listen to brief</button><button data-a="notifopen" data-t="today">Open</button></div>`:'');
   l.hidden=false;$('#phone').classList.add('lockon');
-  l.innerHTML=`<div class="lock__wall"></div><div class="lock__top">${ic('lock')}<div class="lock__date">${dateline()}</div><div class="lock__time">${tm}</div></div><div class="lock__stack ${sc.x?'is-x':''}">${cards}</div><div class="lock__bot"><span class="lock__btn">${ic('flash')}</span><button class="lock__hint" data-a="unlock">Swipe up to open</button><span class="lock__btn">${ic('cam')}</span></div>`;
+  l.innerHTML=`<div class="lock__wall"></div><div class="lock__top">${ic('lock')}<div class="lock__date">${dateline()}</div><div class="lock__time">${tm}</div></div><div class="lock__stack ${sc.x?'is-x':''}">${cards}</div><button class="lock__back" data-a="lockback">${ic('chevL','sm')}Back</button><div class="lock__pick" role="tablist" aria-label="Notification styles">${Object.entries(NSCEN).map(([k,v])=>`<button data-a="lockpick" data-n="${k}" aria-pressed="${k===kind}">${v.label}</button>`).join('')}</div><div class="lock__bot"><span class="lock__btn">${ic('flash')}</span><button class="lock__hint" data-a="unlock">Swipe up to open</button><span class="lock__btn">${ic('cam')}</span></div>`;
+  {const pk=$('.lock__pick',l),a=pk&&$('[aria-pressed=true]',pk);if(a)pk.scrollLeft=a.offsetLeft-(pk.clientWidth-a.offsetWidth)/2}
 }
 function hideLock(){const l=$('#lock');l.hidden=true;l.innerHTML='';$('#phone').classList.remove('lockon')}
 async function lockOpen(t){
@@ -1664,7 +1682,7 @@ const ACT={
   listenbrief:()=>{if(A.active)return openPlayer();const ids=briefIds();audioStart(ids[0],ids);openPlayer()},
   listenstory:()=>{const id=curId();if(A.active&&A.id===id){A.playing=!A.playing;runTimer();audioChanged()}else audioStart(id,S.ctx.ids)},
   openplayer:()=>openPlayer(),
-  notifopen:t=>lockOpen(t.dataset.t),unlock:()=>lockOpen('today'),lockpreview:()=>showLock('brief'),
+  notifopen:t=>lockOpen(t.dataset.t),unlock:()=>lockOpen('today'),lockpreview:()=>showLock('brief'),lockback:()=>hideLock(),lockpick:t=>showLock(t.dataset.n),
   playpause:()=>{if(A.pos>=byId[A.id].listen-.3){A.pos=0}A.playing=!A.playing;runTimer();audioChanged()},
   stopaudio:()=>{clearInterval(A.timer);A.active=false;A.playing=false;closeSheet();syncChrome();refreshStoryBars();renderToday()},
   speed:()=>{A.speed=SPEEDS[(SPEEDS.indexOf(A.speed)+1)%SPEEDS.length];renderPlayer()},
