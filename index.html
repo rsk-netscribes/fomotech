@@ -700,6 +700,85 @@ button{font-family:inherit;color:inherit}
 .tile__sub li::before{content:"";position:absolute;left:0;top:15px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .tilebox[data-open=true] .tile__sub li:first-child::before{top:19px}
 
+/* share previews */
+.targets{grid-template-columns:repeat(3,1fr);row-gap:10px}
+.shp{position:absolute;inset:0;z-index:86;background:#0B0C0F;display:flex;flex-direction:column;animation:fadein .25s both;color:#F2F3F5}
+.shp[hidden]{display:none}
+.shp__bar{display:flex;align-items:center;gap:10px;padding:calc(var(--safe-top) + 8px) 12px 6px}
+.shp__bar span{font:600 14px/18px var(--font-sans);color:#C9CDD6}
+.shp__back{height:34px;padding:0 14px 0 8px;display:inline-flex;align-items:center;gap:2px;border:0;border-radius:99px;background:#ffffff1f;color:#fff;font:500 14px/1 var(--font-sans);cursor:pointer}
+.shp__back .i{width:16px;height:16px}
+.shp__kind{display:flex;gap:6px;padding:6px 12px 10px}
+.shp__kind button{flex:1;height:32px;border:0;border-radius:99px;background:#ffffff14;color:#C9CDD6;font:500 13px/1 var(--font-sans);cursor:pointer}
+.shp__kind button[aria-pressed=true]{background:#fff;color:#0B1B4D;font-weight:600}
+.shp__scr{flex:1;min-height:0;margin:0 10px;border-radius:18px;overflow:hidden;background:#fff;display:flex}
+.shp__pick{display:flex;gap:6px;overflow-x:auto;padding:10px 12px 4px;scrollbar-width:none}
+.shp__pick::-webkit-scrollbar{display:none}
+.shp__pick button{flex:none;height:34px;padding:0 13px;border:0;border-radius:99px;background:#ffffff1f;color:#fff;font:500 13px/1 var(--font-sans);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.shp__pick button .i{width:15px;height:15px}
+.shp__pick button[aria-pressed=true]{background:#fff;color:#0B1B4D;font-weight:600}
+.shp__foot{padding:8px 16px calc(var(--safe-bot) + 14px)}
+/* third-party app mocks (their own look, not ours) */
+.ap{flex:1;min-width:0;display:flex;flex-direction:column;font:400 14px/20px -apple-system,system-ui,Inter,sans-serif;color:#111;text-align:left}
+.ap *{box-sizing:border-box}
+.ap__hd{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.ap__bd{flex:1;overflow-y:auto;padding:12px 14px}
+.ap__in{padding:8px 12px 12px}.ap__in span{display:block;border:1px solid #d6d6da;border-radius:99px;padding:8px 14px;color:#8e8e93;font-size:14px}
+.ap .av{width:32px;height:32px;border-radius:50%;background:#9aa4b8;color:#fff;font:600 14px/32px sans-serif;text-align:center;flex:none}
+.ap p{margin:0}
+.og{aspect-ratio:1.91/1;background:linear-gradient(160deg,#0E1634,#1b2a63 70%,#2f4aa8);color:#F2F3F5;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;overflow:hidden}
+.og__b{font:700 13px/1 var(--font-head)}.og__b em{font-style:normal;color:#96B4FF;margin-left:1px}
+.og__t{font:500 10.5px/14px var(--font-sans);color:#96B4FF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.og h6{margin:0;font:400 17px/21px var(--font-head);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ap .lp{border-radius:14px;overflow:hidden;background:#E9E9EB}
+.ap .lp__t{padding:8px 12px 10px;display:flex;flex-direction:column;gap:1px}.ap .lp__t b{font:600 13.5px/18px sans-serif}.ap .lp__t span{font-size:12px;color:#6b6b70;line-height:16px}
+/* Messages */
+.ap-ios .ap__hd{justify-content:center;flex-direction:column;gap:2px;background:#F6F6F8;border-bottom:1px solid #e3e3e6;font-size:11px}.ap-ios .ap__hd b{font:500 11px/14px sans-serif}
+.ap-ios .dt{text-align:center;color:#8e8e93;font-size:11px;margin-bottom:10px}
+.ap-ios .out{margin-left:auto;max-width:78%;background:#0A84FF;color:#fff;border-radius:18px 18px 4px 18px;padding:8px 13px;width:fit-content;margin-bottom:6px}
+.ap-ios .lp{margin-left:auto;width:78%}
+.ap-ios .dl{text-align:right;color:#8e8e93;font-size:11px;margin-top:4px}
+/* WhatsApp */
+.ap-wa{background:#ECE5DD}.ap-wa .ap__hd{background:#008069;color:#fff}.ap-wa .ap__hd small{display:block;font-size:11px;opacity:.8;line-height:13px}
+.ap-wa .bub{margin-left:auto;max-width:86%;background:#D9FDD3;border-radius:10px 10px 2px 10px;padding:4px;box-shadow:0 1px 1px #0002}
+.ap-wa .lp{background:#C8EFC1;border-radius:7px}.ap-wa .lp__t span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.ap-wa .lp__t i{font-style:normal;font-size:11px;color:#667781}
+.ap-wa .ln{padding:5px 6px 0;font-size:13.5px;line-height:19px;word-break:break-all}.ap-wa .ln u{color:#027EB5}
+.ap-wa .tm{text-align:right;font-size:10.5px;color:#667781;padding:0 4px 2px}.ap-wa .tm em{font-style:normal;color:#53BDEB}
+.ap-wa .ap__in{background:#F0F2F5}.ap-wa .ap__in span{border:0;background:#fff}
+/* Mail */
+.ap-mail .ap__hd{justify-content:space-between;border-bottom:1px solid #e3e3e6;color:#0A84FF}.ap-mail .ap__hd b{color:#111;font:600 15px/20px sans-serif}.ap-mail .snd{font-weight:600}
+.ap-mail .ap__bd{padding:0}
+.ap-mail .f{padding:10px 14px;border-bottom:1px solid #ececef;font-size:14px}.ap-mail .f i{font-style:normal;color:#8e8e93;margin-right:8px}
+.ap-mail .body{padding:14px}.ap-mail .body>p{margin-bottom:12px}
+.ap-mail .mc{border:1px solid #e3e3e6;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.ap-mail .mc__t{font:500 12px/16px sans-serif;color:#3F5FD4}.ap-mail .mc h6{margin:0;font:400 21px/26px var(--font-head)}.ap-mail .mc p{font-size:14px;line-height:21px;color:#333}
+.ap-mail .mc__b{align-self:flex-start;background:#3F5FD4;color:#fff;border-radius:99px;padding:9px 18px;font-weight:600;font-size:14px}.ap-mail .mc small{color:#8e8e93;font-size:12px}
+.ap-mail .sig{color:#8e8e93;margin-top:14px}
+/* LinkedIn */
+.ap-li{background:#F4F2EE}.ap-li .ap__hd{background:#fff;border-bottom:1px solid #e0dfdc;justify-content:space-between}.ap-li .ap__hd b{background:#0A66C2;color:#fff;border-radius:4px;padding:1px 5px;font:700 14px/18px sans-serif}.ap-li .ap__hd span{font-weight:600;color:#0A66C2}
+.ap-li .post{background:#fff;border-radius:10px;padding:12px 0 0;border:1px solid #e0dfdc}
+.ap-li .who{display:flex;gap:10px;padding:0 12px 8px}.ap-li .who b{display:block;font:600 14px/18px sans-serif}.ap-li .who small{color:#666;font-size:12px}
+.ap-li .post>p{padding:0 12px 10px}
+.ap-li .lp{border-radius:0;background:#EDF3F8}.ap-li .lp__t b{font-weight:600}
+.ap-li .rx{display:flex;justify-content:space-around;padding:10px 6px;border-top:1px solid #e0dfdc;color:#666;font-weight:600;font-size:13px}
+/* Slack */
+.ap-slack .ap__hd{flex-direction:column;align-items:flex-start;gap:0;border-bottom:1px solid #e3e3e6}.ap-slack .ap__hd b{font:700 15px/20px sans-serif}.ap-slack .ap__hd small{color:#6b6b70;font-size:12px}
+.ap-slack .msg{display:flex;gap:10px}.ap-slack .av{border-radius:6px;background:#4A154B}
+.ap-slack .mb{min-width:0;flex:1}.ap-slack .mb b{font-weight:800}.ap-slack .mb small{color:#6b6b70;margin-left:6px;font-size:11.5px}
+.ap-slack u{color:#1264A3;word-break:break-all}
+.ap-slack .unf{border-left:4px solid #dddddd;padding:2px 0 2px 12px;margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.ap-slack .unf__s{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#333}
+.ap-slack .fi{width:16px;height:16px;border-radius:4px;background:#1b2a63;color:#96B4FF;font:700 10px/16px sans-serif;text-align:center}
+.ap-slack .unf>b{color:#1264A3;font-weight:700;font-size:14px;line-height:19px}
+.ap-slack .unf>p{font-size:13.5px;color:#333;line-height:19px}
+.ap-slack .og{border-radius:8px;margin-top:4px;max-width:300px}
+/* Teams */
+.ap-teams{background:#F5F5F5}.ap-teams .ap__hd{background:#fff;border-bottom:1px solid #e3e3e6}.ap-teams .av{background:#5B5FC7}
+.ap-teams .dt{text-align:center;color:#6b6b70;font-size:11.5px;margin-bottom:10px}
+.ap-teams .bub{margin-left:auto;max-width:92%;background:#E8EBFA;border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:8px;border:1px solid #d6dbf5}
+.ap-teams .tc{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e3e3e6}
+.ap-teams .tc__t{padding:10px 12px;display:flex;flex-direction:column;gap:3px}.ap-teams .tc__t b{font:600 14px/18px sans-serif;color:#4F52B2}.ap-teams .tc__t span{font-size:12.5px;line-height:17px;color:#444;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.ap-teams .tc__t i{font-style:normal;font-size:11.5px;color:#6b6b70}
+
 </style>
 </head>
 <body>
@@ -987,7 +1066,7 @@ today:'<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 
 foryou:'<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>',
 user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
 users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
 copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
 mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
@@ -1565,8 +1644,40 @@ function shareSheet(id,invite){
   :`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">${esc(tagLine(s))}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.w)}</div><div class="ft"><span>${s.src.length} named sources</span><span>fomotech.app</span></div></div>`;
   openSheet({title:invite?'Invite your team':(s.op?'Share piece':'Share story'),tall:false,
    body:`${card}<div class="linkrow">${ic('link')}<span>${url}</span><button class="btn btn--primary" data-a="copylink" data-u="${url}">Copy</button></div>
-   <div class="targets">${[['msg','Messages'],['whats','WhatsApp'],['mail','Mail'],['linkedin','LinkedIn']].map(t=>`<button class="target" data-a="shareto" data-n="${t[1]}"><span class="ic">${ic(t[0])}</span>${t[1]}</button>`).join('')}</div>`});
+   <div class="targets">${SHARE_APPS.map(a=>`<button class="target" data-a="shareprev" data-app="${a[0]}" data-k="${invite?'invite':(s.op?'opinion':'story')}" data-id="${id}"><span class="ic">${ic(a[2])}</span>${a[1]}</button>`).join('')}</div>`});
 }
+
+/* ---------- Share previews: how a share looks inside each app ---------- */
+const SHARE_APPS=[['ios','Messages','msg'],['wa','WhatsApp','whats'],['mail','Mail','mail'],['li','LinkedIn','linkedin'],['slack','Slack','hash'],['teams','Teams','users']];
+const SHP={app:'ios',kind:'story',id:1,from:false};
+function shareData(kind,id){
+  if(kind==='invite')return{tag:'Free daily tech brief',title:'Tech news that tells you what it means',head:'Tech news that tells you what it means.',desc:'Eight to ten stories a day, named sources and a clear reason each one matters. Nothing behind a paywall.',by:'Invitation from a colleague',url:SHARE_URL+'invite',note:'Sharing the daily tech brief I read. It is free and short.',subject:'An invitation to FomoTech',lead:'A colleague invited you to FomoTech.'};
+  const s=byId[id],url=SHARE_URL+(id*7919).toString(36).slice(0,5);
+  if(s.op)return{tag:'Opinion · '+T1[s.t1],title:s.h,head:s.h,desc:s.s,by:s.au+', '+s.org,url,note:'Worth reading, from '+s.au+'.',subject:s.h,lead:'An opinion piece from '+s.au+' on FomoTech.'};
+  return{tag:tagLine(s),title:s.h,head:s.h,desc:s.w,by:s.src.length+' named sources',url,note:'Worth a read.',subject:s.h,lead:'A story from FomoTech.'};
+}
+const shpOg=d=>`<div class="og"><span class="og__b"><b>Fomo</b><em>Tech</em></span><span class="og__t">${esc(d.tag)}</span><h6>${esc(d.head)}</h6></div>`;
+const SHP_VIEW={
+ios:d=>`<div class="ap ap-ios"><div class="ap__hd"><span class="av">C</span><b>Colleague</b></div><div class="ap__bd"><div class="dt">Today 9:41 AM</div><div class="out">${esc(d.note)}</div><div class="lp">${shpOg(d)}<div class="lp__t"><b>${esc(d.title)}</b><span>fomotech.app</span></div></div><div class="dl">Delivered</div></div><div class="ap__in"><span>iMessage</span></div></div>`,
+wa:d=>`<div class="ap ap-wa"><div class="ap__hd"><span class="av">C</span><div><b>Colleague</b><small>online</small></div></div><div class="ap__bd"><div class="bub"><div class="lp">${shpOg(d)}<div class="lp__t"><b>${esc(d.title)}</b><span>${esc(d.desc)}</span><i>fomotech.app</i></div></div><div class="ln">${esc(d.note)} <u>${esc(d.url)}</u></div><div class="tm">9:41 AM <em>✓✓</em></div></div></div><div class="ap__in"><span>Message</span></div></div>`,
+mail:d=>`<div class="ap ap-mail"><div class="ap__hd"><span>Cancel</span><b>New message</b><span class="snd">Send</span></div><div class="ap__bd"><div class="f"><i>To:</i>colleague@company.com</div><div class="f"><i>Subject:</i><b>${esc(d.subject)}</b></div><div class="body"><p>${esc(d.note)}</p><div class="mc"><span class="mc__t">${esc(d.tag)}</span><h6>${esc(d.title)}</h6><p>${esc(d.desc)}</p><span class="mc__b">Read on FomoTech</span><small>${esc(d.by)} · fomotech.app</small></div><p class="sig">Sent from my iPhone</p></div></div></div>`,
+li:d=>`<div class="ap ap-li"><div class="ap__hd"><b>in</b><span>Post</span></div><div class="ap__bd"><div class="post"><div class="who"><span class="av">Y</span><div><b>You</b><small>Just now</small></div></div><p>${esc(d.note)}</p><div class="lp">${shpOg(d)}<div class="lp__t"><b>${esc(d.title)}</b><span>fomotech.app</span></div></div><div class="rx"><span>Like</span><span>Comment</span><span>Repost</span><span>Send</span></div></div></div></div>`,
+slack:d=>`<div class="ap ap-slack"><div class="ap__hd"><b># tech-watch</b><small>48 members</small></div><div class="ap__bd"><div class="msg"><span class="av">Y</span><div class="mb"><div><b>You</b><small>9:41 AM</small></div><p>${esc(d.note)} <u>${esc(d.url)}</u></p><div class="unf"><div class="unf__s"><span class="fi">F</span>FomoTech</div><b>${esc(d.title)}</b><p>${esc(d.desc)}</p>${shpOg(d)}</div></div></div></div><div class="ap__in"><span>Message #tech-watch</span></div></div>`,
+teams:d=>`<div class="ap ap-teams"><div class="ap__hd"><span class="av">C</span><b>Colleague</b></div><div class="ap__bd"><div class="dt">Today 9:41 AM</div><div class="bub"><p>${esc(d.note)}</p><div class="tc">${shpOg(d)}<div class="tc__t"><b>${esc(d.title)}</b><span>${esc(d.desc)}</span><i>FomoTech</i></div></div></div></div><div class="ap__in"><span>Type a message</span></div></div>`
+};
+function showSharePreview(app,kind,id,fromShare){
+  Object.assign(SHP,{app,kind,id,from:!!fromShare});
+  let el=$('#shp');if(!el){el=document.createElement('div');el.id='shp';el.className='shp';$('#phone').appendChild(el)}
+  const d=shareData(kind,id),nm=SHARE_APPS.find(a=>a[0]===app)[1];
+  closeSheet(true);el.hidden=false;
+  el.innerHTML=`<div class="shp__bar"><button class="shp__back" data-a="shpback">${ic('chevL','sm')}Back</button><span>How it looks in ${esc(nm)}</span></div>
+  <div class="shp__kind">${[['story','Story',1],['opinion','Opinion',101],['invite','Invite',1]].map(k=>`<button data-a="shpkind" data-k="${k[0]}" data-id="${k[2]}" aria-pressed="${k[0]===kind}">${k[1]}</button>`).join('')}</div>
+  <div class="shp__scr">${SHP_VIEW[app](d)}</div>
+  <div class="shp__pick">${SHARE_APPS.map(a=>`<button data-a="shpapp" data-app="${a[0]}" aria-pressed="${a[0]===app}">${ic(a[2],'sm')}${a[1]}</button>`).join('')}</div>
+  <div class="shp__foot"><button class="btn btn--primary btn--block" data-a="shpsend">Send to ${esc(nm)}</button></div>`;
+  const pk=$('.shp__pick',el),a=$('[aria-pressed=true]',pk);if(a)pk.scrollLeft=a.offsetLeft-(pk.clientWidth-a.offsetWidth)/2;
+}
+function hideSharePreview(){const el=$('#shp');if(el){el.hidden=true;el.innerHTML=''}}
 
 /* ---------- Collections ---------- */
 function organiseSheet(id){
@@ -1706,12 +1817,14 @@ function buildSide(){
   $('#side').innerHTML=`<div><h1><b>Fomo</b><em>Tech</em></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
   <div><h2>Notifications</h2><div class="jump">${Object.entries(NSCEN).map(([k,v])=>`<button data-n="${k}">${v.label}</button>`).join('')}</div><p class="note" style="margin-top:8px">Lock screen mockups. Tap a notification to open the app.</p></div>
+  <div><h2>Sharing</h2><div class="jump">${SHARE_APPS.map(a=>`<button data-sh="${a[0]}">${a[1]}</button>`).join('')}</div><p class="note" style="margin-top:8px">How a story, opinion or team invite looks in each app.</p></div>
   <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
   <div><h2>Try these</h2><p class="note">Tap a story. Swipe up at the bottom for the next one, swipe right to go back. Open the tools row. Tap Listen to your brief. Save a story, then organise it into a collection.</p></div>
   <button class="btn btn--secondary" id="reset" style="min-height:40px;font-size:13px;align-self:flex-start">Restart from the welcome screen</button>`;
   $$('[data-j]').forEach(b=>b.onclick=()=>jump(b.dataset.j));
   $$('[data-n]').forEach(b=>b.onclick=()=>showLock(b.dataset.n));
+  $$('[data-sh]').forEach(b=>b.onclick=()=>{SHP.orig=null;showSharePreview(b.dataset.sh,'story',1,false)});
   $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
@@ -1749,6 +1862,11 @@ const ACT={
   share:t=>shareSheet(+t.dataset.id),
   invite:()=>shareSheet(1,true),
   copylink:t=>{try{navigator.clipboard.writeText('https://'+t.dataset.u)}catch(e){}toast('Link copied')},
+  shareprev:t=>{SHP.orig={id:+t.dataset.id,invite:t.dataset.k==='invite'};showSharePreview(t.dataset.app,t.dataset.k,+t.dataset.id,true)},
+  shpapp:t=>showSharePreview(t.dataset.app,SHP.kind,SHP.id,SHP.from),
+  shpkind:t=>showSharePreview(SHP.app,t.dataset.k,+t.dataset.id,SHP.from),
+  shpback:()=>{const o=SHP.from&&SHP.orig;hideSharePreview();if(o)shareSheet(o.id,o.invite)},
+  shpsend:()=>{const nm=SHARE_APPS.find(a=>a[0]===SHP.app)[1];hideSharePreview();closeSheet(true);toast('Shared to '+nm+' (prototype)')},
   shareto:t=>{closeSheet();toast('Shared to '+t.dataset.n+' (prototype)')},
   closesheet:()=>closeSheet(),
   pro:()=>proSheet(),gopro:()=>{S.pro=true;closeSheet();if(S.tab==='profile')renderProfile();toast('Welcome to Pro (demo, no payment taken)')},unpro:()=>{S.pro=false;closeSheet();if(S.tab==='profile')renderProfile();toast('Back on Free')},
