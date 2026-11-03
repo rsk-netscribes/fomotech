@@ -677,6 +677,29 @@ button{font-family:inherit;color:inherit}
 .layer.swapping .s-top>*,.layer.swapping .s-bot>*{animation:barsoft .4s ease both}
 .layer[data-k=story] .story{backface-visibility:hidden}
 
+/* theme tiles: expandable "what's covered" */
+.tilebox{position:relative;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.tilebox .tile{background:none;box-shadow:none;border-radius:0;min-height:72px}
+.tilebox .tile::before{display:none}
+.tilebox::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform .25s var(--ease);z-index:1}
+.tilebox:has(.tile[aria-pressed=true])::before{transform:scaleY(1)}
+.tilebox .tile__tx{margin-right:40px}
+.tilebox .tile__tx span{white-space:normal;overflow:visible;text-overflow:clip}
+.tilehead{position:relative}
+.tile__info{position:absolute;right:56px;top:50%;margin-top:-15px;width:30px;height:30px;border-radius:50%;border:1px solid var(--hairline-strong);background:none;color:var(--ink-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;padding:0}
+.tile__info .chev{width:16px;height:16px;transition:transform .25s var(--ease)}
+.tile__info[aria-expanded=true]{color:var(--accent);border-color:var(--accent)}
+.tile__info[aria-expanded=true] .chev{transform:rotate(180deg)}
+.tile__sub{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s var(--ease)}
+.tile__sub ul{overflow:hidden;min-height:0;list-style:none;margin:0;padding:0 18px}
+.tilebox[data-open=true] .tile__sub{grid-template-rows:1fr}
+.tilebox[data-open=true] .tile__sub ul{padding:0 18px 14px;border-top:1px solid var(--hairline);margin-top:0}
+.tilebox[data-open=true] .tile__sub li:first-child{padding-top:12px}
+.tile__sub li{font:400 14px/20px var(--font-sans);color:var(--ink);padding:7px 0 7px 16px;position:relative;border-top:1px solid var(--hairline)}
+.tile__sub li:first-child{border-top:0}
+.tile__sub li::before{content:"";position:absolute;left:0;top:15px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.tilebox[data-open=true] .tile__sub li:first-child::before{top:19px}
+
 </style>
 </head>
 <body>
@@ -707,7 +730,7 @@ button{font-family:inherit;color:inherit}
 <script>
 /* Sample content. All outlets, quotes and figures are invented placeholders for the prototype. */
 const T1=["AI","Cybersecurity & Trust","Software & AI Engineering","Data & Analytics","Compute, Chips & Connectivity","Energy & Sustainability","Robotics, Mobility & Physical AI"];
-const T2=["Business & Big Tech","Policy & Regulation","Geopolitics & Supply Chains","Startups & Funding","Work & Careers","Health","Climate & Energy","Markets & Money"];
+const T2=["Business & Big Tech","Policy & Regulation","Geopolitics & Supply Chains","Startups & Funding","Work & Careers","Health","Climate & Energy","Markets & Money","Retail, E-commerce & Logistics","Consumer Brands"];
 const LENS=["Banking & finance","Healthcare","Manufacturing"];
 const INDUSTRIES=["Banking & finance","Healthcare","Manufacturing","Energy & utilities","Public sector","Retail & consumer","Technology & software","Other"];
 const ROLES=["CEO or founder","CTO or CIO","Product leader","Engineering leader","Security leader","Data leader","Strategy or operations","Other"];
@@ -792,7 +815,7 @@ const STORIES=[
  bias:[4,4,0,"Coverage presents consolidation as sensible and overdue.","No coverage opposes it. Some warn about vendor lock-in."],
  lens:[["Expect questions on lineage for any model used in credit or risk.","Weigh lock-in risk before choosing a single platform."],["Patient data rules favour fewer, well-controlled stores.","Check how research and care data stay separate."],["Plant and supplier data often sit in many systems. Start with a catalogue.","Prioritise quality data feeding any AI pilots."]]},
 
-{id:8,t1:6,t2:[4],age:"6 hr ago",min:3,listen:82,
+{id:8,t1:6,t2:[8],age:"6 hr ago",min:3,listen:82,
  h:"Warehouse operators trial humanoid robots, starting with single tasks",
  s:"Logistics firms are running pilots of humanoid robots in warehouses, limited to tasks like moving totes between conveyors. Operators say the main test is reliability across a full shift, not capability. Safety rules for robots working near people are still being written.",
  w:"Pilots show where humanoids might fit first: narrow, repeatable tasks. Whether they beat existing automation on cost and uptime will decide how quickly adoption spreads.",
@@ -832,7 +855,7 @@ const STORIES=[
  w:"The skills in demand are moving toward judgement and process. Training budgets and career paths may need to follow.",
  e:"Companies used to want people who were good at asking AI questions. Now they want people who can check its answers.",
  src:[["Northgate Journal","Analysis","Oversight roles outgrow prompt roles","Yesterday"],["Kestrel Data","First report","Postings point to evaluation skills","Yesterday"],["The Ledger Review","Confirmation","Employers rewrite AI job titles","Yesterday"]]},
-{id:12,t1:4,t2:[0],age:"Yesterday",min:2,listen:64,
+{id:12,t1:4,t2:[8],age:"Yesterday",min:2,listen:64,
  h:"Edge inference chips target retail and factory sites",
  s:"Chipmakers are releasing lower-power processors built to run AI models on site, aimed at cameras, checkout systems and production lines. Buyers cite latency and data-privacy reasons for keeping inference local.",
  w:"Running AI on site changes cost and privacy trade-offs, and may reduce reliance on distant data centres for routine tasks.",
@@ -877,7 +900,7 @@ const MORE_SRC=[
 [27,4,[0],"Networking becomes the next constraint inside AI clusters","Cluster builders report that moving data between chips now limits performance as much as the chips themselves. Network vendors are releasing faster links and new designs.","The speed of the connections is becoming as important as the speed of the chips."],
 [28,5,[6],"Heat reuse from data centres gains ground in northern cities","Several northern cities are connecting data-centre waste heat to district heating. Planners say the model works best when agreed early in the design.","Waste heat is turning from a cost into a resource, if planned before construction."],
 [29,5,[1],"Nuclear developers court technology buyers for long-term power","Developers of new nuclear plants are talking to technology companies about long-term power agreements. Timelines and approvals remain the main uncertainty.","Long-dated power deals may decide which clean-energy projects get built."],
-[30,6,[4],"Autonomous trucking pilots focus on fixed, repeatable routes","Pilot programmes are limited to highway routes where conditions are predictable. Operators say route choice matters more than vehicle capability at this stage.","Narrow routes make early deployments practical and set the template for expansion."],
+[30,6,[8],"Autonomous trucking pilots focus on fixed, repeatable routes","Pilot programmes are limited to highway routes where conditions are predictable. Operators say route choice matters more than vehicle capability at this stage.","Narrow routes make early deployments practical and set the template for expansion."],
 [31,6,[5],"Surgical robotics vendors add AI guidance with clinician control","Vendors are adding AI guidance to surgical systems, with the surgeon retaining control at every step. Hospitals ask for clear records of what the AI suggested.","Assistive AI in surgery depends on trust, records and clinician authority."]
 ];
 MORE_SRC.forEach(([id,t1,t2,h,s,w])=>{
@@ -888,8 +911,16 @@ MORE_SRC.forEach(([id,t1,t2,h,s,w])=>{
 const IX={1:["Banking x Agentic AI"],2:["Utilities x Data-centre power"],7:["Chemicals x ERP","Pharma x Data platforms"],8:["Manufacturing x Humanoid robots"],9:["Healthcare x Ambient AI"],10:["Banking x Post-quantum security"]};
 STORIES.forEach(s=>{if(IX[s.id])s.ix=IX[s.id]});
 const OTHERS_SUGGEST=["Chemicals x ERP","Banking x Agentic AI","Pharma x Data platforms","Healthcare x Ambient AI","Manufacturing x Humanoid robots","Utilities x Data-centre power","Banking x Post-quantum security"];
-const T1_DESC=["Frontier models, agent architectures, enterprise adoption","Zero trust, threat vectors, enterprise defence","DevOps, code synthesis, cloud infrastructure","Vector databases, data pipelines, modern BI","Silicon, GPU clusters, 6G, data-centre networks","Grid-scale storage, nuclear, cooling, power demand","Humanoids, autonomous freight, computer vision"];
+const T1_DESC=["Frontier models, agents, agentic commerce","Zero trust, threat vectors, enterprise defence","DevOps, code synthesis, cloud infrastructure","Vector databases, data pipelines, modern BI","Silicon, GPU clusters, 6G, edge","Grid-scale storage, nuclear, cooling","Humanoids, industrial AI and IoT"];
 
+const T1_SUB=[
+["Enterprise AI adoption and ROI","AI agents and multi-agent systems","Agentic commerce","AI governance and regulation","AI model launches"],
+["AI-driven threats and AI security","Ransomware and resilience","Identity and zero trust","Post-quantum and digital trust"],
+["AI coding agents","AI-led modernisation and platform engineering","Intelligent automation"],
+["Data platforms","AI-ready data and governance","AI and agentic analytics"],
+["AI data centres and cloud","Chips and AI memory","6G, satellite and edge","Sovereign AI and data localisation","Quantum computing"],
+["Powering AI: nuclear, grid and renewables","Carbon capture and climate tech"],
+["Industrial and humanoid robots","Autonomous and software-defined vehicles","Delivery and industrial drones","Industrial AI and IoT"]];
 /* Opinion pieces: contributed by named professionals (fictional), reviewed by editors before posting. */
 const OPS=[
 {id:101,op:1,kind:"piece",t1:0,t2:[0],au:"Priya Nair",role:"Chief Risk Officer",org:"Halden Bank",age:"2 days ago",min:6,cc:12,
@@ -945,7 +976,7 @@ tabToday:'<path d="M12 3v2.5M4.6 7.6l1.8 1.5M19.4 7.6l-1.8 1.5M2.5 15.5h19M6.5 1
 tabOpinion:'<path d="M17 3.5a2.1 2.1 0 0 1 3 3L8 18.5l-4.5 1 1-4.5Z"/><path d="M14.5 6l3.5 3.5"/>',
 tabLayers:'<path d="m12 3 9.5 4.8L12 12.6 2.5 7.8Z"/><path d="m2.5 12.2 9.5 4.8 9.5-4.8"/><path d="m2.5 16.4 9.5 4.8 9.5-4.8"/>',
 tabUser:'<circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3"/><path d="M6.8 18.6a5.6 5.6 0 0 1 10.4 0"/>',
-chevL:'<path d="m15 18-6-6 6-6"/>',chevU:'<path d="m18 15-6-6-6 6"/>',chevR:'<path d="m9 18 6-6-6-6"/>',arrowR:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+chevL:'<path d="m15 18-6-6 6-6"/>',chevU:'<path d="m18 15-6-6-6 6"/>',chevD:'<path d="m6 9 6 6 6-6"/>',chevR:'<path d="m9 18 6-6-6-6"/>',arrowR:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
 check:'<path d="M20 6 9 17l-5-5"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',minus:'<path d="M5 12h14"/>',
 bookmark:'<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>',
 share:'<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
@@ -1141,7 +1172,7 @@ function viewThemes(){
   <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of 3</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
   <div class="setup__body" id="th-body">
    <h2>Choose your themes</h2><p class="sub">Select up to 5 technology areas for your daily brief.</p>
-   <div class="tiles" id="tiles">${T1.map((t,i)=>`<button class="tile" data-a="tile" data-i="${i}" aria-pressed="${S.themes.includes(i)}"><span class="tile__tx"><b>${esc(t)}</b><span>${esc(T1_DESC[i])}</span></span><span class="tile__ck">${ic('plus')}</span></button>`).join('')}</div>
+   <div class="tiles" id="tiles">${T1.map((t,i)=>`<div class="tilebox" data-open="false"><div class="tilehead"><button class="tile" data-a="tile" data-i="${i}" aria-pressed="${S.themes.includes(i)}"><span class="tile__tx"><b>${esc(t)}</b><span>${esc(T1_DESC[i])}</span></span><span class="tile__ck">${ic('plus')}</span></button><button class="tile__info" data-a="tileinfo" data-i="${i}" aria-expanded="false" aria-controls="tsub${i}" aria-label="Show what ${esc(t)} covers">${ic('chevD','chev')}</button></div><div class="tile__sub" id="tsub${i}"><ul>${T1_SUB[i].map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>`).join('')}</div>
    <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of 3</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional · Pick how tech intersects your industry</p>
    <div class="chips" id="t2chips" style="margin-top:14px">${T2.map((t,i)=>`<button class="chip" data-a="t2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${ic(S.where.includes(i)?'check':'plus')}${esc(t)}</button>`).join('')}</div></div>
    <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional · Search for a specific industry and technology</p><div id="oth" style="margin-top:14px"></div></div>
@@ -1690,6 +1721,7 @@ function syncSide(){$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed
 /* ---------- Actions ---------- */
 const ACT={
   signin:(t)=>doSignin(t.dataset.m,t),email:()=>openEmail(),
+  tileinfo:t=>{const b=t.closest('.tilebox'),o=b.dataset.open!=='true';document.querySelectorAll('.tilebox').forEach(x=>{x.dataset.open='false';x.querySelector('.tile__info').setAttribute('aria-expanded','false')});if(o){b.dataset.open='true';t.setAttribute('aria-expanded','true');setTimeout(()=>{const sc=document.getElementById('th-body'),r=b.getBoundingClientRect(),h=sc.getBoundingClientRect();if(r.bottom>h.bottom-90)sc.scrollBy({top:r.bottom-h.bottom+100,behavior:'smooth'})},260)}},
   tile:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5){const c=$('#th-count');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');return toast('Pick up to five themes')}else S.themes.push(i);updThemes()},
   addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Noted. Requests help us decide what to cover next.');q&&q.focus({preventScroll:true})},
   remother:t=>{S.others=S.others.filter(x=>x!==t.dataset.v);const q=$('#oth-q');othersPaint(q?q.value:'')},
