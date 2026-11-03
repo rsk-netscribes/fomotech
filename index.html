@@ -672,6 +672,11 @@ button{font-family:inherit;color:inherit}
 .feed .card p{font-size:15.5px;line-height:23px}
 .module p,.ev p{font-size:15px;line-height:23px}
 
+/* Story swap: top and bottom bars ease in instead of snapping */
+@keyframes barsoft{from{opacity:.25}to{opacity:1}}
+.layer.swapping .s-top>*,.layer.swapping .s-bot>*{animation:barsoft .4s ease both}
+.layer[data-k=story] .story{backface-visibility:hidden}
+
 </style>
 </head>
 <body>
@@ -1373,12 +1378,16 @@ function attachGestures(layer,opts={}){
   const down=(x,y,t)=>{if(layer._popping||t.closest('.tools,.pills,.collchips,.pl-wave'))return;st={x,y,time:Date.now(),dx:0,dy:0,mode:null,bottom:atBottom()}};
   const move=(x,y)=>{if(!st)return;st.dx=x-st.x;st.dy=y-st.y;
     if(!st.mode){if(st.dx>12&&st.dx>Math.abs(st.dy)*1.5){st.mode='h';layer.classList.remove('in');layer.style.animation='none';layer.style.transition='none'}else if(Math.abs(st.dy)>12&&Math.abs(st.dy)>Math.abs(st.dx))st.mode='v'}
-    if(st.mode==='h'){const dx=Math.max(0,st.dx),p=Math.min(1,dx/W()),pv=prevOf(layer);layer.style.transform=`translateX(${dx}px)`;pv.style.transition='none';pv.style.transform=`translateX(${-22*(1-p)}%)`;pv.style.filter=`brightness(${.7+.3*p})`}};
-  const up=()=>{if(!st)return;const s=st;st=null;
+    if(st.mode==='h'){const dx=Math.max(0,st.dx),p=Math.min(1,dx/W()),pv=prevOf(layer);layer.style.transform=`translateX(${dx}px)`;pv.style.transition='none';pv.style.transform=`translateX(${-22*(1-p)}%)`;pv.style.filter=`brightness(${.7+.3*p})`}
+    else if(st.mode==='v'&&opts.next&&st.bottom&&st.dy<0&&!storyBusy){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translateY(${Math.max(-70,st.dy*.45)}px)`;bd.style.opacity=String(1-Math.min(.5,Math.abs(st.dy)/320))}}};
+  const up=()=>{if(!st)return;const s=st;st=null;if(s.mode)layer._swallow=Date.now();
     if(s.mode==='h'){const v=s.dx/Math.max(1,Date.now()-s.time);
       if(s.dx>W()*.33||v>.6)pop();
       else{const pv=prevOf(layer);layer.style.transition='transform .3s var(--ease)';layer.style.transform='translateX(0)';pv.style.transition='transform .3s var(--ease),filter .3s';pv.style.transform='';pv.style.filter=''}}
-    else if(s.mode==='v'&&opts.next&&s.bottom&&atBottom()&&s.dy<-70&&Math.abs(s.dx)<70)opts.next()};
+    else if(s.mode==='v'&&opts.next){const bd=$('.story',layer);
+      if(s.bottom&&atBottom()&&s.dy<-70&&Math.abs(s.dx)<70)opts.next();
+      else if(bd){bd.style.transition='transform .3s var(--ease),opacity .3s';bd.style.transform='';bd.style.opacity=''}}};
+  layer.addEventListener('click',e=>{if(layer._swallow&&Date.now()-layer._swallow<350){e.stopPropagation();e.preventDefault()}},{capture:true,...sig});
   layer.addEventListener('touchstart',e=>down(e.touches[0].clientX,e.touches[0].clientY,e.target),{passive:true,...sig});
   layer.addEventListener('touchmove',e=>move(e.touches[0].clientX,e.touches[0].clientY),{passive:true,...sig});
   layer.addEventListener('touchend',up,sig);layer.addEventListener('touchcancel',up,sig);
@@ -1425,10 +1434,30 @@ function updateStory(L,anim){
   body.innerHTML=p.body;if(anim)body.style.animation='up-in .42s var(--ease) both';
   $('.scroll',L).scrollTop=0;$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot;
 }
-function nextStory(){
-  const L=storyLayer();if(!L)return;
-  if(S.i<S.ctx.ids.length-1){S.i++;markRead(curId());updateStory(L,true)}
-  else if(S.ctx.kind==='brief')openCaught();else pop();
+let storyBusy=false;
+async function nextStory(){
+  const L=storyLayer();if(!L||storyBusy)return;
+  if(S.i>=S.ctx.ids.length-1){if(S.ctx.kind==='brief')openCaught();else pop();return}
+  storyBusy=true;
+  const body=$('.story',L),sc=$('.scroll',L);
+  /* 1. current story lifts away and fades */
+  body.style.willChange='transform,opacity';
+  body.style.transition='transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease';
+  body.style.transform='translate3d(0,-56px,0)';body.style.opacity='0';
+  await wait(250);
+  /* 2. swap while invisible, reset scroll, park the new story just below */
+  S.i++;S.read.add(curId());
+  body.style.transition='none';body.style.transform='translate3d(0,44px,0)';body.style.opacity='0';
+  updateStory(L,false);sc.scrollTop=0;
+  L.classList.add('swapping');
+  void body.offsetWidth;
+  /* 3. new story rises into place */
+  body.style.transition='transform .5s var(--ease),opacity .4s ease';
+  body.style.transform='';body.style.opacity='';
+  await wait(540);
+  body.style.transition='';body.style.willChange='';L.classList.remove('swapping');
+  markRead(curId());           /* heavy list refresh only after the motion has finished */
+  storyBusy=false;
 }
 function refreshStoryBars(){const L=storyLayer();if(!L)return;const p=storyParts();$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot}
 
