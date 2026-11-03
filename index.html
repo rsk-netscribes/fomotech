@@ -1300,7 +1300,7 @@ const PRICE=999;
 const PRO_ROWS=[
  ['The daily brief','8 to 10 stories, ends when you are done',1,1],
  ['Named sources, AI summaries','Labelled on every story',1,1],
- ['Why it matters, ELI5','Prepared analysis on every story',1,1],
+ ['Why it matters, In plain terms','Prepared analysis on every story',1,1],
  ['Hype check, Bias checker','Evidence, not a score',1,1],
  ['AI audio brief','Listen to the whole brief',1,1],
  ['Saved stories and collections','Free: 2 collections',1,'Unlimited'],
@@ -1390,7 +1390,7 @@ function attachGestures(layer,opts={}){
 function newLayer(kind){const L=document.createElement('div');L.className='layer';L.dataset.k=kind;return L}
 
 /* ---------- Story ---------- */
-const TOOLS=[['wim','Why it matters','trend'],['eli5','ELI5','bulb'],['hype','Hype check','activity'],['bias','Bias checker','scale'],['lens','Industry lens','brief']];
+const TOOLS=[['wim','Why it matters','trend'],['eli5','In plain terms','bulb'],['hype','Hype check','activity'],['bias','Bias checker','scale'],['lens','Industry lens','brief']];
 const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
 function storyParts(){
@@ -1476,7 +1476,7 @@ function toolSheet(k){
     const lab=['What changed','Who is affected','What to watch'];
     return openSheet({...common,title:'Why it matters',eyebrow:'Prepared analysis · AI-written',body:`<p style="font-family:var(--font-serif);font-size:18px;line-height:26px;font-weight:600;letter-spacing:-.01em">${esc(s.w)}</p>${s.wim.map((t,i)=>`<div class="module"><span class="label">${lab[i]}</span><p>${esc(t)}</p></div>`).join('')}`});
   }
-  if(k==='eli5')return openSheet({...common,title:'ELI5',eyebrow:'Plain language · AI-written',body:`<p style="font-family:var(--font-serif);font-size:20px;line-height:29px;font-weight:600;letter-spacing:-.01em">${esc(s.e)}</p><div class="module"><span class="label">The headline, simply</span><p>${esc(s.h)}</p></div><p class="note">Prepared from the ${s.src.length} sources on this story.</p>`});
+  if(k==='eli5')return openSheet({...common,title:'In plain terms',eyebrow:'AI-written',body:`<p style="font-family:var(--font-serif);font-size:20px;line-height:29px;font-weight:600;letter-spacing:-.01em">${esc(s.e)}</p><div class="module"><span class="label">The headline, simply</span><p>${esc(s.h)}</p></div><p class="note">Prepared from the ${s.src.length} sources on this story.</p>`});
   if(k==='hype'){
     const [v,a,b,c]=s.hy,rows=[['ok','Confirmed',a,ic('check')],['part','Partly shown',b,ic('minus')],['open','Not yet shown',c,'?']];
     return openSheet({...common,title:'Hype check',eyebrow:'Evidence, not a score · AI-written',body:`<p class="verdict">${esc(v)}.</p>${rows.map(r=>`<div class="ev"><span class="mk ${r[0]}">${r[3]}</span><div><b>${r[1]}</b><p>${esc(r[2])}</p></div></div>`).join('')}<p class="note">Checked against the ${s.src.length} sources on this story. AI-written. No score is given.</p>`});
