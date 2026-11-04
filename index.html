@@ -1804,9 +1804,8 @@ async function jump(name){
   if(name==='opinion-read'||name==='comments'){await wait(80);openStory(101,'opinion',opList().map(o=>o.id));await wait(480);if(name==='comments')commentsSheet(101)}
   if(name==='audio'){await wait(80);audioStart(ids[0],ids);A.pos=22;openPlayer()}
   if(name==='caught'){await wait(80);openCaught()}
-  if(name==='pro'){await wait(300);proSheet()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile'],['pro','Get Pro']];
+const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1><b>Fomo</b><em>Tech</em></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
