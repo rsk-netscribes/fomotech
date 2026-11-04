@@ -1397,15 +1397,12 @@ function renderForYou(){
   const coll=S.fyColl==='all'?null:S.colls.find(c=>c.id===S.fyColl);if(S.fyColl!=='all'&&!coll)S.fyColl='all';
   const vis=coll?S.saved.filter(id=>coll.ids.includes(id)):S.saved;
   let body='';
-  if(S.fySeg==='saved'){
+  {
     const chips=`<div class="collchips"><button class="chip" data-a="coll" data-k="all" aria-pressed="${S.fyColl==='all'}">All saved ${S.saved.length}</button>${S.colls.map(c=>`<button class="chip" data-a="coll" data-k="${c.id}" aria-pressed="${S.fyColl===c.id}">${esc(c.name)} ${c.ids.length}</button>`).join('')}<button class="chip" data-a="newcoll" style="background:none;box-shadow:inset 0 0 0 1px var(--hairline-strong)">${ic('plus')}New</button></div>`;
     body=S.saved.length?chips+`<div class="feed" style="margin-top:16px">${vis.length?vis.map((id,n)=>rowHTML(byId[id],'saved',true,n)).join(''):`<div class="empty"><div class="ring">${ic('folder')}</div><h4>This collection is empty</h4><p>Tap the folder icon on a saved story to add it here.</p></div>`}</div>`
      :`<div class="empty"><div class="ring">${ic('bookmark')}</div><h4>Nothing saved yet</h4><p>Tap the bookmark on any story to keep it here. Group saved stories into collections.</p><button class="btn btn--primary" data-a="tab" data-k="today" style="margin-top:8px">Go to Today</button></div>`;
-  }else{
-    const ids=picksIds();
-    body=`<p class="note" style="margin:0 0 14px">Picked from your themes and what you save. Earlier stories you may have missed.</p><div class="feed">${ids.map((id,n)=>rowHTML(byId[id],'picks',false,n)).join('')}</div>`;
   }
-  el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">For You</h1><div class="pagetop"><div class="seg" id="fy-seg"><button data-a="fyseg" data-k="saved" aria-pressed="${S.fySeg==='saved'}">Saved${S.saved.length?' · '+S.saved.length:''}</button><button data-a="fyseg" data-k="picks" aria-pressed="${S.fySeg==='picks'}">Picks</button></div></div>${body}</div></div>`;
+  el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">For You</h1>${body}</div></div>`;
   $('.scroll',el).scrollTop=top;
 }
 
@@ -1444,7 +1441,6 @@ function renderProfile(){
   const li=S.linkedin?S.linkedin.replace(/^https?:\/\/(www\.)?/,''):'Add link';
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
    <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
-   <button class="procard" data-a="pro"><span class="procard__t">${S.pro?'FomoTech Pro':'Get Pro'}<em>${S.pro?'Active':'₹'+PRICE+' / year'}</em></span><span class="procard__s">${S.pro?'Industry lens, alerts, archive and more':'Industry lens, alerts, archive search and more'}</span>${ic('chevR','chev')}</button>
    <div class="group"><span class="label">Your brief</span><div class="rows">
     ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added':'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
@@ -1687,7 +1683,6 @@ function organiseSheet(id){
   organiseSheet.draw=draw;
 }
 function newCollSheet(){
-  if(!S.pro&&S.colls.length>=2)return proSheet('Free includes 2 collections');
   openSheet({title:'New collection',body:`<input class="field" id="nc-in" placeholder="For example, Board prep" maxlength="28"><button class="btn btn--primary btn--block" data-a="addcoll">Create collection</button>`});
 }
 function toggleSave(id){
@@ -1798,8 +1793,7 @@ async function jump(name){
   if(name==='more')S.filter=0;
   if(name==='foryou-saved'){S.saved=[2,6,3];S.colls[0].ids=[2,6];S.colls[1].ids=[3];S.read=new Set([1])}
   if(name==='caught'){S.read=new Set(briefIds())}
-  const tab=name==='opinion'||name==='opinion-read'||name==='comments'?'opinion':name==='foryou-empty'||name==='foryou-saved'||name==='picks'?'foryou':name==='profile'||name==='pro'?'profile':'today';
-  if(name==='picks')S.fySeg='picks';
+  const tab=name==='opinion'||name==='opinion-read'||name==='comments'?'opinion':name==='foryou-empty'||name==='foryou-saved'?'foryou':name==='profile'?'profile':'today';
   enterMain(tab);
   const ids=briefIds();
   const story=async()=>{await wait(80);openStory(ids[0],'brief',ids);await wait(480)};
@@ -1812,12 +1806,13 @@ async function jump(name){
   if(name==='caught'){await wait(80);openCaught()}
   if(name==='pro'){await wait(300);proSheet()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['picks','Picks'],['profile','Profile'],['pro','Get Pro']];
+const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile'],['pro','Get Pro']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1><b>Fomo</b><em>Tech</em></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
   <div><h2>Notifications</h2><div class="jump">${Object.entries(NSCEN).map(([k,v])=>`<button data-n="${k}">${v.label}</button>`).join('')}</div><p class="note" style="margin-top:8px">Lock screen mockups. Tap a notification to open the app.</p></div>
   <div><h2>Sharing</h2><div class="jump">${SHARE_APPS.map(a=>`<button data-sh="${a[0]}">${a[1]}</button>`).join('')}</div><p class="note" style="margin-top:8px">How a story, opinion or team invite looks in each app.</p></div>
+  <div><h2>Demo only</h2><div class="jump"><button data-demo="pro">Pro tier</button></div><p class="note" style="margin-top:8px">Not part of the app screens. Opens the Pro comparison sheet on top of whatever is showing.</p></div>
   <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
   <div><h2>Try these</h2><p class="note">Tap a story. Swipe up at the bottom for the next one, swipe right to go back. Open the tools row. Tap Listen to your brief. Save a story, then organise it into a collection.</p></div>
@@ -1825,6 +1820,7 @@ function buildSide(){
   $$('[data-j]').forEach(b=>b.onclick=()=>jump(b.dataset.j));
   $$('[data-n]').forEach(b=>b.onclick=()=>showLock(b.dataset.n));
   $$('[data-sh]').forEach(b=>b.onclick=()=>{SHP.orig=null;showSharePreview(b.dataset.sh,'story',1,false)});
+  $$('[data-demo]').forEach(b=>b.onclick=()=>{if(S.phase!=='main')return toast('Finish the welcome flow first');proSheet()});
   $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
