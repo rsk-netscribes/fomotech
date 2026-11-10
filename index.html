@@ -779,6 +779,62 @@ button{font-family:inherit;color:inherit}
 .ap-teams .tc{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e3e3e6}
 .ap-teams .tc__t{padding:10px 12px;display:flex;flex-direction:column;gap:3px}.ap-teams .tc__t b{font:600 14px/18px sans-serif;color:#4F52B2}.ap-teams .tc__t span{font-size:12.5px;line-height:17px;color:#444;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.ap-teams .tc__t i{font-style:normal;font-size:11.5px;color:#6b6b70}
 
+/* industry x technology: requested state and Your interests tab */
+.reqtag{font:500 11px/1 var(--font-sans);padding:4px 7px;border-radius:99px;background:var(--surface-elevated);color:var(--ink-secondary);margin-left:6px;white-space:nowrap}
+.chip[aria-pressed=true] .reqtag{background:rgba(255,255,255,.18);color:inherit}
+.reqnote{display:flex;gap:8px;align-items:flex-start;width:100%;margin:6px 0 0;font:400 13px/18px var(--font-sans);color:var(--ink-secondary)}
+.reqnote .i{flex:none;margin-top:1px;color:var(--accent)}
+.reqnote b{color:var(--ink);font-weight:600}
+.ixchips{flex-wrap:nowrap;overflow-x:auto;margin:4px -16px 6px;padding:0 16px 4px;scrollbar-width:none}
+.ixchips::-webkit-scrollbar{display:none}
+.ixchips .chip{flex:none}
+.ixchips .chip .num{margin-left:6px;opacity:.7}
+.ixchips .chip em{font-style:normal;opacity:.6}
+.chip--add{background:none;box-shadow:inset 0 0 0 1px var(--hairline-strong)}
+.reqcard{margin-top:16px;padding:16px;border:1px solid var(--hairline-strong);border-radius:14px}
+.reqcard__top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.reqcard__top .reqtag{margin-left:0}
+.reqcard .combo{font:600 15px/20px var(--font-sans);color:var(--ink)}
+.reqcard .combo em{font-style:normal;opacity:.55;font-weight:400}
+.reqsteps{list-style:none;margin:0 0 10px;padding:0}
+.reqsteps li{position:relative;padding:0 0 12px 24px;font:400 14px/20px var(--font-sans);color:var(--ink-muted)}
+.reqsteps li i{position:absolute;left:3px;top:5px;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--hairline-strong)}
+.reqsteps li:not(:last-child)::after{content:"";position:absolute;left:8px;top:17px;bottom:0;width:1px;background:var(--hairline-strong)}
+.reqsteps li.on{color:var(--ink)}
+.reqsteps li.on i{background:var(--accent);border-color:var(--accent)}
+.ixchips .chip[aria-pressed=true] .num{color:inherit}
+
+
+/* story page: lighter "up next" and bars that hide on scroll */
+.story .upnext{background:none;border-radius:0;border-top:1px solid var(--hairline);margin-top:28px;padding:18px 8px 6px;align-items:center;text-align:center;gap:4px;box-shadow:none}
+.story .upnext .label{order:2;font:500 11.5px/16px var(--font-sans)!important;color:var(--ink-muted)!important}
+.story .upnext h4{order:3;font-size:15px;line-height:20px;color:var(--ink-secondary);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;max-width:100%}
+.story .upnext .hint{order:1;color:var(--accent);font-weight:600;font-size:12.5px}
+.layer .s-top,.layer .s-bot{transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .25s ease,height .25s ease,padding .25s ease}
+.layer.bars-hide .s-bot{transform:translateY(calc(100% + 28px));opacity:0;pointer-events:none}
+.layer.bars-hide .s-top{left:50%;right:auto;transform:translateX(-50%);height:40px;padding:0 4px 0 16px;gap:12px}
+.layer.bars-hide .s-top [data-a=back]{display:none}
+.layer.bars-hide .s-top .where{flex:none}
+.layer.bars-hide .s-top .listenpill{height:32px;margin-right:0}
+.layer .s-top .listenpill{white-space:nowrap}
+/* compact story bar: smooth width change, headphone icon only */
+.layer .s-top{left:50%;right:auto;width:calc(100% - 32px);transform:translateX(-50%);overflow:hidden;transition:width .3s cubic-bezier(.2,.8,.2,1),height .25s ease,padding .25s ease}
+.layer .s-top .where{white-space:nowrap}
+.layer.bars-hide .s-top{width:168px;height:40px;padding:0 4px 0 14px;gap:8px}
+.layer.bars-hide .s-top .listenpill{font-size:0;gap:0;width:32px;height:32px;padding:0;justify-content:center;flex:none}
+.layer.bars-hide .s-top .listenpill .i{width:16px;height:16px}
+.layer.bars-hide .s-top .listenpill .player__eq{margin:0}
+
+/* smoother bar motion */
+.layer .s-top,.layer .s-bot{will-change:transform,width,opacity;transition:transform .42s cubic-bezier(.32,.72,0,1),opacity .3s ease,width .42s cubic-bezier(.32,.72,0,1),height .42s cubic-bezier(.32,.72,0,1),padding .42s cubic-bezier(.32,.72,0,1),gap .42s cubic-bezier(.32,.72,0,1)}
+.layer.bars-hide .s-bot{transform:translateY(calc(100% + 28px));opacity:0}
+.layer .s-top [data-a=back]{display:flex!important;width:44px;min-width:0;overflow:hidden;opacity:1;transition:width .42s cubic-bezier(.32,.72,0,1),opacity .2s ease,margin .42s cubic-bezier(.32,.72,0,1)}
+.layer.bars-hide .s-top [data-a=back]{width:0;opacity:0;margin:0;padding:0;pointer-events:none}
+.layer .s-top .listenpill{transition:width .42s cubic-bezier(.32,.72,0,1),height .42s cubic-bezier(.32,.72,0,1),padding .42s cubic-bezier(.32,.72,0,1),gap .42s cubic-bezier(.32,.72,0,1)}
+.layer .s-top .lp-t{display:inline-block;max-width:110px;overflow:hidden;white-space:nowrap;vertical-align:middle;transition:max-width .42s cubic-bezier(.32,.72,0,1),opacity .2s ease}
+.layer.bars-hide .s-top .listenpill{font-size:inherit;font:600 12px/1 var(--font-sans);width:32px;padding:0 8px;gap:0}
+.layer.bars-hide .s-top .lp-t{max-width:0;opacity:0}
+.layer.bars-hide .s-top{width:156px}
 </style>
 </head>
 <body>
@@ -987,7 +1043,7 @@ MORE_SRC.forEach(([id,t1,t2,h,s,w])=>{
   STORIES.push({id,t1,t2,h,s,w,e:E_BY_T1[t1],age,min:2+id%3,listen:60+(id*7)%30,
     src:[[OUT[id%8],"First report",h,age],[OUT[(id+3)%8],"Confirmation","Coverage and background",age],[OUT[(id+5)%8],"Analysis","What it means for buyers",age]]});
 });
-const IX={1:["Banking x Agentic AI"],2:["Utilities x Data-centre power"],7:["Chemicals x ERP","Pharma x Data platforms"],8:["Manufacturing x Humanoid robots"],9:["Healthcare x Ambient AI"],10:["Banking x Post-quantum security"]};
+const IX={1:["Banking x Agentic AI"],16:["Banking x Agentic AI"],13:["Utilities x Data-centre power"],2:["Utilities x Data-centre power"],7:["Chemicals x ERP","Pharma x Data platforms"],8:["Manufacturing x Humanoid robots"],9:["Healthcare x Ambient AI"],10:["Banking x Post-quantum security"]};
 STORIES.forEach(s=>{if(IX[s.id])s.ix=IX[s.id]});
 const OTHERS_SUGGEST=["Chemicals x ERP","Banking x Agentic AI","Pharma x Data platforms","Healthcare x Ambient AI","Manufacturing x Humanoid robots","Utilities x Data-centre power","Banking x Post-quantum security"];
 const T1_DESC=["Frontier models, agents, agentic commerce","Zero trust, threat vectors, enterprise defence","DevOps, code synthesis, cloud infrastructure","Vector databases, data pipelines, modern BI","Silicon, GPU clusters, 6G, edge","Grid-scale storage, nuclear, cooling","Humanoids, industrial AI and IoT"];
@@ -1099,7 +1155,7 @@ let appearance='dark',cardStyle='text';
 let S;
 function fresh(){return{method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
- others:[],opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
+ others:[],ixSel:'all',opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
 const SPEEDS=[1,1.25,1.5,2];
 S=fresh();
@@ -1119,6 +1175,8 @@ function briefIds(){
   const sc=s=>(S.themes.includes(s.t1)?2:0)+(S.where.some(w=>s.t2.includes(w))?1:0)+(ixMatch(s).length?1:0);
   return STORIES.filter(s=>s.id<=10).map((s,i)=>({s,i,k:sc(s)})).sort((a,b)=>b.k-a.k||a.i-b.i).map(x=>x.s.id);
 }
+const isKnownIx=x=>OTHERS_SUGGEST.some(o=>o.toLowerCase()===x.toLowerCase());
+const ixIds=sel=>STORIES.filter(s=>s.id<100&&(s.ix||[]).some(x=>S.others.some(o=>o.toLowerCase()===x.toLowerCase())&&(!sel||sel==='all'||x.toLowerCase()===sel.toLowerCase()))).map(s=>s.id);
 const ixMatch=s=>(s.ix||[]).filter(x=>S.others.some(o=>o.toLowerCase()===x.toLowerCase()));
 function topicIds(t){return [...briefIds().filter(i=>byId[i].t1===t),...moreIds(t)]}
 function moreIds(t){return STORIES.filter(s=>s.id>10&&s.id<100&&s.t1===t).map(s=>s.id)}
@@ -1238,7 +1296,7 @@ function othersMount(root){
 }
 function othersPaint(q){
   q=(q||'').trim();const ql=q.toLowerCase(),sel=S.others;
-  $('#oth-sel').innerHTML=sel.map(x=>`<button class="chip" aria-pressed="true" data-a="remother" data-v="${esc(x)}" aria-label="Remove ${esc(x)}">${comboHTML(x)}${ic('x')}</button>`).join('');
+  $('#oth-sel').innerHTML=sel.map(x=>`<button class="chip" aria-pressed="true" data-a="remother" data-v="${esc(x)}" aria-label="Remove ${esc(x)}">${comboHTML(x)}${isKnownIx(x)?'':'<span class="reqtag">Requested</span>'}${ic('x')}</button>`).join('')+(sel.some(x=>!isKnownIx(x))?`<p class="reqnote">${ic('clock','sm')}<span>Requested topics appear under <b>Your interests</b> on Today. We will notify you when coverage starts.</span></p>`:'');
   $('#oth-sel').style.display=sel.length?'flex':'none';
   const sug=OTHERS_SUGGEST.filter(x=>!sel.some(s=>s.toLowerCase()===x.toLowerCase())&&(!ql||x.toLowerCase().includes(ql)));
   const exact=[...OTHERS_SUGGEST,...sel].some(x=>x.toLowerCase()===ql);
@@ -1263,13 +1321,13 @@ function viewThemes(){
 function updThemes(){
   const n=S.themes.length,c=$('#th-count');if(!c)return;
   c.textContent=n+' of 5 selected';
-  $('#th-go').innerHTML=n?'Continue '+ic('arrowR'):'Skip and show everything';
+  $('#th-go').innerHTML=(n||S.where.length||S.others.length)?'Continue '+ic('arrowR'):'Skip and show everything';
   $$('#tiles .tile').forEach(b=>{const on=S.themes.includes(+b.dataset.i);b.setAttribute('aria-pressed',on);b.querySelector('.tile__ck').innerHTML=ic(on?'check':'plus')});
   $$('#t2chips .chip').forEach(b=>{const on=S.where.includes(+b.dataset.i);b.setAttribute('aria-pressed',on);b.querySelector('svg').outerHTML=ic(on?'check':'plus')});
 }
 async function viewPrep(){
   const names=S.themes.length?S.themes.map(i=>T1[i]):['all seven tech areas'];
-  const lines=[`Selecting stories on ${names.length>2?names.slice(0,2).join(', ')+' and more':names.join(' and ')}`,'Adding named sources','Preparing analysis for every story',`Scheduling your ${S.briefTime} brief`];
+  const lines=[`Selecting stories on ${names.length>2?names.slice(0,2).join(', ')+' and more':names.join(' and ')}`,...(S.others.length?[`Following ${S.others.length} industry x technology interest${S.others.length>1?'s':''}`]:[]),'Adding named sources','Preparing analysis for every story',`Scheduling your ${S.briefTime} brief`];
   showAuth(`<div class="prep fade"><div class="brandmark" style="text-align:left"><b>Fomo</b><em>Tech</em></div><h2 class="display" style="margin-top:28px">Building your first brief.</h2><ul>${lines.map(l=>`<li><span class="ring">${ic('check')}</span>${esc(l)}</li>`).join('')}</ul></div>`);
   const li=$$('#auth .prep li');
   for(const l of li){await wait(420);l.classList.add('on')}
@@ -1284,7 +1342,7 @@ function enterMain(tab){
 function cardHTML(s,pos,n){
   const read=S.read.has(s.id),isNew=s.isNew&&!read;
   return `<article class="card ${read?'card--read':''}" role="button" tabindex="0" data-a="${pos==null?'openmore':'open'}" data-id="${s.id}" style="--n:${n}">
-   <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}${read?`<span class="card__tick">${ic('check','sm')}</span>`:''}<span class="card__tags">${esc(tagLine(s,false,S.filter!=='all'))}</span></div>
+   <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}${read?`<span class="card__tick">${ic('check','sm')}</span>`:''}<span class="card__tags">${esc(tagLine(s,false,S.filter!=='all'&&S.filter!=='ix'))}</span></div>
    <h3>${esc(s.h)}</h3>
    ${cardStyle==='photo'?`<div class="photo">${art(s.id)}</div>`:''}
    <p>${esc(s.s)}</p>
@@ -1294,8 +1352,9 @@ function renderToday(){
   const el=$('#tab-today'),old=$('.scroll',el),top=old?old.scrollTop:0;
   const ids=briefIds(),total=ids.length,rd=ids.filter(i=>S.read.has(i)).length;
   const pf=S.themes.length?S.themes:[0,1,2,3,4,5,6];
-  if(S.filter!=='all'&&!pf.includes(S.filter))S.filter='all';
+  if(S.filter==='ix'&&!S.others.length)S.filter='all';if(S.filter!=='all'&&S.filter!=='ix'&&!pf.includes(S.filter))S.filter='all';
   const cnt=t=>ids.filter(i=>byId[i].t1===t).length+moreIds(t).length;
+  if(S.filter==='ix')return renderIx(el,ids,total,pf,cnt);
   const list=S.filter==='all'?ids:ids.filter(i=>byId[i].t1===S.filter);
   const mo=S.filter==='all'?[]:moreIds(S.filter);
   const mins=Math.round(ids.reduce((a,i)=>a+byId[i].listen,0)/60);
@@ -1310,8 +1369,27 @@ function renderToday(){
   </div></div>
   <div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist">
    <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">Daily Brief<span class="meta num">${total}</span></button>
-   ${pf.map(t=>`<button class="pill" data-a="filter" data-k="${t}" aria-pressed="${S.filter===t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}</div></div>`;
+   ${pillsTail(pf,cnt)}</div></div>`;
   const sc=$('.scroll',el);sc.scrollTop=top;
+}
+function pillsTail(pf,cnt){return (S.others.length?`<button class="pill" data-a="filter" data-k="ix" aria-pressed="${S.filter==='ix'}">Your interests<span class="meta num">${ixIds('all').length}</span></button>`:'')+pf.map(t=>`<button class="pill" data-a="filter" data-k="${t}" aria-pressed="${S.filter===t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}
+function renderIx(el,ids,total,pf,cnt){
+  const sel=S.ixSel!=='all'&&!S.others.includes(S.ixSel)?'all':S.ixSel;S.ixSel=sel;
+  const list=ixIds(sel),anim=S.anim;S.anim=false;
+  const pairs=sel==='all'?S.others:[sel];
+  const pending=pairs.filter(x=>!isKnownIx(x));
+  const quiet=pairs.filter(x=>isKnownIx(x)&&!ixIds(x).length);
+  const card=(s,n)=>cardHTML(s,null,n).replace('data-a="openmore"','data-a="openix"');
+  el.innerHTML=FADE+`<div class="scroll"><div class="pad">
+   <div class="chips ixchips"><button class="chip" data-a="ixsel" data-k="all" aria-pressed="${sel==='all'}">All<span class="meta num">${ixIds('all').length}</span></button>${S.others.map(x=>`<button class="chip" data-a="ixsel" data-k="${esc(x)}" aria-pressed="${sel===x}">${comboHTML(x)}${isKnownIx(x)?`<span class="meta num">${ixIds(x).length}</span>`:'<span class="reqtag">Requested</span>'}</button>`).join('')}<button class="chip chip--add" data-a="edit" data-k="others">${ic('plus')}Add</button></div>
+   <div class="feed ${anim?'anim':''}">${list.map((id,n)=>card(byId[id],n)).join('')}</div>
+   ${pending.map(x=>`<div class="reqcard"><div class="reqcard__top"><span class="reqtag">Requested</span><span class="combo">${comboHTML(x)}</span></div><ol class="reqsteps"><li class="on"><i></i>Request received</li><li><i></i>Our team checks there is enough news to cover</li><li><i></i>Stories appear here and we notify you</li></ol><p class="note">You will be notified either way. Remove it any time from Profile.</p></div>`).join('')}
+   ${quiet.map(x=>`<div class="end">No new stories on ${esc(x)} today.</div>`).join('')}
+   ${!list.length&&!pending.length&&!quiet.length?'<div class="end">No stories match your interests today.</div>':''}
+  </div></div>
+  <div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist">
+   <button class="pill" data-a="filter" data-k="all" aria-pressed="false">Daily Brief<span class="meta num">${total}</span></button>
+   ${pillsTail(pf,cnt)}</div></div>`;
 }
 
 /* ---------- Opinion ---------- */
@@ -1442,7 +1520,7 @@ function renderProfile(){
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
    <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
    <div class="group"><span class="label">Your brief</span><div class="rows">
-    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added':'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
+    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added'+(S.others.some(x=>!isKnownIx(x))?' · '+S.others.filter(x=>!isKnownIx(x)).length+' requested':''):'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
     ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
@@ -1512,7 +1590,7 @@ function storyParts(){
   const id=curId(),s=byId[id];if(s.op)return opinionParts(s);
   const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'Story'}[kind]||'Story';
   const listening=A.active&&A.id===id,nid=S.ctx.ids[S.i+1],ns=nid&&byId[nid];
-  const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${word} <b class="num">${S.i+1}</b> of ${n}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</button>`;
+  const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${word} <b class="num">${S.i+1}</b> of ${n}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}<span class="lp-t">${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</span></button>`;
   const bot=`<button class="act" data-a="save" data-id="${id}" aria-pressed="${isSaved(id)}">${ic('bookmark')}Save</button><button class="act" data-a="share" data-id="${id}">${ic('share')}Share</button><button class="btn btn--primary" data-a="next">${last?(kind==='brief'?'Finish brief':'Done'):'Next story'} ${ic('arrowR')}</button>`;
   const isNew=s.isNew&&!S.read.has(id);
   const body=`<div class="tags"><span class="label">${esc(tagLine(s,true,kind==='topic'))}</span></div>
@@ -1527,10 +1605,17 @@ function storyParts(){
    <p class="footnote">Summaries are AI-written from the named sources. Sample content for this prototype.</p>`;
   return{top,bot,body};
 }
+function barsOnScroll(L){const sc=$('.scroll',L);if(!sc)return;let y=0,acc=0,raf=0;
+  const tick=()=>{raf=0;const t=sc.scrollTop,d=t-y;y=t;acc=(Math.sign(d)===Math.sign(acc))?acc+d:d;
+    const end=t+sc.clientHeight>=sc.scrollHeight-90,hid=L.classList.contains('bars-hide');
+    if(t<60||end){if(hid)L.classList.remove('bars-hide');acc=0}
+    else if(acc>28&&!hid){L.classList.add('bars-hide');acc=0}
+    else if(acc<-28&&hid){L.classList.remove('bars-hide');acc=0}};
+  sc.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(tick)},{passive:true})}
 function openStory(id,kind,ids){
   closeSheet(true);S.ctx={kind,ids};S.i=ids.indexOf(id);
   const L=newLayer('story'),p=storyParts();
-  L.innerHTML=`<div class="scroll"><div class="pad"><div class="story">${p.body}</div></div></div>${FADE}<div class="s-top glass">${p.top}</div><div class="s-bot glass">${p.bot}</div>`;
+  L.innerHTML=`<div class="scroll"><div class="pad"><div class="story">${p.body}</div></div></div>${FADE}<div class="s-top glass">${p.top}</div><div class="s-bot glass">${p.bot}</div>`;barsOnScroll(L);
   push(L);attachGestures(L,{next:nextStory});markRead(id);
 }
 function storyLayer(){const L=$('#stack').lastElementChild;return L&&L.dataset.k==='story'?L:null}
@@ -1538,7 +1623,7 @@ function updateStory(L,anim){
   closeSheet(true);const p=storyParts(),body=$('.story',L);
   if(anim){body.style.animation='none';void body.offsetWidth}
   body.innerHTML=p.body;if(anim)body.style.animation='up-in .42s var(--ease) both';
-  $('.scroll',L).scrollTop=0;$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot;
+  $('.scroll',L).scrollTop=0;L.classList.remove('bars-hide');$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot;
 }
 let storyBusy=false;
 async function nextStory(){
@@ -1831,12 +1916,14 @@ const ACT={
   signin:(t)=>doSignin(t.dataset.m,t),email:()=>openEmail(),
   tileinfo:t=>{const b=t.closest('.tilebox'),o=b.dataset.open!=='true';document.querySelectorAll('.tilebox').forEach(x=>{x.dataset.open='false';x.querySelector('.tile__info').setAttribute('aria-expanded','false')});if(o){b.dataset.open='true';t.setAttribute('aria-expanded','true');setTimeout(()=>{const sc=document.getElementById('th-body'),r=b.getBoundingClientRect(),h=sc.getBoundingClientRect();if(r.bottom>h.bottom-90)sc.scrollBy({top:r.bottom-h.bottom+100,behavior:'smooth'})},260)}},
   tile:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5){const c=$('#th-count');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');return toast('Pick up to five themes')}else S.themes.push(i);updThemes()},
-  addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Noted. Requests help us decide what to cover next.');q&&q.focus({preventScroll:true})},
-  remother:t=>{S.others=S.others.filter(x=>x!==t.dataset.v);const q=$('#oth-q');othersPaint(q?q.value:'')},
+  addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Request added. Find it under Your interests on Today.');if($('#th-count'))updThemes();q&&q.focus({preventScroll:true})},
+  remother:t=>{S.others=S.others.filter(x=>x!==t.dataset.v);if(S.ixSel===t.dataset.v)S.ixSel='all';const q=$('#oth-q');othersPaint(q?q.value:'');if($('#th-count'))updThemes()},
   t2:t=>{const i=+t.dataset.i;S.where=S.where.includes(i)?S.where.filter(x=>x!==i):[...S.where,i];updThemes()},
   skipthemes:()=>{S.themes=[];S.where=[];viewPrep()},themesdone:()=>viewPrep(),
   tab:t=>{if($('#stack').children.length){popAll();setTimeout(()=>setTab(t.dataset.k),340)}else if(S.tab===t.dataset.k){const sc=$('#tab-'+t.dataset.k+' .scroll');sc&&sc.scrollTo({top:0,behavior:'smooth'})}else setTab(t.dataset.k)},
-  filter:t=>{S.filter=t.dataset.k==='all'?'all':+t.dataset.k;renderToday();const p=$('#tab-today .pill[aria-pressed=true]');p&&p.scrollIntoView({inline:'center',block:'nearest'})},
+  ixsel:t=>{S.ixSel=t.dataset.k;S.anim=true;renderToday()},
+  openix:t=>{const id=+t.dataset.id;openStory(id,'ix',ixIds(S.ixSel))},
+  filter:t=>{S.filter=t.dataset.k==='all'?'all':t.dataset.k==='ix'?'ix':+t.dataset.k;renderToday();const p=$('#tab-today .pill[aria-pressed=true]');p&&p.scrollIntoView({inline:'center',block:'nearest'})},
   open:t=>{const ids=briefIds();openStory(+t.dataset.id,'brief',ids)},
   openctx:t=>{const k=t.dataset.ctx,id=+t.dataset.id;let ids;
     if(k==='saved'){const c=S.fyColl==='all'?null:S.colls.find(c=>c.id===S.fyColl);ids=c?S.saved.filter(x=>c.ids.includes(x)):S.saved.slice();const op=!!byId[id].op;ids=ids.filter(x=>!!byId[x].op===op)}else ids=picksIds();
