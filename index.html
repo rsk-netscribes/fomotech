@@ -835,6 +835,54 @@ button{font-family:inherit;color:inherit}
 .layer.bars-hide .s-top .listenpill{font-size:inherit;font:600 12px/1 var(--font-sans);width:32px;padding:0 8px;gap:0}
 .layer.bars-hide .s-top .lp-t{max-width:0;opacity:0}
 .layer.bars-hide .s-top{width:156px}
+
+/* flat brand surfaces: no decorative gradients */
+.welcome::before{display:none}
+.by{font:500 13px/18px var(--font-sans)!important;color:var(--ink-muted)!important;letter-spacing:0!important;text-transform:none!important}
+.sharecard{background:#101217;border:1px solid #ffffff1f;box-shadow:inset 0 3px 0 #7E9CFF}
+.sharecard .why2{color:#C9CDD6;border-left-color:#7E9CFF}
+.sharecard .ft{color:#8A91A0;border-top-color:#ffffff1f}
+.sharecard .stag{color:#7E9CFF}
+.og{background:#101217;box-shadow:inset 0 3px 0 #7E9CFF}
+.og__t{color:#7E9CFF}
+.feat{background:#12151B}
+.feat__art{opacity:.18}
+.feat__tx{background:none}
+.feat__tx span{color:#A1A6B0}
+.lock__wall{background:#0D0F13}
+.lock__wall::after{display:none}
+.nicon{background:#101217;box-shadow:inset 0 0 0 1px #ffffff26}
+.procard{background:var(--surface);box-shadow:inset 0 0 0 1px var(--hairline-strong)}
+.photo{background:var(--surface-elevated);filter:none}
+.photo svg{mix-blend-mode:normal;opacity:.35}
+
+/* welcome: left-aligned masthead and a live brief preview */
+.welcome .brandmark{text-align:left;font-size:26px}
+.welcome .by{text-align:left!important;margin-top:6px}
+.welcome .wl-date{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding:10px 0;border-top:1px solid var(--hairline-strong);border-bottom:1px solid var(--hairline);font:500 12.5px/16px var(--font-sans);color:var(--ink-secondary)}
+.welcome .wl-date b{color:var(--ink);font-weight:600}
+.welcome .display{margin-top:22px;font-family:var(--font-head);font-weight:400;font-size:32px;line-height:37px;letter-spacing:-.01em}
+.welcome .lede{font-family:var(--font-read);font-size:16px;line-height:25px}
+.wl-prev{margin-top:20px;position:relative;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.wl-prev .r{display:grid;grid-template-columns:22px 1fr;gap:2px 8px;padding:12px 0;border-top:1px solid var(--hairline)}
+.wl-prev .r:first-child{border-top:0;padding-top:4px}
+.wl-prev .n{grid-row:1/3;font:500 13px/18px var(--font-sans);color:var(--ink-muted)}
+.wl-prev .t{font:500 12px/16px var(--font-head);color:var(--accent)}
+.wl-prev .h{font:400 17px/22px var(--font-head);color:var(--ink)}
+.welcome .cta{padding-top:8px!important}
+
+/* welcome: clean editorial layout; share card B (wordmark + headline only) */
+.welcome .display{margin-top:auto;font-size:38px;line-height:43px}
+.welcome .lede{margin-top:14px}
+.welcome .cta{margin-top:32px}
+.sharecard{background:#0E0F12;border:1px solid #ffffff1a;box-shadow:none;padding:24px 22px 22px;gap:36px}
+.sharecard h5{font:400 25px/31px var(--font-head);color:#F2F3F5;letter-spacing:0}
+.sharecard .mast{font:700 34px/1 var(--font-serif);letter-spacing:-.02em;color:#F2F3F5}
+.sharecard .mast em{font-style:normal;color:#7E9CFF;margin-left:1px}
+.og{background:#0E0F12;box-shadow:none;border:1px solid #ffffff14;justify-content:space-between;padding:16px 18px}
+.og h6{font:400 18px/23px var(--font-head)}
+.og .og__b{font:700 20px/1 var(--font-serif);letter-spacing:-.02em}
+.og .og__b em{color:#7E9CFF}
 </style>
 </head>
 <body>
@@ -1258,12 +1306,8 @@ function showAuth(html){const a=$('#auth');a.hidden=false;a.innerHTML=FADE+html;
 function viewWelcome(){
   showAuth(`<div class="welcome fade" style="overflow-y:auto">
   <div class="brandmark"><b>Fomo</b><em>Tech</em></div><div class="label by">Powered by Netscribes</div>
-  <h1 class="display">Tech news that tells you what it means. Free.</h1>
-  <p class="lede">A finite daily brief for technology leaders. Eight to ten stories, named sources and a clear reason each one matters.</p>
-  <div class="freecard"><b class="hd">${ic('shield')} The daily brief is free.</b><ul>
-   <li>${ic('check')}<span><strong>A finite daily brief.</strong> It ends when you are caught up.</span></li>
-   <li>${ic('check')}<span><strong>Named sources</strong> and clearly labelled AI summaries.</span></li>
-   <li>${ic('check')}<span><strong>Prepared analysis</strong> on every story, ready when you tap.</span></li></ul></div>
+  <h1 class="display">What is changing in tech, and what it means for your business.</h1>
+  <p class="lede">A daily brief, more on the themes you follow, analysis on every story and opinion from people in the industry. Every story names its sources.</p>
   <div class="cta" style="padding-top:22px">
    <button class="btn btn--apple btn--block" data-a="signin" data-m="Apple">${APPLE} Continue with Apple</button>
    <button class="btn btn--secondary btn--block" data-a="signin" data-m="LinkedIn">${LINKEDIN} Continue with LinkedIn</button>
@@ -1720,9 +1764,7 @@ function toolSheet(k){
 /* ---------- Share ---------- */
 function shareSheet(id,invite){
   const s=byId[id],url=SHARE_URL+(id*7919).toString(36).slice(0,5);
-  const card=invite?`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">Free daily tech brief</span><h5>Tech news that tells you what it means.</h5><div class="why2">Eight to ten stories a day, named sources and a clear reason each one matters. Nothing behind a paywall.</div><div class="ft"><span>Invitation from a colleague</span><span>fomotech.app</span></div></div>`
-  :s.op?`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">Opinion · ${esc(T1[s.t1])}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.s)}</div><div class="ft"><span>${esc(s.au+', '+s.org)}</span><span>fomotech.app</span></div></div>`
-  :`<div class="sharecard"><div class="brand"><span><b>Fomo</b><em>Tech</em></span></div><span class="stag">${esc(tagLine(s))}</span><h5>${esc(s.h)}</h5><div class="why2">${esc(s.w)}</div><div class="ft"><span>${s.src.length} named sources</span><span>fomotech.app</span></div></div>`;
+  const card=`<div class="sharecard"><h5>${esc(invite?'What is changing in tech, and what it means for your business.':s.h)}</h5><div class="mast"><b>Fomo</b><em>Tech</em></div></div>`;
   openSheet({title:invite?'Invite your team':(s.op?'Share piece':'Share story'),tall:false,
    body:`${card}<div class="linkrow">${ic('link')}<span>${url}</span><button class="btn btn--primary" data-a="copylink" data-u="${url}">Copy</button></div>
    <div class="targets">${SHARE_APPS.map(a=>`<button class="target" data-a="shareprev" data-app="${a[0]}" data-k="${invite?'invite':(s.op?'opinion':'story')}" data-id="${id}"><span class="ic">${ic(a[2])}</span>${a[1]}</button>`).join('')}</div>`});
@@ -1732,12 +1774,12 @@ function shareSheet(id,invite){
 const SHARE_APPS=[['ios','Messages','msg'],['wa','WhatsApp','whats'],['mail','Mail','mail'],['li','LinkedIn','linkedin'],['slack','Slack','hash'],['teams','Teams','users']];
 const SHP={app:'ios',kind:'story',id:1,from:false};
 function shareData(kind,id){
-  if(kind==='invite')return{tag:'Free daily tech brief',title:'Tech news that tells you what it means',head:'Tech news that tells you what it means.',desc:'Eight to ten stories a day, named sources and a clear reason each one matters. Nothing behind a paywall.',by:'Invitation from a colleague',url:SHARE_URL+'invite',note:'Sharing the daily tech brief I read. It is free and short.',subject:'An invitation to FomoTech',lead:'A colleague invited you to FomoTech.'};
+  if(kind==='invite')return{tag:'Free daily tech brief',title:'What is changing in tech, and what it means for your business',head:'What is changing in tech, and what it means for your business.',desc:'Eight to ten stories a day, named sources and a clear reason each one matters.',by:'Invitation from a colleague',url:SHARE_URL+'invite',note:'Sharing the daily tech brief I read. It is short and worth a look.',subject:'An invitation to FomoTech',lead:'A colleague invited you to FomoTech.'};
   const s=byId[id],url=SHARE_URL+(id*7919).toString(36).slice(0,5);
   if(s.op)return{tag:'Opinion · '+T1[s.t1],title:s.h,head:s.h,desc:s.s,by:s.au+', '+s.org,url,note:'Worth reading, from '+s.au+'.',subject:s.h,lead:'An opinion piece from '+s.au+' on FomoTech.'};
   return{tag:tagLine(s),title:s.h,head:s.h,desc:s.w,by:s.src.length+' named sources',url,note:'Worth a read.',subject:s.h,lead:'A story from FomoTech.'};
 }
-const shpOg=d=>`<div class="og"><span class="og__b"><b>Fomo</b><em>Tech</em></span><span class="og__t">${esc(d.tag)}</span><h6>${esc(d.head)}</h6></div>`;
+const shpOg=d=>`<div class="og"><h6>${esc(d.head)}</h6><span class="og__b"><b>Fomo</b><em>Tech</em></span></div>`;
 const SHP_VIEW={
 ios:d=>`<div class="ap ap-ios"><div class="ap__hd"><span class="av">C</span><b>Colleague</b></div><div class="ap__bd"><div class="dt">Today 9:41 AM</div><div class="out">${esc(d.note)}</div><div class="lp">${shpOg(d)}<div class="lp__t"><b>${esc(d.title)}</b><span>fomotech.app</span></div></div><div class="dl">Delivered</div></div><div class="ap__in"><span>iMessage</span></div></div>`,
 wa:d=>`<div class="ap ap-wa"><div class="ap__hd"><span class="av">C</span><div><b>Colleague</b><small>online</small></div></div><div class="ap__bd"><div class="bub"><div class="lp">${shpOg(d)}<div class="lp__t"><b>${esc(d.title)}</b><span>${esc(d.desc)}</span><i>fomotech.app</i></div></div><div class="ln">${esc(d.note)} <u>${esc(d.url)}</u></div><div class="tm">9:41 AM <em>✓✓</em></div></div></div><div class="ap__in"><span>Message</span></div></div>`,
