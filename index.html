@@ -902,6 +902,14 @@ button{font-family:inherit;color:inherit}
 .srcall svg{width:18px;height:18px}
 .srclist{display:flex;flex-direction:column;overflow-y:auto;margin:0 -4px}
 .srclist .source{padding:14px 4px}
+
+/* badges use the small radius; story swap follows the finger; quiet motion */
+.count,.reqtag,.feat__tag{border-radius:var(--radius-sm)}
+.toast{border-radius:var(--radius-lg)}
+.feed.anim .card,.feed.anim .minirow{animation:none}
+.caught .rise{animation:none}
+@keyframes savepop{0%{transform:scale(1)}35%{transform:scale(.78)}70%{transform:scale(1.14)}100%{transform:scale(1)}}
+.pulse svg{animation:savepop .38s cubic-bezier(.3,1.5,.5,1)}
 </style>
 </head>
 <body>
@@ -1626,8 +1634,8 @@ function attachGestures(layer,opts={}){
   const move=(x,y)=>{if(!st)return;st.dx=x-st.x;st.dy=y-st.y;
     if(!st.mode){if(st.dx>12&&st.dx>Math.abs(st.dy)*1.5){st.mode='h';layer.classList.remove('in');layer.style.animation='none';layer.style.transition='none'}else if(Math.abs(st.dy)>12&&Math.abs(st.dy)>Math.abs(st.dx))st.mode='v'}
     if(st.mode==='h'){const dx=Math.max(0,st.dx),p=Math.min(1,dx/W()),pv=prevOf(layer);layer.style.transform=`translateX(${dx}px)`;pv.style.transition='none';pv.style.transform=`translateX(${-22*(1-p)}%)`;pv.style.filter=`brightness(${.7+.3*p})`}
-    else if(st.mode==='v'&&opts.prev&&st.top&&st.dy>0&&S.i>0&&!storyBusy&&sc.scrollTop<=0){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translateY(${Math.min(70,st.dy*.45)}px)`;bd.style.opacity=String(1-Math.min(.5,st.dy/320))}}
-    else if(st.mode==='v'&&opts.next&&st.bottom&&st.dy<0&&!storyBusy){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translateY(${Math.max(-70,st.dy*.45)}px)`;bd.style.opacity=String(1-Math.min(.5,Math.abs(st.dy)/320))}}};
+    else if(st.mode==='v'&&opts.prev&&st.top&&st.dy>0&&S.i>0&&!storyBusy&&sc.scrollTop<=0){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translate3d(0,${Math.min(sc.clientHeight*.6,st.dy)}px,0)`}}
+    else if(st.mode==='v'&&opts.next&&st.bottom&&st.dy<0&&!storyBusy){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translate3d(0,${Math.max(-sc.clientHeight*.6,st.dy)}px,0)`}}};
   const up=()=>{if(!st)return;const s=st;st=null;if(s.mode)layer._swallow=Date.now();
     if(s.mode==='h'){const v=s.dx/Math.max(1,Date.now()-s.time);
       if(s.dx>W()*.33||v>.6)pop();
@@ -1691,49 +1699,27 @@ function updateStory(L,anim){
   $('.scroll',L).scrollTop=0;L.classList.remove('bars-hide');$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot;
 }
 let storyBusy=false;
-async function nextStory(){
+async function swapStory(dir){
   const L=storyLayer();if(!L||storyBusy)return;
-  if(S.i>=S.ctx.ids.length-1){if(S.ctx.kind==='brief')openCaught();else pop();return}
+  if(dir>0&&S.i>=S.ctx.ids.length-1){if(S.ctx.kind==='brief')openCaught();else pop();return}
+  if(dir<0&&S.i<=0)return;
   storyBusy=true;
-  const body=$('.story',L),sc=$('.scroll',L);
-  /* 1. current story lifts away and fades */
-  body.style.willChange='transform,opacity';
-  body.style.transition='transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease';
-  body.style.transform='translate3d(0,-56px,0)';body.style.opacity='0';
-  await wait(250);
-  /* 2. swap while invisible, reset scroll, park the new story just below */
-  S.i++;S.read.add(curId());
-  body.style.transition='none';body.style.transform='translate3d(0,44px,0)';body.style.opacity='0';
-  updateStory(L,false);sc.scrollTop=0;
-  L.classList.add('swapping');
+  const body=$('.story',L),sc=$('.scroll',L),H=sc.clientHeight||800;
+  body.style.willChange='transform';
+  body.style.transition='transform .24s cubic-bezier(.4,0,1,1)';
+  body.style.transform=`translate3d(0,${-dir*H}px,0)`;
+  await wait(230);
+  if(dir>0){S.i++;S.read.add(curId())}else S.i--;
+  body.style.transition='none';body.style.transform=`translate3d(0,${dir*H}px,0)`;
+  updateStory(L,false);sc.scrollTop=0;L.classList.add('swapping');
   void body.offsetWidth;
-  /* 3. new story rises into place */
-  body.style.transition='transform .5s var(--ease),opacity .4s ease';
-  body.style.transform='';body.style.opacity='';
-  await wait(540);
+  body.style.transition='transform .46s cubic-bezier(.32,.72,0,1)';body.style.transform='';
+  await wait(480);
   body.style.transition='';body.style.willChange='';L.classList.remove('swapping');
-  markRead(curId());           /* heavy list refresh only after the motion has finished */
+  if(dir>0)markRead(curId());
   storyBusy=false;
 }
-async function prevStory(){
-  const L=storyLayer();if(!L||storyBusy||S.i<=0)return;
-  storyBusy=true;
-  const body=$('.story',L),sc=$('.scroll',L);
-  body.style.willChange='transform,opacity';
-  body.style.transition='transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease';
-  body.style.transform='translate3d(0,56px,0)';body.style.opacity='0';
-  await wait(250);
-  S.i--;
-  body.style.transition='none';body.style.transform='translate3d(0,-44px,0)';body.style.opacity='0';
-  updateStory(L,false);sc.scrollTop=0;
-  L.classList.add('swapping');
-  void body.offsetWidth;
-  body.style.transition='transform .5s var(--ease),opacity .4s ease';
-  body.style.transform='';body.style.opacity='';
-  await wait(540);
-  body.style.transition='';body.style.willChange='';L.classList.remove('swapping');
-  storyBusy=false;
-}
+const nextStory=()=>swapStory(1),prevStory=()=>swapStory(-1);
 function sourcesSheet(){const s=byId[curId()];
   openSheet({title:`Sources <span class="num" style="color:var(--ink-muted);font-weight:500">${s.src.length}</span>`,tall:s.src.length>5,body:`<div class="srclist">${s.src.map((r,k)=>`<button class="source" data-a="source" data-k="${k}"><b>${esc(r[0])}<i>${esc(r[1])}</i></b><span>${esc(r[2])}</span><span class="meta num">${r[3]}</span></button>`).join('')}</div>`})}
 function refreshStoryBars(){const L=storyLayer();if(!L)return;const p=storyParts();$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot}
@@ -1857,7 +1843,7 @@ function newCollSheet(){
 function toggleSave(id){
   if(isSaved(id)){S.saved=S.saved.filter(x=>x!==id);S.colls.forEach(c=>c.ids=c.ids.filter(x=>x!==id));toast('Removed from saved')}
   else{S.saved.unshift(id);toast('Saved to For You',['Organise',()=>organiseSheet(id)])}
-  $$(`[data-a="save"][data-id="${id}"]`).forEach(b=>b.setAttribute('aria-pressed',isSaved(id)));
+  $$(`[data-a="save"][data-id="${id}"]`).forEach(b=>{b.setAttribute('aria-pressed',isSaved(id));if(isSaved(id)){b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse')}});
   if(S.tab==='foryou')renderForYou();
 }
 
