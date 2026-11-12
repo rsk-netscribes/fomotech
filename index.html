@@ -910,6 +910,14 @@ button{font-family:inherit;color:inherit}
 .caught .rise{animation:none}
 @keyframes savepop{0%{transform:scale(1)}35%{transform:scale(.78)}70%{transform:scale(1.14)}100%{transform:scale(1)}}
 .pulse svg{animation:savepop .38s cubic-bezier(.3,1.5,.5,1)}
+
+/* previous-story hint: sits above the story and is revealed as it is pulled down */
+.story{position:relative}
+.prevhint{position:absolute;left:0;right:0;bottom:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:0 8px 22px;border:0;background:none;color:inherit;font-family:inherit;opacity:var(--pd,0);pointer-events:none}
+.prevhint .label{font:500 11.5px/16px var(--font-sans)!important;color:var(--ink-muted)!important;letter-spacing:0!important;text-transform:none!important}
+.prevhint h4{margin:0;max-width:100%;font:400 15px/20px var(--font-head);color:var(--ink-secondary);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.prevhint .hint{display:flex;align-items:center;gap:6px;margin-top:6px;font:600 12.5px/16px var(--font-sans);color:var(--accent)}
+.prevhint .hint .i{width:14px;height:14px}
 </style>
 </head>
 <body>
@@ -1512,7 +1520,7 @@ function opinionParts(s){
    <button class="discuss" data-a="comments" data-id="${id}">${ic('msg')}<span>Discussion</span><span class="meta num">${opCount(s)} comments</span>${ic('chevR','chev')}</button>
    <button class="upnext" data-a="next"><span class="label">${last?'End of Opinion':'Up next · Opinion '+(S.i+2)+' of '+n}</span><h4>${last?'That is the last piece in this list.':esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
    <p class="footnote">Sample pieces and authors for this prototype.</p>`;
-  return{top,bot,body};
+  return{top,bot,body:prevHint()+body};
 }
 function commentsDraw(id,sh){
   const s=byId[id],seeds=COMMENT_POOL.slice(0,Math.min(4,s.cc)).map(c=>({au:c[0],role:c[1],txt:c[2],when:'2 days ago'})),all=[...seeds,...(OPC[id]||[])];
@@ -1634,7 +1642,7 @@ function attachGestures(layer,opts={}){
   const move=(x,y)=>{if(!st)return;st.dx=x-st.x;st.dy=y-st.y;
     if(!st.mode){if(st.dx>12&&st.dx>Math.abs(st.dy)*1.5){st.mode='h';layer.classList.remove('in');layer.style.animation='none';layer.style.transition='none'}else if(Math.abs(st.dy)>12&&Math.abs(st.dy)>Math.abs(st.dx))st.mode='v'}
     if(st.mode==='h'){const dx=Math.max(0,st.dx),p=Math.min(1,dx/W()),pv=prevOf(layer);layer.style.transform=`translateX(${dx}px)`;pv.style.transition='none';pv.style.transform=`translateX(${-22*(1-p)}%)`;pv.style.filter=`brightness(${.7+.3*p})`}
-    else if(st.mode==='v'&&opts.prev&&st.top&&st.dy>0&&S.i>0&&!storyBusy&&sc.scrollTop<=0){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translate3d(0,${Math.min(sc.clientHeight*.6,st.dy)}px,0)`}}
+    else if(st.mode==='v'&&opts.prev&&st.top&&st.dy>0&&S.i>0&&!storyBusy&&sc.scrollTop<=0){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translate3d(0,${Math.min(sc.clientHeight*.6,st.dy)}px,0)`;bd.style.setProperty('--pd',String(Math.min(1,st.dy/70)))}}
     else if(st.mode==='v'&&opts.next&&st.bottom&&st.dy<0&&!storyBusy){const bd=$('.story',layer);if(bd){bd.style.transition='none';bd.style.transform=`translate3d(0,${Math.max(-sc.clientHeight*.6,st.dy)}px,0)`}}};
   const up=()=>{if(!st)return;const s=st;st=null;if(s.mode)layer._swallow=Date.now();
     if(s.mode==='h'){const v=s.dx/Math.max(1,Date.now()-s.time);
@@ -1643,7 +1651,7 @@ function attachGestures(layer,opts={}){
     else if(s.mode==='v'&&opts.next){const bd=$('.story',layer);
       if(s.bottom&&atBottom()&&s.dy<-70&&Math.abs(s.dx)<70)opts.next();
       else if(opts.prev&&s.top&&sc.scrollTop<=0&&s.dy>70&&Math.abs(s.dx)<70&&S.i>0)opts.prev();
-      else if(bd){bd.style.transition='transform .3s var(--ease),opacity .3s';bd.style.transform='';bd.style.opacity=''}}};
+      else if(bd){bd.style.transition='transform .3s var(--ease),opacity .3s';bd.style.transform='';bd.style.opacity='';bd.style.removeProperty('--pd')}}};
   layer.addEventListener('click',e=>{if(layer._swallow&&Date.now()-layer._swallow<350){e.stopPropagation();e.preventDefault()}},{capture:true,...sig});
   layer.addEventListener('touchstart',e=>down(e.touches[0].clientX,e.touches[0].clientY,e.target),{passive:true,...sig});
   layer.addEventListener('touchmove',e=>move(e.touches[0].clientX,e.touches[0].clientY),{passive:true,...sig});
@@ -1659,6 +1667,9 @@ function newLayer(kind){const L=document.createElement('div');L.className='layer
 const TOOLS=[['wim','Why it matters','trend'],['eli5','In plain terms','bulb'],['hype','Hype check','activity'],['bias','Bias checker','scale'],['lens','Industry lens','brief']];
 const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
+function prevHint(){
+  if(S.i<=0)return '';const pid=S.ctx.ids[S.i-1],ps=byId[pid];if(!ps)return '';
+  return `<div class="prevhint" aria-hidden="true"><span class="label">Previous · ${S.i} of ${S.ctx.ids.length}</span><h4>${esc(ps.h)}</h4><span class="hint">${ic('chevD')}Swipe down to go back</span></div>`}
 function storyParts(){
   const id=curId(),s=byId[id];if(s.op)return opinionParts(s);
   const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'Story'}[kind]||'Story';
@@ -1676,7 +1687,7 @@ function storyParts(){
    <div class="sec"><button class="srchead" data-a="allsources" aria-label="View all ${s.src.length} sources"><span>Sources</span><span class="num">${s.src.length}</span>${ic('chevR')}</button><div class="srcgrid ${s.src.length<3?'one':''}">${s.src.map((r,k)=>`<button class="srccard" data-a="source" data-k="${k}"><b>${esc(r[0])}</b><span class="h">${esc(r[2])}</span><span class="m"><i>${esc(r[1])}</i> · ${r[3]}</span></button>`).join('')}${s.src.length>2?`<button class="srccard srcall" data-a="allsources">View all ${s.src.length}${ic('arrowR')}</button>`:''}</div></div>
    <button class="upnext" data-a="next"><span class="label">${last?'End of '+(kind==='brief'?'today\'s brief':'list'):'Up next · '+word+' '+(S.i+2)+' of '+n}</span><h4>${last?(kind==='brief'?'You have read everything in today\'s brief.':'That is the last story in this list.'):esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
    <p class="footnote">Summaries are AI-written from the named sources. Sample content for this prototype.</p>`;
-  return{top,bot,body};
+  return{top,bot,body:prevHint()+body};
 }
 function barsOnScroll(L){const sc=$('.scroll',L);if(!sc)return;let y=0,acc=0,raf=0;
   const tick=()=>{raf=0;const t=sc.scrollTop,d=t-y;y=t;acc=(Math.sign(d)===Math.sign(acc))?acc+d:d;
@@ -1705,11 +1716,13 @@ async function swapStory(dir){
   if(dir<0&&S.i<=0)return;
   storyBusy=true;
   const body=$('.story',L),sc=$('.scroll',L),H=sc.clientHeight||800;
+  if(dir<0)body.style.setProperty('--pd','1');
   body.style.willChange='transform';
   body.style.transition='transform .24s cubic-bezier(.4,0,1,1)';
   body.style.transform=`translate3d(0,${-dir*H}px,0)`;
   await wait(230);
   if(dir>0){S.i++;S.read.add(curId())}else S.i--;
+  body.style.removeProperty('--pd');
   body.style.transition='none';body.style.transform=`translate3d(0,${dir*H}px,0)`;
   updateStory(L,false);sc.scrollTop=0;L.classList.add('swapping');
   void body.offsetWidth;
