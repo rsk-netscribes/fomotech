@@ -968,6 +968,13 @@ button{font-family:inherit;color:inherit}
 .srchead{gap:4px}
 .keepr{border:0;border-top:1px solid var(--hairline);border-radius:0;padding:20px 0 0;margin-top:28px}
 .card__idx{font-family:var(--font-head)}
+
+/* copy pass: fonts on stragglers */
+.pro__lede:empty{display:none}
+.uprow .n{font-family:var(--font-head);font-weight:400}
+.avatar{font-family:var(--font-sans)}
+.h2s{font-family:var(--font-head)!important;font-weight:400!important}
+.sheet__body>p[style*="font-serif"]{font-family:var(--font-read)!important;font-weight:400!important}
 </style>
 </head>
 <body>
@@ -1407,7 +1414,7 @@ function doSignin(method,btn){
 }
 function openEmail(){
   let step=1;
-  const body=()=>step===1?`<input class="field" id="em-in" type="email" value="you@company.com" autocomplete="email" aria-label="Work email"><button class="btn btn--primary btn--block" id="em-go">Continue</button><p class="note" style="text-align:center">Use your work email. We will send a one-time code. No password to remember.</p>`
+  const body=()=>step===1?`<input class="field" id="em-in" type="email" value="you@company.com" autocomplete="email" aria-label="Work email"><button class="btn btn--primary btn--block" id="em-go">Continue</button><p class="note" style="text-align:center">We will send you a one-time code.</p>`
    :`<p style="color:var(--ink-secondary)">Enter the 4-digit code sent to <b style="color:var(--ink)">your work email</b>.</p><div class="codebox" id="em-code"><i class="cur"></i><i></i><i></i><i></i></div><p class="note" style="text-align:center">Prototype: the code fills in automatically.</p>`;
   const wire=sh=>{
     if(step!==1)return;
@@ -1420,7 +1427,7 @@ function openEmail(){
 /* Industry x technology search ("Others"), used in onboarding and Profile */
 const comboHTML=x=>{const p=x.split(/ x /i);return p.length===2?`<span>${esc(p[0])}</span><em> x </em><span class="tc">${esc(p[1])}</span>`:`<span>${esc(x)}</span>`};
 function othersMount(root){
-  root.innerHTML=`<div id="oth-sel" class="chips" style="margin-bottom:12px"></div><label class="search">${ic('search')}<input id="oth-q" type="search" placeholder="Search, for example Chemicals x ERP" autocomplete="off" enterkeyhint="done"></label><div class="oth-h" id="oth-h"></div><div id="oth-list"></div><p class="note" style="margin-top:12px">Format: industry x technology. Requests help us decide what to cover next.</p>`;
+  root.innerHTML=`<div id="oth-sel" class="chips" style="margin-bottom:12px"></div><label class="search">${ic('search')}<input id="oth-q" type="search" placeholder="Search, for example Chemicals x ERP" autocomplete="off" enterkeyhint="done"></label><div class="oth-h" id="oth-h"></div><div id="oth-list"></div><p class="note" style="margin-top:12px">Format: industry x technology.</p>`;
   othersPaint('');
 }
 function othersPaint(q){
@@ -1437,11 +1444,11 @@ function viewThemes(){
   showAuth(`<div class="setup fade">
   <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of 3</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
   <div class="setup__body" id="th-body">
-   <h2>Choose your themes</h2><p class="sub">Select up to 5 technology areas for your daily brief.</p>
+   <h2>Choose your themes</h2><p class="sub">Up to five.</p>
    <div class="tiles" id="tiles">${T1.map((t,i)=>`<div class="tilebox" data-open="false"><div class="tilehead"><button class="tile" data-a="tile" data-i="${i}" aria-pressed="${S.themes.includes(i)}"><span class="tile__tx"><b>${esc(t)}</b><span>${esc(T1_DESC[i])}</span></span><span class="tile__ck">${ic('plus')}</span></button><button class="tile__info" data-a="tileinfo" data-i="${i}" aria-expanded="false" aria-controls="tsub${i}" aria-label="Show what ${esc(t)} covers">${ic('chevD','chev')}</button></div><div class="tile__sub" id="tsub${i}"><ul>${T1_SUB[i].map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>`).join('')}</div>
-   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of 3</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional · Pick how tech intersects your industry</p>
+   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of 3</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional</p>
    <div class="chips" id="t2chips" style="margin-top:14px">${T2.map((t,i)=>`<button class="chip" data-a="t2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${ic(S.where.includes(i)?'check':'plus')}${esc(t)}</button>`).join('')}</div></div>
-   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional · Search for a specific industry and technology</p><div id="oth" style="margin-top:14px"></div></div>
+   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional</p><div id="oth" style="margin-top:14px"></div></div>
    <div class="fine">${ic('sliders')}<span>Your picks decide which stories lead your brief. Change them anytime in Profile.</span></div>
   </div>
   <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="themesdone" id="th-go"></button></div></div>`);
@@ -1494,7 +1501,7 @@ function renderToday(){
    <div class="progress"><div class="progress__track"><div class="progress__fill" style="width:${rd/total*100}%"></div></div><span class="meta num">${rd} of ${total}</span></div>
    <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>`:``}
    <div class="feed ${anim?'anim':''}">${S.filter==='all'?list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join(''):[...list,...mo].map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>
-   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>${S.filter==='all'?keepReading(pf,cnt):''}`:`${S.filter==='all'?keepReading(pf,cnt):''}<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief.${S.topicNav==='menu'?'':' Pick a theme above for more.'}`:''}</div>`}
+   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Tap for the three to remember.</p></button>${S.filter==='all'?keepReading(pf,cnt):''}`:`${S.filter==='all'?keepReading(pf,cnt):''}<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief.`:''}</div>`}
   </div></div>
   ${todayTop(total,pf,cnt,false)}`;
   const sc=$('.scroll',el);sc.scrollTop=top;
@@ -1537,7 +1544,7 @@ function renderIx(el,ids,total,pf,cnt){
   el.innerHTML=FADE+`<div class="scroll"><div class="pad">
    <div class="chips ixchips"><button class="chip" data-a="ixsel" data-k="all" aria-pressed="${sel==='all'}">All<span class="meta num">${ixIds('all').length}</span></button>${S.others.map(x=>`<button class="chip" data-a="ixsel" data-k="${esc(x)}" aria-pressed="${sel===x}">${comboHTML(x)}${isKnownIx(x)?`<span class="meta num">${ixIds(x).length}</span>`:'<span class="reqtag">Requested</span>'}</button>`).join('')}<button class="chip chip--add" data-a="edit" data-k="others">${ic('plus')}Add</button></div>
    <div class="feed ${anim?'anim':''}">${list.map((id,n)=>card(byId[id],n)).join('')}</div>
-   ${pending.map(x=>`<div class="reqcard"><div class="reqcard__top"><span class="reqtag">Requested</span><span class="combo">${comboHTML(x)}</span></div><ol class="reqsteps"><li class="on"><i></i>Request received</li><li><i></i>Our team checks there is enough news to cover</li><li><i></i>Stories appear here and we notify you</li></ol><p class="note">You will be notified either way. Remove it any time from Profile.</p></div>`).join('')}
+   ${pending.map(x=>`<div class="reqcard"><div class="reqcard__top"><span class="reqtag">Requested</span><span class="combo">${comboHTML(x)}</span></div><ol class="reqsteps"><li class="on"><i></i>Request received</li><li><i></i>Our team checks there is enough news to cover</li><li><i></i>Stories appear here and we notify you</li></ol><p class="note">We will notify you either way.</p></div>`).join('')}
    ${quiet.map(x=>`<div class="end">No new stories on ${esc(x)} today.</div>`).join('')}
    ${!list.length&&!pending.length&&!quiet.length?'<div class="end">No stories match your interests today.</div>':''}
   </div></div>
@@ -1568,10 +1575,10 @@ function renderOpinion(){
   const list=opList(),conv=list.find(o=>o.kind==='interview'),pieces=list.filter(o=>o.kind!=='interview');
   const anim=S.opAnim!==false;S.opAnim=false;
   el.innerHTML=FADE+`<div class="scroll"><div class="pad"><h1 class="pagehead" style="margin-bottom:6px">Opinion</h1>
-   <p class="note" style="margin:0 0 18px;font-size:13.5px;line-height:19px">Perspectives from technology professionals. Contributed by members and reviewed by FomoTech editors before posting.</p>
+   
    ${conv?`<button class="feat" data-a="openop" data-id="${conv.id}"><div class="feat__art">${art(conv.id+3)}</div><span class="feat__tag">The Conversation · Monthly</span><span class="feat__play">${ic('play','fill')}</span><div class="feat__tx"><h3>${esc(conv.h)}</h3><span>${esc(conv.au)}, ${esc(conv.role)}, ${esc(conv.org)} · ${conv.min} min</span></div></button>`:''}
    <div class="feed ${anim?'anim':''}" style="margin-top:${conv?16:0}px">${pieces.length?pieces.map((o,n)=>opCardHTML(o,n)).join(''):`<div class="empty"><div class="ring">${ic('quote')}</div><h4>No pieces on this theme yet</h4><p>Check back soon, or share your own view.</p></div>`}</div>
-   <div class="writecard"><span class="ring">${ic('pen')}</span><h4>Share your perspective</h4><p>Working in technology? Submit a piece for editorial review. We check for quality and clarity, not for position.</p><button class="btn btn--secondary" data-a="writeop">Write for FomoTech</button></div>
+   <div class="writecard"><span class="ring">${ic('pen')}</span><h4>Share your perspective</h4><p>Pieces are reviewed by our editors before they appear.</p><button class="btn btn--secondary" data-a="writeop">Write for FomoTech</button></div>
   </div></div>
   <div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist"><button class="pill" data-a="opfilter" data-k="all" aria-pressed="${S.opFilter==='all'}">All pieces<span class="meta num">${OPS.length}</span></button>${pf.map(t=>`<button class="pill" data-a="opfilter" data-k="${t}" aria-pressed="${S.opFilter===t}">${esc(T1[t])}<span class="meta num">${OPS.filter(o=>o.t1===t).length}</span></button>`).join('')}</div></div>`;
   $('.scroll',el).scrollTop=top;
@@ -1597,7 +1604,7 @@ function opinionParts(s){
 }
 function commentsDraw(id,sh){
   const s=byId[id],seeds=COMMENT_POOL.slice(0,Math.min(4,s.cc)).map(c=>({au:c[0],role:c[1],txt:c[2],when:'2 days ago'})),all=[...seeds,...(OPC[id]||[])];
-  $('.sheet__body',sh).innerHTML=`<div class="clist">${all.map(c=>`<div class="cmt"><span class="avatar sm">${esc(initials(c.au))}</span><div><b>${esc(c.au)}</b><span class="meta"> ${esc(c.role)} · ${c.when}</span><p>${esc(c.txt)}</p></div></div>`).join('')}</div><p class="note">Showing a sample of ${opCount(s)} comments. Comments are visible to other members.</p>`;
+  $('.sheet__body',sh).innerHTML=`<div class="clist">${all.map(c=>`<div class="cmt"><span class="avatar sm">${esc(initials(c.au))}</span><div><b>${esc(c.au)}</b><span class="meta"> ${esc(c.role)} · ${c.when}</span><p>${esc(c.txt)}</p></div></div>`).join('')}</div><p class="note">Visible to other members.</p>`;
   const t=$('.sheet__head h4',sh);if(t)t.textContent='Discussion · '+opCount(s);
   const b=$('.sheet__body',sh);b.scrollTop=b.scrollHeight;
 }
@@ -1609,7 +1616,7 @@ function commentsSheet(id){
 function writeSheet(){
   let theme=0;
   openSheet({title:'Write for FomoTech',tall:true,
-   body:`<input class="field" placeholder="Working title" maxlength="90"><span class="label">Theme</span><div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickwt" aria-pressed="${i===0}">${esc(t)}</button>`).join('')}</div><textarea class="field area" placeholder="Your view in a few paragraphs. Opinions, trends and impacts. Not news reports."></textarea><p class="note">Pieces are reviewed by FomoTech editors for quality and clarity before they appear. We do not edit for position. Your name, role and company are shown.</p>`,
+   body:`<input class="field" placeholder="Working title" maxlength="90"><span class="label">Theme</span><div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickwt" aria-pressed="${i===0}">${esc(t)}</button>`).join('')}</div><textarea class="field area" placeholder="Your view in a few paragraphs."></textarea><p class="note">Your name, role and company are shown with the piece.</p>`,
    foot:'<button class="btn btn--primary" data-a="submitop" style="flex:1">Submit for review</button>'});
 }
 
@@ -1654,7 +1661,7 @@ const PRO_ROWS=[
 function proSheet(why){
   const mk=v=>v===1?`<span class="pt pt--y">${ic('check','sm')}</span>`:v===0?`<span class="pt pt--n">${ic('minus','sm')}</span>`:`<span class="pt pt--t">${v}</span>`;
   openSheet({title:S.pro?'You are on Pro':'FomoTech Pro',tall:true,
-   body:`<div class="pro__hero"><p class="pro__lede">${why?why+'. ':''}Everything in the daily brief stays free. Pro adds tools for people who use FomoTech to prepare, not just to read.</p>
+   body:`<div class="pro__hero"><p class="pro__lede">${why?why+'.':''}</p>
     <div class="pro__price"><b>₹${PRICE}</b><span>/ year</span></div><span class="pro__sub">Billed annually. About ₹${Math.round(PRICE/12)} a month.</span></div>
     <div class="pro__tbl" role="table" aria-label="Free and Pro features"><div class="pro__hd" role="row"><span></span><span>Free</span><span class="pro__col">Pro</span></div>
     ${PRO_ROWS.map(r=>`<div class="pro__row" role="row"><div><b>${r[0]}</b><small>${r[1]}</small></div>${mk(r[2])}<span class="pro__col">${mk(r[3])}</span></div>`).join('')}</div>
@@ -1676,13 +1683,12 @@ function renderProfile(){
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
     ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
-    <p class="note" style="margin:8px 4px 0">${lensOn?'Used to tailor Industry lens. ':''}Nothing is imported from LinkedIn.</p></div>
+    ${lensOn?'<p class=\"note\" style="margin:8px 4px 0">Used to tailor Industry lens.</p>':''}</div>
    <div class="group"><span class="label">Topic view</span><div class="seg" id="tn-seg">${[['tabs','Theme tabs'],['menu','Logo menu']].map(([k,l])=>`<button data-a="topicnav" data-k="${k}" aria-pressed="${(S.topicNav||'tabs')===k}">${l}</button>`).join('')}</div></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
    <div class="group"><div class="rows">${prow('users','Invite your team','Share FomoTech','invite')}</div></div>
-   <div class="freeline">${ic('shield')}The daily brief is free.</div>
    <div class="group" style="margin-top:22px"><div class="rows"><button class="row" data-a="signout"><span class="ic">${ic('logout')}</span>Sign out</button><button class="row" data-a="delete" style="color:var(--new-dot)"><span class="ic" style="color:inherit">${ic('trash')}</span>Delete account</button></div></div>
-   <p class="footnote">FomoTech by Netscribes · Interactive prototype with sample content</p>
+   <p class="footnote">FomoTech by Netscribes</p>
   </div></div>`;
   $('.scroll',el).scrollTop=top;
 }
@@ -1761,7 +1767,7 @@ function storyParts(){
    <div class="sec"><div class="label"><span>Prepared analysis</span></div><div class="tools" role="toolbar">${toolList().map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}</div></div>
    <div class="sec"><button class="srchead" data-a="allsources" aria-label="View all ${s.src.length} sources"><span>Sources</span><span class="num">${s.src.length}</span>${ic('chevR')}</button><div class="srcgrid ${s.src.length<3?'one':''}">${s.src.map((r,k)=>`<button class="srccard" data-a="source" data-k="${k}"><b>${esc(r[0])}</b><span class="h">${esc(r[2])}</span><span class="m"><i>${esc(r[1])}</i> · ${r[3]}</span></button>`).join('')}${s.src.length>2?`<button class="srccard srcall" data-a="allsources">View all ${s.src.length}${ic('arrowR')}</button>`:''}</div></div>
    <button class="upnext" data-a="next"><span class="label">${last?'End of '+(kind==='brief'?'today\'s brief':'list'):'Up next · '+word+' '+(S.i+2)+' of '+n}</span><h4>${last?(kind==='brief'?'You have read everything in today\'s brief.':'That is the last story in this list.'):esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
-   <p class="footnote">Summaries are AI-written from the named sources. Sample content for this prototype.</p>`;
+   <p class="footnote">AI summary of the named sources.</p>`;
   return{top,bot,body:prevHint()+body};
 }
 function barsOnScroll(L){const sc=$('.scroll',L);if(!sc)return;let y=0,acc=0,raf=0;
@@ -1822,7 +1828,6 @@ function openReader(k){
    <h1>${esc(r[2])}</h1><div class="by2">${esc(r[0])} · Staff report</div>
    <div class="callout">${ic('link','sm')}<span>You are reading the original article inside FomoTech. Swipe right to return to the story.</span></div>
    ${paras.map(p=>`<p>${esc(p)}</p>`).join('')}
-   <p style="color:var(--ink-muted);font:italic 400 14px/20px var(--font-serif)">Sample article text for this prototype.</p>
    <button class="btn btn--secondary btn--block" data-a="back" style="margin-top:8px">Back to story</button></div></div>${FADE}
    <div class="s-top glass" style="overflow:hidden"><button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where" style="color:var(--ink)">${esc(r[0])}</div><button class="iconbtn" data-a="share" data-id="${s.id}" aria-label="Share" style="color:var(--ink)">${ic('share')}</button><div class="rd-bar"><i></i></div></div>`;
   push(L);attachGestures(L);
@@ -1855,17 +1860,17 @@ function toolSheet(k){
   const common={onClose:()=>pressTool(null)};
   if(k==='wim'){
     const lab=['What changed','Who is affected','What to watch'];
-    return openSheet({...common,title:'Why it matters',eyebrow:'Prepared analysis · AI-written',body:`<p style="font-family:var(--font-serif);font-size:18px;line-height:26px;font-weight:600;letter-spacing:-.01em">${esc(s.w)}</p>${s.wim.map((t,i)=>`<div class="module"><span class="label">${lab[i]}</span><p>${esc(t)}</p></div>`).join('')}`});
+    return openSheet({...common,title:'Why it matters',eyebrow:'AI-written',body:`<p style="font-family:var(--font-serif);font-size:18px;line-height:26px;font-weight:600;letter-spacing:-.01em">${esc(s.w)}</p>${s.wim.map((t,i)=>`<div class="module"><span class="label">${lab[i]}</span><p>${esc(t)}</p></div>`).join('')}`});
   }
   if(k==='eli5')return openSheet({...common,title:'In plain terms',eyebrow:'AI-written',body:`<p style="font-family:var(--font-serif);font-size:20px;line-height:29px;font-weight:600;letter-spacing:-.01em">${esc(s.e)}</p><div class="module"><span class="label">The headline, simply</span><p>${esc(s.h)}</p></div><p class="note">Prepared from the ${s.src.length} sources on this story.</p>`});
   if(k==='hype'){
     const [v,a,b,c]=s.hy,rows=[['ok','Confirmed',a,ic('check')],['part','Partly shown',b,ic('minus')],['open','Not yet shown',c,'?']];
-    return openSheet({...common,title:'Hype check',eyebrow:'Evidence, not a score · AI-written',body:`<p class="verdict">${esc(v)}.</p>${rows.map(r=>`<div class="ev"><span class="mk ${r[0]}">${r[3]}</span><div><b>${r[1]}</b><p>${esc(r[2])}</p></div></div>`).join('')}<p class="note">Checked against the ${s.src.length} sources on this story. AI-written. No score is given.</p>`});
+    return openSheet({...common,title:'Hype check',eyebrow:'AI-written',body:`<p class="verdict">${esc(v)}.</p>${rows.map(r=>`<div class="ev"><span class="mk ${r[0]}">${r[3]}</span><div><b>${r[1]}</b><p>${esc(r[2])}</p></div></div>`).join('')}<p class="note">Checked against the ${s.src.length} sources on this story.</p>`});
   }
   if(k==='bias'){
     const [f,m,a,ft,at]=s.bias,n=f+m+a;
-    return openSheet({...common,title:'Bias checker',eyebrow:'How the coverage leans · AI-written',body:`<div class="bias"><div class="bias__bar" role="img" aria-label="${f} for, ${m} mixed, ${a} against"><i class="bias__for" style="flex:${f}"></i><i class="bias__mixed" style="flex:${m}"></i><i class="bias__against" style="flex:${a}"></i></div><div class="bias__legend"><span><em style="background:var(--accent)"></em>${f} for</span><span><em style="background:var(--hairline-strong)"></em>${m} mixed</span><span><em style="background:var(--ink)"></em>${a} against</span></div></div>
-     <div class="module"><span class="label">Coverage in favour</span><p>${esc(ft)}</p></div><div class="module"><span class="label">Coverage against</span><p>${esc(at)}</p></div><p class="note">Based on ${n} articles. Shows how coverage leans on this development. It is not a judgement of the sources.</p>`});
+    return openSheet({...common,title:'Bias checker',eyebrow:'AI-written',body:`<div class="bias"><div class="bias__bar" role="img" aria-label="${f} for, ${m} mixed, ${a} against"><i class="bias__for" style="flex:${f}"></i><i class="bias__mixed" style="flex:${m}"></i><i class="bias__against" style="flex:${a}"></i></div><div class="bias__legend"><span><em style="background:var(--accent)"></em>${f} for</span><span><em style="background:var(--hairline-strong)"></em>${m} mixed</span><span><em style="background:var(--ink)"></em>${a} against</span></div></div>
+     <div class="module"><span class="label">Coverage in favour</span><p>${esc(ft)}</p></div><div class="module"><span class="label">Coverage against</span><p>${esc(at)}</p></div><p class="note">Based on ${n} articles.</p>`});
   }
   if(k==='lens'){
     let cur=Math.max(0,LENS.indexOf(S.industry));const short=['Banking','Healthcare','Manufacturing'];
@@ -1962,7 +1967,7 @@ function playerBody(){
   <div class="pl-ctrl"><button class="speed" data-a="speed" aria-label="Playback speed">${A.speed}×</button><button class="iconbtn" data-a="aprev" style="color:var(--ink)" aria-label="Previous">${ic('prev','lg')}</button><button class="bigplay" data-a="playpause" aria-label="${A.playing?'Pause':'Play'}">${ic(A.playing?'pause':'play')}</button><button class="iconbtn" data-a="anext" style="color:var(--ink)" aria-label="Next">${ic('next','lg')}</button><button class="iconbtn" data-a="stopaudio" aria-label="Stop and close">${ic('stop')}</button></div>
   <button class="switch" role="switch" aria-checked="${A.auto}" data-a="autoadv"><span class="tg"></span>Auto-advance to the next story</button>
   ${up.length?`<div><span class="plcat" style="color:var(--ink-secondary)">Up next</span><div style="margin-top:6px">${up.map((id,k)=>`<button class="uprow" data-a="aplay" data-id="${id}"><span class="n num">${i+k+2}</span><h5>${esc(byId[id].h)}</h5><span class="meta num">${fmt(byId[id].listen)}</span></button>`).join('')}</div></div>`:''}
-  <p class="note">AI-generated voice reading the AI summary. Sample audio is simulated in this prototype.</p>`;
+  <p class="note">AI-generated voice.</p>`;
 }
 function renderPlayer(){const b=$('.sheet__body',sheetEl);if(b){const t=b.scrollTop;b.innerHTML=playerBody();b.scrollTop=t}}
 function openPlayer(){openSheet({title:'Listening',tall:true,body:playerBody(),init:()=>paintAudio()})}
@@ -1971,17 +1976,17 @@ function seek(e){const w=$('#pl-wave'),r=w.getBoundingClientRect(),x=Math.min(1,
 /* ---------- Profile editing ---------- */
 function editSheet(k){
   if(k==='themes'){
-    const draw=sh=>{$('.sheet__body',sh).innerHTML=`<div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickt1" data-i="${i}" aria-pressed="${S.themes.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note" id="t1n">${S.themes.length} of 5 selected. Your brief leads with these.</p>`};
+    const draw=sh=>{$('.sheet__body',sh).innerHTML=`<div class="chips">${T1.map((t,i)=>`<button class="chip" data-a="pickt1" data-i="${i}" aria-pressed="${S.themes.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note" id="t1n">${S.themes.length} of 5 selected.</p>`};
     return openSheet({title:'Themes',body:'',init:draw,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:()=>{S.filter='all';refreshTabs()}});
   }
   if(k==='others')return openSheet({title:'Industry x technology',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
-  if(k==='where')return openSheet({title:'Where you want to see it',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div><p class="note">Stories matching both a theme and a place lead your brief.</p>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
-  if(k==='time')return openSheet({title:'Brief time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div><p class="note">Your brief is ready at this time every day.</p>`});
+  if(k==='where')return openSheet({title:'Where you want to see it',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
+  if(k==='time')return openSheet({title:'Brief time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div>`});
   if(k==='industry'||k==='role'){
     const list=k==='industry'?INDUSTRIES:ROLES,cur=S[k];
     return openSheet({title:k==='industry'?'Industry':'Role',body:`<div class="list">${['Not set',...list].map(o=>`<button class="opt-row" data-a="pickopt" data-f="${k}" data-v="${esc(o)}" aria-pressed="${(cur||'Not set')===o}">${esc(o)}<span class="ck">${ic('check')}</span></button>`).join('')}</div>`});
   }
-  if(k==='linkedin')return openSheet({title:'LinkedIn profile link',body:`<input class="field" id="li-in" type="url" placeholder="linkedin.com/in/your-name" value="${esc(S.linkedin)}" autocomplete="off"><p class="note">Display only. FomoTech does not read or import anything from LinkedIn.</p>`,foot:`<button class="btn btn--primary" data-a="savelinkedin" style="flex:1">Save</button>${S.linkedin?'<button class="btn btn--text" data-a="clearlinkedin">Remove</button>':''}`});
+  if(k==='linkedin')return openSheet({title:'LinkedIn profile link',body:`<input class="field" id="li-in" type="url" placeholder="linkedin.com/in/your-name" value="${esc(S.linkedin)}" autocomplete="off"><p class="note">Display only. Nothing is imported.</p>`,foot:`<button class="btn btn--primary" data-a="savelinkedin" style="flex:1">Save</button>${S.linkedin?'<button class="btn btn--text" data-a="clearlinkedin">Remove</button>':''}`});
 }
 
 
@@ -2077,7 +2082,7 @@ const ACT={
   signin:(t)=>doSignin(t.dataset.m,t),email:()=>openEmail(),
   tileinfo:t=>{const b=t.closest('.tilebox'),o=b.dataset.open!=='true';document.querySelectorAll('.tilebox').forEach(x=>{x.dataset.open='false';x.querySelector('.tile__info').setAttribute('aria-expanded','false')});if(o){b.dataset.open='true';t.setAttribute('aria-expanded','true');setTimeout(()=>{const sc=document.getElementById('th-body'),r=b.getBoundingClientRect(),h=sc.getBoundingClientRect();if(r.bottom>h.bottom-90)sc.scrollBy({top:r.bottom-h.bottom+100,behavior:'smooth'})},260)}},
   tile:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5){const c=$('#th-count');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');return toast('Pick up to five themes')}else S.themes.push(i);updThemes()},
-  addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Request added. Find it under Your interests on Today.');if($('#th-count'))updThemes();q&&q.focus({preventScroll:true})},
+  addother:t=>{const v=t.dataset.v.trim();if(!v)return;const known=OTHERS_SUGGEST.some(x=>x.toLowerCase()===v.toLowerCase());if(!S.others.some(x=>x.toLowerCase()===v.toLowerCase()))S.others.push(v);const q=$('#oth-q');if(q){q.value='';}othersPaint('');if(!known)toast('Request added');if($('#th-count'))updThemes();q&&q.focus({preventScroll:true})},
   remother:t=>{S.others=S.others.filter(x=>x!==t.dataset.v);if(S.ixSel===t.dataset.v)S.ixSel='all';const q=$('#oth-q');othersPaint(q?q.value:'');if($('#th-count'))updThemes()},
   t2:t=>{const i=+t.dataset.i;S.where=S.where.includes(i)?S.where.filter(x=>x!==i):[...S.where,i];updThemes()},
   skipthemes:()=>{S.themes=[];S.where=[];viewPrep()},themesdone:()=>viewPrep(),
@@ -2095,7 +2100,7 @@ const ACT={
   comments:t=>commentsSheet(+t.dataset.id),
   postcomment:t=>{const id=+t.dataset.id,inp=$('#cm-in'),v=inp&&inp.value.trim();if(!v)return inp&&inp.focus();(OPC[id]=OPC[id]||[]).push({au:'You',role:S.role||'FomoTech member',txt:v,when:'Just now'});commentsDraw(id,sheetEl)},
   writeop:()=>writeSheet(),
-  submitop:()=>{closeSheet();toast('Submitted for editorial review. You will hear back by email.')},
+  submitop:()=>{closeSheet();toast('Submitted for review')},
   playconv:()=>toast('Video and audio playback is simulated in this prototype'),
   pickwt:t=>{$$('#overlay .chip').forEach(c=>c.setAttribute('aria-pressed',c===t))},
   save:t=>toggleSave(+t.dataset.id),
