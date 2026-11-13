@@ -975,6 +975,25 @@ button{font-family:inherit;color:inherit}
 .avatar{font-family:var(--font-sans)}
 .h2s{font-family:var(--font-head)!important;font-weight:400!important}
 .sheet__body>p[style*="font-serif"]{font-family:var(--font-read)!important;font-weight:400!important}
+
+/* topic story page: scroll, related, discussion */
+.srchead.static{cursor:default;pointer-events:none}
+.relsec{margin-top:28px}
+.relrow{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;padding:14px 0;border:0;border-top:1px solid var(--hairline);background:none;text-align:left;color:inherit;cursor:pointer}
+.relrow:first-of-type{margin-top:8px}
+.relrow .label{font:500 11.5px/16px var(--font-sans);color:var(--ink-muted);letter-spacing:0;text-transform:none}
+.relrow h5{margin:0;font:400 17px/23px var(--font-head)}
+.relrow:active h5{color:var(--accent)}
+.disc{margin-top:30px;padding-top:4px;border-top:1px solid var(--hairline)}
+.disc .clist{margin-top:14px}
+.cmtbox{display:flex;gap:8px;margin-top:18px}
+.cmtbox .field{flex:1}
+.cmtbox .btn{min-height:50px}
+.disc .viewall{margin:6px auto 0;display:flex}
+
+.keepc{align-self:stretch;display:flex;flex-direction:column;gap:10px;text-align:left;margin-top:6px}
+.keepc .label{font:400 17px/22px var(--font-head);letter-spacing:0;text-transform:none;color:var(--ink)}
+.srchead.static .num{margin-left:6px}
 </style>
 </head>
 <body>
@@ -1241,7 +1260,7 @@ const POOL=[
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const byId={};STORIES.forEach(s=>byId[s.id]=s);
+const byId={};STORIES.forEach(s=>{byId[s.id]=s;if(s.cc==null)s.cc=(s.id*7)%9+2});
 const fmt=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -1611,7 +1630,7 @@ function commentsDraw(id,sh){
 function commentsSheet(id){
   openSheet({title:'Discussion',tall:true,body:'',
    foot:`<div style="display:flex;gap:8px;width:100%"><input class="field" id="cm-in" placeholder="Add a comment" maxlength="240" style="flex:1" autocomplete="off"><button class="btn btn--primary" data-a="postcomment" data-id="${id}" style="min-height:50px">Post</button></div>`,
-   init:sh=>commentsDraw(id,sh),onClose:()=>{if(S.tab==='opinion')renderOpinion()}});
+   init:sh=>commentsDraw(id,sh),onClose:()=>{if(S.tab==='opinion')renderOpinion();const d=$('#disc');if(d)d.innerHTML=discInner(id)}});
 }
 function writeSheet(){
   let theme=0;
@@ -1751,8 +1770,16 @@ function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(
 function prevHint(){
   if(S.i<=0)return '';const pid=S.ctx.ids[S.i-1],ps=byId[pid];if(!ps)return '';
   return `<div class="prevhint" aria-hidden="true"><span class="label">Previous · ${S.i} of ${S.ctx.ids.length}</span><h4>${esc(ps.h)}</h4><span class="hint">${ic('chevD')}Swipe down to go back</span></div>`}
+const pageMode=()=>S.ctx.kind!=='brief'&&S.ctx.kind!=='opinion';
+function relatedOf(s){const pool=STORIES.filter(x=>!x.op&&x.id!==s.id&&x.id<100);const sc=x=>(x.t1===s.t1?2:0)+x.t2.filter(i=>s.t2.includes(i)).length;return pool.map(x=>[sc(x),x]).filter(a=>a[0]>0).sort((a,b)=>b[0]-a[0]||a[1].id-b[1].id).slice(0,6).map(a=>a[1])}
+function discInner(id){const s=byId[id],seeds=COMMENT_POOL.slice(0,Math.min(2,s.cc)).map(c=>({au:c[0],role:c[1],txt:c[2],when:'2 days ago'})),mine=OPC[id]||[],shown=[...seeds,...mine.slice(-2)],n=opCount(s);
+  return `<button class="srchead" data-a="comments" data-id="${id}" aria-label="Open all ${n} comments"><span>Discussion</span><span class="num">${n}</span>${ic('chevR')}</button>
+   <div class="clist">${shown.map(c=>`<div class="cmt"><span class="avatar sm">${esc(initials(c.au))}</span><div><b>${esc(c.au)}</b><span class="meta"> ${esc(c.role)} · ${c.when}</span><p>${esc(c.txt)}</p></div></div>`).join('')}</div>
+   <div class="cmtbox"><input class="field" id="sc-in" placeholder="Add a comment" maxlength="240" autocomplete="off"><button class="btn btn--primary" data-a="postinline" data-id="${id}">Post</button></div>
+   ${n>shown.length?`<button class="btn btn--text viewall" data-a="comments" data-id="${id}">View all ${n} comments</button>`:''}`}
 function storyParts(){
   const id=curId(),s=byId[id];if(s.op)return opinionParts(s);
+  if(pageMode())return pageParts(s);
   const n=S.ctx.ids.length,last=S.i===n-1,kind=S.ctx.kind,word={brief:'Story',saved:'Saved',picks:'Pick',topic:'Story'}[kind]||'Story';
   const listening=A.active&&A.id===id,nid=S.ctx.ids[S.i+1],ns=nid&&byId[nid];
   const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${word} <b class="num">${S.i+1}</b> of ${n}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}<span class="lp-t">${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</span></button>`;
@@ -1766,9 +1793,30 @@ function storyParts(){
    <div class="why" id="why"><span class="label">${ic('trend','sm')}Why it matters</span><p>${esc(s.w)}</p></div>
    <div class="sec"><div class="label"><span>Prepared analysis</span></div><div class="tools" role="toolbar">${toolList().map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}</div></div>
    <div class="sec"><button class="srchead" data-a="allsources" aria-label="View all ${s.src.length} sources"><span>Sources</span><span class="num">${s.src.length}</span>${ic('chevR')}</button><div class="srcgrid ${s.src.length<3?'one':''}">${s.src.map((r,k)=>`<button class="srccard" data-a="source" data-k="${k}"><b>${esc(r[0])}</b><span class="h">${esc(r[2])}</span><span class="m"><i>${esc(r[1])}</i> · ${r[3]}</span></button>`).join('')}${s.src.length>2?`<button class="srccard srcall" data-a="allsources">View all ${s.src.length}${ic('arrowR')}</button>`:''}</div></div>
+   ${relSection(s)}<div class="sec disc" id="disc">${discInner(id)}</div>
    <button class="upnext" data-a="next"><span class="label">${last?'End of '+(kind==='brief'?'today\'s brief':'list'):'Up next · '+word+' '+(S.i+2)+' of '+n}</span><h4>${last?(kind==='brief'?'You have read everything in today\'s brief.':'That is the last story in this list.'):esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
    <p class="footnote">AI summary of the named sources.</p>`;
   return{top,bot,body:prevHint()+body};
+}
+function relSection(s){const rel=relatedOf(s);if(!rel.length)return '';
+  return `<div class="sec"><span class="srchead static"><span>Related stories</span><span class="num">${rel.length}</span></span><div class="srcgrid one">${rel.map(r=>`<button class="srccard" data-a="openrel" data-id="${r.id}"><b>${esc(tagLine(r))}</b><span class="h">${esc(r.h)}</span><span class="m"><i>${esc(r.src[0][0])}</i> · ${r.age}</span></button>`).join('')}</div></div>`}
+function pageParts(s){
+  const id=s.id,kind=S.ctx.kind,listening=A.active&&A.id===id,rel=relatedOf(s),n=opCount(s);
+  const where=kind==='saved'?'Saved':kind==='picks'?'Picked for you':T1[s.t1];
+  const top=`<button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where">${esc(where)}</div><button class="listenpill ${listening&&A.playing?'playing':''}" data-a="listenstory" aria-label="Listen to this story">${listening?'<span class="player__eq"><i></i><i></i><i></i><i></i></span>':ic('phones','sm')}<span class="lp-t">${listening?(A.playing?'Playing':'Paused'):'Listen · '+fmt(s.listen)}</span></button>`;
+  const bot=`<button class="act" data-a="save" data-id="${id}" aria-pressed="${isSaved(id)}">${ic('bookmark')}Save</button><button class="act" data-a="share" data-id="${id}">${ic('share')}Share</button><button class="btn btn--primary" data-a="gotodisc">${ic('msg')} Discussion · ${n}</button>`;
+  const body=`<div class="tags"><span class="label">${esc(tagLine(s,true,kind==='topic'))}</span></div>
+   ${ixMatch(s).length?`<div class="ixline">${ic('check','sm')}Matches your interest: ${comboHTML(ixMatch(s)[0])}</div>`:''}
+   <h1>${esc(s.h)}</h1>
+   <div class="byline"><span class="meta">${esc(s.src[0][0])} · ${s.src.length} sources</span><span class="meta">${s.age} · ${s.min} min read</span></div>
+   <p class="summary">${esc(s.s)}</p>
+   <div class="why" id="why"><span class="label">${ic('trend','sm')}Why it matters</span><p>${esc(s.w)}</p></div>
+   <div class="sec"><div class="label"><span>Prepared analysis</span></div><div class="tools" role="toolbar">${toolList().map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}</div></div>
+   <div class="sec"><button class="srchead" data-a="allsources" aria-label="View all ${s.src.length} sources"><span>Sources</span><span class="num">${s.src.length}</span>${ic('chevR')}</button><div class="srcgrid ${s.src.length<3?'one':''}">${s.src.map((r,k)=>`<button class="srccard" data-a="source" data-k="${k}"><b>${esc(r[0])}</b><span class="h">${esc(r[2])}</span><span class="m"><i>${esc(r[1])}</i> · ${r[3]}</span></button>`).join('')}${s.src.length>2?`<button class="srccard srcall" data-a="allsources">View all ${s.src.length}${ic('arrowR')}</button>`:''}</div></div>
+   ${relSection(s)}
+   <div class="sec disc" id="disc">${discInner(id)}</div>
+   <p class="footnote">AI summary of the named sources.</p>`;
+  return{top,bot,body};
 }
 function barsOnScroll(L){const sc=$('.scroll',L);if(!sc)return;let y=0,acc=0,raf=0;
   const tick=()=>{raf=0;const t=sc.scrollTop,d=t-y;y=t;acc=(Math.sign(d)===Math.sign(acc))?acc+d:d;
@@ -1781,7 +1829,7 @@ function openStory(id,kind,ids){
   closeSheet(true);S.ctx={kind,ids};S.i=ids.indexOf(id);
   const L=newLayer('story'),p=storyParts();
   L.innerHTML=`<div class="scroll"><div class="pad"><div class="story">${p.body}</div></div></div>${FADE}<div class="s-top glass">${p.top}</div><div class="s-bot glass">${p.bot}</div>`;barsOnScroll(L);
-  push(L);attachGestures(L,{next:nextStory,prev:prevStory});markRead(id);
+  push(L);attachGestures(L,pageMode()?{}:{next:nextStory,prev:prevStory});markRead(id);
 }
 function storyLayer(){const L=$('#stack').lastElementChild;return L&&L.dataset.k==='story'?L:null}
 function updateStory(L,anim){
@@ -1845,6 +1893,7 @@ function openCaught(){
   L.innerHTML=`<div class="scroll"><div class="caught"><div class="ring rise">${ic('check')}</div><h1 class="display rise" style="animation-delay:.08s">You're caught up.</h1>
    <p class="rise" style="animation-delay:.14s">${ids.length} stories across ${esc(themeNames())}.</p><div class="rule"></div>
    <div class="three rise" style="animation-delay:.2s"><span class="label">The three to remember</span>${three.map(i=>`<button data-a="jumpstory" data-id="${i}">${esc(byId[i].h)}</button>`).join('')}</div>
+   <div class="keepc rise" style="animation-delay:.26s"><span class="label">Keep reading</span><div class="chips">${S.others.length?`<button class="chip" data-a="caughtview" data-k="ix">Your interests<span class="meta num">${ixIds('all').length}</span></button>`:''}${(S.themes.length?S.themes:[0,1,2,3,4,5,6]).map(t=>`<button class="chip" data-a="caughtview" data-k="${t}">${esc(T1[t])}<span class="meta num">${briefIds().filter(i=>byId[i].t1===t).length+moreIds(t).length}</span></button>`).join('')}</div></div>
    <div class="nextbrief" id="nb">${ic('clock','sm')}<span>${nextBriefLine()}</span></div>
    <div id="notif-slot" style="align-self:stretch"></div>
    <div style="align-self:stretch;display:flex;flex-direction:column;gap:8px;margin-top:10px"><button class="btn btn--primary btn--block" data-a="home">Back to Today</button><button class="btn btn--secondary btn--block" data-a="tosaved">${ic('bookmark')}Saved stories</button></div></div></div>
@@ -2098,6 +2147,10 @@ const ACT={
   openop:t=>{const id=+t.dataset.id;openStory(id,'opinion',opList().map(o=>o.id))},
   opfilter:t=>{S.opFilter=t.dataset.k==='all'?'all':+t.dataset.k;renderOpinion()},
   comments:t=>commentsSheet(+t.dataset.id),
+  openrel:t=>{const id=+t.dataset.id,k=S.ctx.kind==='saved'||S.ctx.kind==='picks'?S.ctx.kind:'topic';openStory(id,k,k==='topic'?topicIds(byId[id].t1):[id])},
+  caughtview:t=>{const k=t.dataset.k==='ix'?'ix':+t.dataset.k;popAll();setTimeout(()=>{setTab('today');S.filter=k;S.anim=true;renderToday();const sc=$('#tab-today .scroll');if(sc)sc.scrollTop=0},340)},
+  gotodisc:()=>{const L=storyLayer(),d=L&&$('#disc',L);if(d)d.scrollIntoView({behavior:'smooth',block:'center'})},
+  postinline:t=>{const id=+t.dataset.id,inp=$('#sc-in'),v=inp&&inp.value.trim();if(!v)return inp&&inp.focus();(OPC[id]=OPC[id]||[]).push({au:'You',role:S.role||'FomoTech member',txt:v,when:'Just now'});const d=$('#disc');if(d)d.innerHTML=discInner(id);const L=storyLayer();if(L&&pageMode())$('.s-bot .btn',L).innerHTML=ic('msg')+' Discussion · '+opCount(byId[id])},
   postcomment:t=>{const id=+t.dataset.id,inp=$('#cm-in'),v=inp&&inp.value.trim();if(!v)return inp&&inp.focus();(OPC[id]=OPC[id]||[]).push({au:'You',role:S.role||'FomoTech member',txt:v,when:'Just now'});commentsDraw(id,sheetEl)},
   writeop:()=>writeSheet(),
   submitop:()=>{closeSheet();toast('Submitted for review')},
