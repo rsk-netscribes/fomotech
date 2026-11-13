@@ -918,6 +918,56 @@ button{font-family:inherit;color:inherit}
 .prevhint h4{margin:0;max-width:100%;font:400 15px/20px var(--font-head);color:var(--ink-secondary);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .prevhint .hint{display:flex;align-items:center;gap:6px;margin-top:6px;font:600 12.5px/16px var(--font-sans);color:var(--accent)}
 .prevhint .hint .i{width:14px;height:14px}
+
+/* topic menu: iOS pull-down menu anchored under the wordmark */
+#tab-today .topbar .wm{border:0;background:none;color:var(--ink);width:100%;cursor:pointer;padding:0}
+.viewsw{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;height:40px;border:0;background:none;color:var(--ink);font:600 14.5px/1 var(--font-sans);cursor:pointer}
+.viewsw .i{width:16px;height:16px;color:var(--ink-secondary);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.viewsw.open .i{transform:rotate(180deg)}
+.viewsw:active{opacity:.6}
+.mn-ov{position:absolute;inset:0;z-index:62}
+.mn-scrim{position:absolute;inset:0}
+.mn{position:absolute;left:50%;width:252px;margin-left:-126px;max-height:min(460px,72%);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;border-radius:14px;transform-origin:50% 0;animation:mnin .34s cubic-bezier(.32,.72,0,1) both}
+.mn::-webkit-scrollbar{display:none}
+@keyframes mnin{from{opacity:0;transform:scale(.82) translateY(-6px)}to{opacity:1;transform:none}}
+.mn-ov.out .mn{opacity:0;transform:scale(.96);transition:opacity .16s ease,transform .16s ease}
+.mn-row{display:grid;grid-template-columns:18px 1fr auto;align-items:center;column-gap:10px;width:100%;min-height:44px;padding:0 16px 0 12px;border:0;background:none;color:var(--ink);font:400 15.5px/20px var(--font-sans);letter-spacing:-.01em;text-align:left;cursor:pointer;position:relative}
+.mn-row+.mn-row::before{content:"";position:absolute;top:0;left:40px;right:0;height:.5px;background:var(--hairline-strong)}
+.mn-row:active{background:var(--surface-pressed)}
+.mn-ck{display:flex;color:var(--ink);visibility:hidden}
+.mn-ck .i{width:15px;height:15px;stroke-width:2.4}
+.mn-row[aria-checked=true] .mn-ck{visibility:visible}
+.mn-n{font:400 14px/1 var(--font-sans);color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.mn-sep{height:8px;background:var(--hairline)}
+.mn-h{padding:10px 16px 4px 40px;font:400 12.5px/16px var(--font-sans);color:var(--ink-muted)}
+.coach{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:260px;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:10px 14px;border:0;border-radius:12px;background:var(--surface-elevated);color:var(--ink);font:400 12.5px/17px var(--font-sans);box-shadow:var(--shadow-glass);cursor:pointer;z-index:40;animation:fadein .3s .6s both}
+.coach b{font-weight:600;font-size:13px}
+.coach span{color:var(--ink-secondary)}
+.coach::before{content:"";position:absolute;top:-6px;left:50%;margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom-color:var(--surface-elevated)}
+.keepr{margin:22px 0 4px;padding:16px;border:1px solid var(--hairline-strong);border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:2px}
+.keepr>b{font:600 15px/20px var(--font-sans)}
+.keepr>span{font:400 13px/18px var(--font-sans);color:var(--ink-secondary)}
+.keepr .chips{margin-top:10px}
+.keepr .chip .num{margin-left:6px;opacity:.6}
+
+.mn{width:272px;margin-left:-136px;max-height:none;background:#202329EB;-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+.light .mn{background:#F7F7F9EB}
+.mn-row>span:nth-child(2){white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* audit: headings in the head face, quieter source types, smooth menu exit */
+.srchead{font:400 17px/22px var(--font-head);letter-spacing:0}
+.srchead .num{font:500 13px/1 var(--font-sans);color:var(--ink-muted)}
+.keepr>b{font:400 17px/22px var(--font-head)}
+.srccard .m i,.source b i{color:var(--ink-secondary);font-weight:500}
+.mn{will-change:transform,opacity}
+@keyframes mnout{from{opacity:1;transform:none}to{opacity:0;transform:scale(.96)}}
+.mn-ov.out .mn{animation:mnout .16s ease both;transition:none}
+.mn-ov.out{pointer-events:none}
+
+.srchead svg{margin-left:0}
+.srchead{gap:4px}
+.keepr{border:0;border-top:1px solid var(--hairline);border-radius:0;padding:20px 0 0;margin-top:28px}
+.card__idx{font-family:var(--font-head)}
 </style>
 </head>
 <body>
@@ -1236,7 +1286,7 @@ const FADE='<div class="statusfade"></div>';
 /* ---------- State ---------- */
 let appearance='dark',cardStyle='text';
 let S;
-function fresh(){return{method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
+function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
  others:[],ixSel:'all',opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
@@ -1444,13 +1494,38 @@ function renderToday(){
    <div class="progress"><div class="progress__track"><div class="progress__fill" style="width:${rd/total*100}%"></div></div><span class="meta num">${rd} of ${total}</span></div>
    <div class="listenrow"><button class="listenbtn" data-a="listenbrief">${ic('phones','sm')}${A.active?'Open player':'Listen to your brief'}<span class="meta">${mins} min</span></button></div>`:``}
    <div class="feed ${anim?'anim':''}">${S.filter==='all'?list.map((id,n)=>cardHTML(byId[id],ids.indexOf(id),n)).join(''):[...list,...mo].map((id,n)=>cardHTML(byId[id],null,n)).join('')}</div>
-   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>`:`<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief. Pick a theme above for more.`:''}</div>`}
+   ${rd===total&&S.filter==='all'?`<button class="card endbtn" data-a="caught" style="align-items:center;text-align:center;gap:6px"><span class="ring">${ic('check')}</span><h3 style="font-size:20px">You're caught up.</h3><p style="-webkit-line-clamp:3">Today's brief is complete. Tap for the three to remember.</p></button>${S.filter==='all'?keepReading(pf,cnt):''}`:`${S.filter==='all'?keepReading(pf,cnt):''}<div class="end">${S.filter==='all'?`${total-rd} ${total-rd===1?'story':'stories'} left in today's brief.${S.topicNav==='menu'?'':' Pick a theme above for more.'}`:''}</div>`}
   </div></div>
-  <div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist">
-   <button class="pill" data-a="filter" data-k="all" aria-pressed="${S.filter==='all'}">Daily Brief<span class="meta num">${total}</span></button>
-   ${pillsTail(pf,cnt)}</div></div>`;
+  ${todayTop(total,pf,cnt,false)}`;
   const sc=$('.scroll',el);sc.scrollTop=top;
 }
+/* ---------- Topic view: theme tabs or logo menu (setting) ---------- */
+function todayTop(total,pf,cnt,ixMode){
+  if(S.topicNav!=='menu')return `<div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist">
+   <button class="pill" data-a="filter" data-k="all" aria-pressed="${!ixMode&&S.filter==='all'}">Daily Brief<span class="meta num">${total}</span></button>
+   ${pillsTail(pf,cnt)}</div></div>`;
+  const lab=S.filter==='all'?'Daily Brief':S.filter==='ix'?'Your interests':T1[S.filter];
+  return `<div class="topbar"><button class="wm" data-a="topics" aria-label="Switch topic"><b>Fomo</b><em>Tech</em></button><button class="viewsw" data-a="topics" aria-haspopup="menu">${esc(lab)}${ic('chevD','sm')}</button>${S.coach?'':`<button class="coach" data-a="coachok"><b>Tap here to switch topics</b><span>Your themes and interests live here.</span></button>`}</div>`}
+function keepReading(pf,cnt){if(S.topicNav!=='menu')return '';return `<div class="keepr"><b>Keep reading</b><span>More stories on your topics</span><div class="chips">${S.others.length?`<button class="chip" data-a="pickview" data-k="ix">Your interests<span class="meta num">${ixIds('all').length}</span></button>`:''}${pf.map(t=>`<button class="chip" data-a="pickview" data-k="${t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}</div></div>`}
+let menuEl=null;
+function closeMenu(instant){
+  if(!menuEl)return;const m=menuEl;menuEl=null;$$('.viewsw.open').forEach(b=>b.classList.remove('open'));
+  if(instant)m.remove();else{m.classList.add('out');setTimeout(()=>m.remove(),170)}}
+function topicsMenu(){
+  if(menuEl&&menuEl.isConnected)return closeMenu();
+  closeSheet(true);
+  S.coach=true;$('.coach')&&$('.coach').remove();
+  const ids=briefIds(),pf=S.themes.length?S.themes:[0,1,2,3,4,5,6];
+  const cnt=t=>ids.filter(i=>byId[i].t1===t).length+moreIds(t).length;
+  const row=(k,lab,n)=>`<button class="mn-row" role="menuitemradio" aria-checked="${String(S.filter)===String(k)}" data-a="pickview" data-k="${k}"><span class="mn-ck">${ic('check')}</span><span>${lab}</span><span class="mn-n">${n}</span></button>`;
+  const ov=$('#overlay'),m=document.createElement('div');m.className='mn-ov';
+  m.innerHTML=`<div class="mn-scrim" data-a="closemenu"></div><div class="mn glass" role="menu" aria-label="Switch topic">${row('all','Daily Brief',ids.length)}${S.others.length?row('ix','Your interests',ixIds('all').length):''}<div class="mn-sep"></div><div class="mn-h">Your themes</div>${pf.map(t=>row(t,esc(T1[t]),cnt(t))).join('')}</div>`;
+  ov.appendChild(m);menuEl=m;
+  const sw=$('#tab-today .viewsw');sw&&sw.classList.add('open');
+  const ref=m.getBoundingClientRect(),a=(sw||$('#tab-today .topbar')).getBoundingClientRect();
+  const top=a.bottom-ref.top+4,mn=$('.mn',m);mn.style.top=top+'px';mn.style.maxHeight=Math.max(220,ref.height-top-110)+'px';
+}
+function setTopicNav(k){S.topicNav=k;closeMenu(true);syncSide();if(S.phase==='main'){renderToday();if(S.tab==='profile')renderProfile()}}
 function pillsTail(pf,cnt){return (S.others.length?`<button class="pill" data-a="filter" data-k="ix" aria-pressed="${S.filter==='ix'}">Your interests<span class="meta num">${ixIds('all').length}</span></button>`:'')+pf.map(t=>`<button class="pill" data-a="filter" data-k="${t}" aria-pressed="${S.filter===t}">${esc(T1[t])}<span class="meta num">${cnt(t)}</span></button>`).join('')}
 function renderIx(el,ids,total,pf,cnt){
   const sel=S.ixSel!=='all'&&!S.others.includes(S.ixSel)?'all':S.ixSel;S.ixSel=sel;
@@ -1466,9 +1541,7 @@ function renderIx(el,ids,total,pf,cnt){
    ${quiet.map(x=>`<div class="end">No new stories on ${esc(x)} today.</div>`).join('')}
    ${!list.length&&!pending.length&&!quiet.length?'<div class="end">No stories match your interests today.</div>':''}
   </div></div>
-  <div class="topbar"><div class="wm"><b>Fomo</b><em>Tech</em></div><div class="pills" role="tablist">
-   <button class="pill" data-a="filter" data-k="all" aria-pressed="false">Daily Brief<span class="meta num">${total}</span></button>
-   ${pillsTail(pf,cnt)}</div></div>`;
+  ${todayTop(total,pf,cnt,true)}`;
 }
 
 /* ---------- Opinion ---------- */
@@ -1603,7 +1676,8 @@ function renderProfile(){
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
     ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
-    <p class="note" style="margin:8px 4px 0">Used to tailor Industry lens. Nothing is imported from LinkedIn.</p></div>
+    <p class="note" style="margin:8px 4px 0">${lensOn?'Used to tailor Industry lens. ':''}Nothing is imported from LinkedIn.</p></div>
+   <div class="group"><span class="label">Topic view</span><div class="seg" id="tn-seg">${[['tabs','Theme tabs'],['menu','Logo menu']].map(([k,l])=>`<button data-a="topicnav" data-k="${k}" aria-pressed="${(S.topicNav||'tabs')===k}">${l}</button>`).join('')}</div></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
    <div class="group"><div class="rows">${prow('users','Invite your team','Share FomoTech','invite')}</div></div>
    <div class="freeline">${ic('shield')}The daily brief is free.</div>
@@ -1665,6 +1739,7 @@ function newLayer(kind){const L=document.createElement('div');L.className='layer
 
 /* ---------- Story ---------- */
 const TOOLS=[['wim','Why it matters','trend'],['eli5','In plain terms','bulb'],['hype','Hype check','activity'],['bias','Bias checker','scale'],['lens','Industry lens','brief']];
+let lensOn=false;const toolList=()=>TOOLS.filter(x=>x[0]!=='lens'||lensOn);
 const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
 function prevHint(){
@@ -1683,7 +1758,7 @@ function storyParts(){
    <div class="byline"><span class="meta">${esc(s.src[0][0])} · ${s.src.length} sources</span><span class="meta">${s.age} · ${s.min} min read</span></div>
    <p class="summary">${esc(s.s)}</p>
    <div class="why" id="why"><span class="label">${ic('trend','sm')}Why it matters</span><p>${esc(s.w)}</p></div>
-   <div class="sec"><div class="label"><span>Prepared analysis</span></div><div class="tools" role="toolbar">${TOOLS.map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}</div></div>
+   <div class="sec"><div class="label"><span>Prepared analysis</span></div><div class="tools" role="toolbar">${toolList().map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}</div></div>
    <div class="sec"><button class="srchead" data-a="allsources" aria-label="View all ${s.src.length} sources"><span>Sources</span><span class="num">${s.src.length}</span>${ic('chevR')}</button><div class="srcgrid ${s.src.length<3?'one':''}">${s.src.map((r,k)=>`<button class="srccard" data-a="source" data-k="${k}"><b>${esc(r[0])}</b><span class="h">${esc(r[2])}</span><span class="m"><i>${esc(r[1])}</i> · ${r[3]}</span></button>`).join('')}${s.src.length>2?`<button class="srccard srcall" data-a="allsources">View all ${s.src.length}${ic('arrowR')}</button>`:''}</div></div>
    <button class="upnext" data-a="next"><span class="label">${last?'End of '+(kind==='brief'?'today\'s brief':'list'):'Up next · '+word+' '+(S.i+2)+' of '+n}</span><h4>${last?(kind==='brief'?'You have read everything in today\'s brief.':'That is the last story in this list.'):esc(ns.h)}</h4><span class="hint">${ic('chevU')}${last?'Tap to continue':'Swipe up or tap to continue'}</span></button>
    <p class="footnote">Summaries are AI-written from the named sources. Sample content for this prototype.</p>`;
@@ -1735,6 +1810,7 @@ async function swapStory(dir){
 const nextStory=()=>swapStory(1),prevStory=()=>swapStory(-1);
 function sourcesSheet(){const s=byId[curId()];
   openSheet({title:`Sources <span class="num" style="color:var(--ink-muted);font-weight:500">${s.src.length}</span>`,tall:s.src.length>5,body:`<div class="srclist">${s.src.map((r,k)=>`<button class="source" data-a="source" data-k="${k}"><b>${esc(r[0])}<i>${esc(r[1])}</i></b><span>${esc(r[2])}</span><span class="meta num">${r[3]}</span></button>`).join('')}</div>`})}
+function refreshStoryTools(L){const tl=$('.tools',L);if(tl)tl.innerHTML=toolList().map(([k,l,i])=>`<button class="tool" data-a="tool" data-k="${k}" aria-pressed="false">${ic(i)}${l}</button>`).join('')}
 function refreshStoryBars(){const L=storyLayer();if(!L)return;const p=storyParts();$('.s-top',L).innerHTML=p.top;$('.s-bot',L).innerHTML=p.bot}
 
 /* ---------- Reader ---------- */
@@ -1973,13 +2049,14 @@ async function jump(name){
   if(name==='audio'){await wait(80);audioStart(ids[0],ids);A.pos=22;openPlayer()}
   if(name==='caught'){await wait(80);openCaught()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['lens','Industry lens'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile']];
+const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1><b>Fomo</b><em>Tech</em></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
   <div><h2>Notifications</h2><div class="jump">${Object.entries(NSCEN).map(([k,v])=>`<button data-n="${k}">${v.label}</button>`).join('')}</div><p class="note" style="margin-top:8px">Lock screen mockups. Tap a notification to open the app.</p></div>
   <div><h2>Sharing</h2><div class="jump">${SHARE_APPS.map(a=>`<button data-sh="${a[0]}">${a[1]}</button>`).join('')}</div><p class="note" style="margin-top:8px">How a story, opinion or team invite looks in each app.</p></div>
-  <div><h2>Demo only</h2><div class="jump"><button data-demo="pro">Pro tier</button></div><p class="note" style="margin-top:8px">Not part of the app screens. Opens the Pro comparison sheet on top of whatever is showing.</p></div>
+  <div><h2>Possible integrations</h2><div class="jump"><button data-demo="pro">Pro tier</button><button data-demo="lens" id="o-lens">Industry lens</button></div><p class="note" style="margin-top:8px">Not part of the launch app. Pro tier opens the comparison sheet. Industry lens adds the tool back to every story while it is switched on.</p></div>
+  <div><h2>Topic view</h2><div class="opt" id="o-tn"><button data-tn="tabs">Theme tabs</button><button data-tn="menu">Logo menu</button></div><p class="note" style="margin-top:8px">Also in Profile, under Topic view.</p></div>
   <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
   <div><h2>Try these</h2><p class="note">Tap a story. Swipe up at the bottom for the next one, swipe right to go back. Open the tools row. Tap Listen to your brief. Save a story, then organise it into a collection.</p></div>
@@ -1987,12 +2064,13 @@ function buildSide(){
   $$('[data-j]').forEach(b=>b.onclick=()=>jump(b.dataset.j));
   $$('[data-n]').forEach(b=>b.onclick=()=>showLock(b.dataset.n));
   $$('[data-sh]').forEach(b=>b.onclick=()=>{SHP.orig=null;showSharePreview(b.dataset.sh,'story',1,false)});
-  $$('[data-demo]').forEach(b=>b.onclick=()=>{if(S.phase!=='main')return toast('Finish the welcome flow first');proSheet()});
+  $$('[data-demo]').forEach(b=>b.onclick=()=>{if(S.phase!=='main')return toast('Finish the welcome flow first');if(b.dataset.demo==='pro')return proSheet();lensOn=!lensOn;syncSide();const L=storyLayer();if(L)refreshStoryTools(L);if(S.tab==='profile')renderProfile();toast(lensOn?'Industry lens added to the story tools':'Industry lens removed')});
+  $$('[data-tn]').forEach(b=>b.onclick=()=>setTopicNav(b.dataset.tn));
   $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
 }
-function syncSide(){$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cs===cardStyle));$$('#o-app button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ap===appearance))}
+function syncSide(){$$('#o-tn button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tn===(S.topicNav||'tabs')));const lb=$('#o-lens');lb&&lb.setAttribute('aria-pressed',lensOn);$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cs===cardStyle));$$('#o-app button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ap===appearance))}
 
 /* ---------- Actions ---------- */
 const ACT={
@@ -2035,6 +2113,11 @@ const ACT={
   shpsend:()=>{const nm=SHARE_APPS.find(a=>a[0]===SHP.app)[1];hideSharePreview();closeSheet(true);toast('Shared to '+nm+' (prototype)')},
   shareto:t=>{closeSheet();toast('Shared to '+t.dataset.n+' (prototype)')},
   closesheet:()=>closeSheet(),
+  closemenu:()=>closeMenu(),
+  topics:()=>topicsMenu(),
+  coachok:()=>{S.coach=true;$('.coach')&&$('.coach').remove()},
+  topicnav:t=>setTopicNav(t.dataset.k),
+  pickview:t=>{const k=t.dataset.k;S.filter=k==='all'?'all':k==='ix'?'ix':+k;S.anim=true;S.coach=true;closeMenu();renderToday();const sc=$('#tab-today .scroll');sc&&sc.scrollTo({top:0})},
   pro:()=>proSheet(),gopro:()=>{S.pro=true;closeSheet();if(S.tab==='profile')renderProfile();toast('Welcome to Pro (demo, no payment taken)')},unpro:()=>{S.pro=false;closeSheet();if(S.tab==='profile')renderProfile();toast('Back on Free')},
   caught:()=>openCaught(),home:()=>{popAll();setTimeout(()=>setTab('today'),340)},tosaved:()=>{popAll();setTimeout(()=>setTab('foryou'),340)},
   jumpstory:t=>{const ids=briefIds();popAll();setTimeout(()=>{if(S.tab!=='today')setTab('today');openStory(+t.dataset.id,'brief',ids)},360)},
