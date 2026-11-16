@@ -1461,17 +1461,17 @@ function othersPaint(q){
 function viewThemes(){
   S.phase='auth';
   showAuth(`<div class="setup fade">
-  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of 3</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
+  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 1 of ${ixOn?3:2}</span><div style="display:flex;align-items:center;gap:6px"><span class="count" id="th-count"></span><button class="btn btn--text" data-a="skipthemes" style="padding:0 4px">Skip</button></div></div>
   <div class="setup__body" id="th-body">
    <h2>Choose your themes</h2><p class="sub">Up to five.</p>
    <div class="tiles" id="tiles">${T1.map((t,i)=>`<div class="tilebox" data-open="false"><div class="tilehead"><button class="tile" data-a="tile" data-i="${i}" aria-pressed="${S.themes.includes(i)}"><span class="tile__tx"><b>${esc(t)}</b><span>${esc(T1_DESC[i])}</span></span><span class="tile__ck">${ic('plus')}</span></button><button class="tile__info" data-a="tileinfo" data-i="${i}" aria-expanded="false" aria-controls="tsub${i}" aria-label="Show what ${esc(t)} covers">${ic('chevD','chev')}</button></div><div class="tile__sub" id="tsub${i}"><ul>${T1_SUB[i].map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>`).join('')}</div>
-   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of 3</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional</p>
+   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 2 of ${ixOn?3:2}</div><h2 class="h2s">Where do you want to see it?</h2><p class="sub">Optional</p>
    <div class="chips" id="t2chips" style="margin-top:14px">${T2.map((t,i)=>`<button class="chip" data-a="t2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${ic(S.where.includes(i)?'check':'plus')}${esc(t)}</button>`).join('')}</div></div>
-   <div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional</p><div id="oth" style="margin-top:14px"></div></div>
+   ${ixOn?`<div class="stepblock"><div class="stepcap"><i class="dot" style="background:var(--accent)"></i>Step 3 of 3</div><h2 class="h2s">Others</h2><p class="sub">Optional</p><div id="oth" style="margin-top:14px"></div></div>`:''}
    <div class="fine">${ic('sliders')}<span>Your picks decide which stories lead your brief. Change them anytime in Profile.</span></div>
   </div>
   <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="themesdone" id="th-go"></button></div></div>`);
-  othersMount($('#oth'));updThemes();
+  if($('#oth'))othersMount($('#oth'));updThemes();
 }
 function updThemes(){
   const n=S.themes.length,c=$('#th-count');if(!c)return;
@@ -1683,7 +1683,7 @@ function proSheet(why){
    body:`<div class="pro__hero"><p class="pro__lede">${why?why+'.':''}</p>
     <div class="pro__price"><b>₹${PRICE}</b><span>/ year</span></div><span class="pro__sub">Billed annually. About ₹${Math.round(PRICE/12)} a month.</span></div>
     <div class="pro__tbl" role="table" aria-label="Free and Pro features"><div class="pro__hd" role="row"><span></span><span>Free</span><span class="pro__col">Pro</span></div>
-    ${PRO_ROWS.map(r=>`<div class="pro__row" role="row"><div><b>${r[0]}</b><small>${r[1]}</small></div>${mk(r[2])}<span class="pro__col">${mk(r[3])}</span></div>`).join('')}</div>
+    ${PRO_ROWS.map(r=>r[0]==='Hype check, Bias checker'&&!hypeOn?['Bias checker',r[1],r[2],r[3]]:r).map(r=>`<div class="pro__row" role="row"><div><b>${r[0]}</b><small>${r[1]}</small></div>${mk(r[2])}<span class="pro__col">${mk(r[3])}</span></div>`).join('')}</div>
     <p class="note">Prototype only. The feature split and price are samples for discussion. No payment is taken.</p>`,
    foot:S.pro?'<button class="btn btn--secondary" data-a="unpro" style="flex:1">Switch back to Free (demo)</button>':`<button class="btn btn--primary" data-a="gopro" style="flex:1">Get Pro · ₹${PRICE}/year</button><button class="btn btn--text" data-a="closesheet">Not now</button>`});
 }
@@ -1698,7 +1698,7 @@ function renderProfile(){
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
    <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
    <div class="group"><span class="label">Your brief</span><div class="rows">
-    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${prow('search','Industry x technology',S.others.length?S.others.length+' added'+(S.others.some(x=>!isKnownIx(x))?' · '+S.others.filter(x=>!isKnownIx(x)).length+' requested':''):'None','edit','others')}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
+    ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${ixOn?prow('search','Industry x technology',S.others.length?S.others.length+' added'+(S.others.some(x=>!isKnownIx(x))?' · '+S.others.filter(x=>!isKnownIx(x)).length+' requested':''):'None','edit','others'):''}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
     ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
@@ -1764,7 +1764,7 @@ function newLayer(kind){const L=document.createElement('div');L.className='layer
 
 /* ---------- Story ---------- */
 const TOOLS=[['wim','Why it matters','trend'],['eli5','In plain terms','bulb'],['hype','Hype check','activity'],['bias','Bias checker','scale'],['lens','Industry lens','brief']];
-let lensOn=false;const toolList=()=>TOOLS.filter(x=>x[0]!=='lens'||lensOn);
+let lensOn=false,hypeOn=false,ixOn=false;const toolList=()=>TOOLS.filter(x=>(x[0]!=='lens'||lensOn)&&(x[0]!=='hype'||hypeOn));
 const curId=()=>S.ctx.ids[S.i];
 function markRead(id){S.read.add(id);renderToday();if(S.tab!=='today')renderTab(S.tab)}
 function prevHint(){
@@ -2086,8 +2086,9 @@ async function jump(name){
   resetUI();clearTabs();S=fresh();$('#auth').hidden=true;
   if(name==='welcome'){return viewWelcome()}
   if(name==='themes'){S.method='LinkedIn';return viewThemes()}
-  if(name==='others'){S.method='LinkedIn';S.themes=[0,1];viewThemes();await wait(900);const o=$('#oth');o.scrollIntoView({block:'center'});return}
-  S.method='LinkedIn';S.themes=[0,1,2];S.where=[0,1];S.others=['Banking x Agentic AI'];
+  if(name==='others'){ixOn=true;syncSide();S.method='LinkedIn';S.themes=[0,1];viewThemes();await wait(900);const o=$('#oth');o.scrollIntoView({block:'center'});return}
+  if(name==='hype'){hypeOn=true;syncSide()}
+  S.method='LinkedIn';S.themes=[0,1,2];S.where=[0,1];S.others=ixOn?['Banking x Agentic AI']:[];
   if(name==='more')S.filter=0;
   if(name==='foryou-saved'){S.saved=[2,6,3];S.colls[0].ids=[2,6];S.colls[1].ids=[3];S.read=new Set([1])}
   if(name==='caught'){S.read=new Set(briefIds())}
@@ -2109,7 +2110,7 @@ function buildSide(){
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
   <div><h2>Notifications</h2><div class="jump">${Object.entries(NSCEN).map(([k,v])=>`<button data-n="${k}">${v.label}</button>`).join('')}</div><p class="note" style="margin-top:8px">Lock screen mockups. Tap a notification to open the app.</p></div>
   <div><h2>Sharing</h2><div class="jump">${SHARE_APPS.map(a=>`<button data-sh="${a[0]}">${a[1]}</button>`).join('')}</div><p class="note" style="margin-top:8px">How a story, opinion or team invite looks in each app.</p></div>
-  <div><h2>Possible integrations</h2><div class="jump"><button data-demo="pro">Pro tier</button><button data-demo="lens" id="o-lens">Industry lens</button></div><p class="note" style="margin-top:8px">Not part of the launch app. Pro tier opens the comparison sheet. Industry lens adds the tool back to every story while it is switched on.</p></div>
+  <div><h2>Possible integrations</h2><div class="jump"><button data-demo="pro">Pro tier</button><button data-demo="lens" id="o-lens">Industry lens</button><button data-demo="hype" id="o-hype">Hype check</button><button data-demo="ix" id="o-ix">Custom filters</button></div><p class="note" style="margin-top:8px">Not part of the launch app. Pro tier opens the comparison sheet. Industry lens and Hype check add a tool to every story while switched on. Custom filters adds the industry x technology step to setup, plus Your interests and its Profile row.</p></div>
   <div><h2>Topic view</h2><div class="opt" id="o-tn"><button data-tn="tabs">Theme tabs</button><button data-tn="menu">Logo menu</button></div><p class="note" style="margin-top:8px">Also in Profile, under Topic view.</p></div>
   <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
@@ -2118,13 +2119,15 @@ function buildSide(){
   $$('[data-j]').forEach(b=>b.onclick=()=>jump(b.dataset.j));
   $$('[data-n]').forEach(b=>b.onclick=()=>showLock(b.dataset.n));
   $$('[data-sh]').forEach(b=>b.onclick=()=>{SHP.orig=null;showSharePreview(b.dataset.sh,'story',1,false)});
-  $$('[data-demo]').forEach(b=>b.onclick=()=>{if(S.phase!=='main')return toast('Finish the welcome flow first');if(b.dataset.demo==='pro')return proSheet();lensOn=!lensOn;syncSide();const L=storyLayer();if(L)refreshStoryTools(L);if(S.tab==='profile')renderProfile();toast(lensOn?'Industry lens added to the story tools':'Industry lens removed')});
+  $$('[data-demo]').forEach(b=>b.onclick=()=>{if(S.phase!=='main')return toast('Finish the welcome flow first');const d=b.dataset.demo;if(d==='pro')return proSheet();
+    if(d==='ix'){ixOn=!ixOn;if(!ixOn){S.others=[];S.ixSel='all';if(S.filter==='ix')S.filter='all'}syncSide();renderToday();if(S.tab==='profile')renderProfile();return toast(ixOn?'Custom filters added to setup':'Custom filters removed')}
+    if(d==='hype')hypeOn=!hypeOn;else lensOn=!lensOn;syncSide();const L=storyLayer();if(L)refreshStoryTools(L);if(S.tab==='profile')renderProfile();toast(d==='hype'?(hypeOn?'Hype check added to the story tools':'Hype check removed'):(lensOn?'Industry lens added to the story tools':'Industry lens removed'))});
   $$('[data-tn]').forEach(b=>b.onclick=()=>setTopicNav(b.dataset.tn));
   $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
 }
-function syncSide(){$$('#o-tn button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tn===(S.topicNav||'tabs')));const lb=$('#o-lens');lb&&lb.setAttribute('aria-pressed',lensOn);$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cs===cardStyle));$$('#o-app button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ap===appearance))}
+function syncSide(){$$('#o-tn button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tn===(S.topicNav||'tabs')));const lb=$('#o-lens');lb&&lb.setAttribute('aria-pressed',lensOn);const hb=$('#o-hype');hb&&hb.setAttribute('aria-pressed',hypeOn);const xb=$('#o-ix');xb&&xb.setAttribute('aria-pressed',ixOn);$$('#o-card button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cs===cardStyle));$$('#o-app button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ap===appearance))}
 
 /* ---------- Actions ---------- */
 const ACT={
