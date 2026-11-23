@@ -1023,6 +1023,25 @@ select.field.sel{appearance:none;-webkit-appearance:none;background-image:url("d
 .abav.pop,#ab-av.pop{animation:avpop .34s cubic-bezier(.32,.72,0,1)}
 @keyframes avpop{from{transform:scale(.92);opacity:.6}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.abav.pop,#ab-av.pop{animation:none}}
+
+/* appearance settings */
+:root{--rs:1;--rl:1}
+.feed .card h3{font-size:calc(25px*var(--rs));line-height:calc(30px*var(--rs))}
+.feed .card p{font-size:calc(15.5px*var(--rs));line-height:calc(23px*var(--rs)*var(--rl))}
+.story h1{font-size:calc(28px*var(--rs));line-height:calc(34px*var(--rs))}
+.story .summary{font-size:calc(16.5px*var(--rs));line-height:calc(26px*var(--rs)*var(--rl))}
+.story .why p{font-size:calc(15.5px*var(--rs));line-height:calc(24px*var(--rs)*var(--rl))}
+.reader p,.oparas p{font-size:calc(17px*var(--rs));line-height:calc(28px*var(--rs)*var(--rl))}
+.oparas p.qa{font-size:13.5px;line-height:19px}
+.standfirst{font-size:calc(19px*var(--rs));line-height:calc(27px*var(--rs))}
+.cmt p{font-size:calc(14px*var(--rs))!important;line-height:calc(20px*var(--rs)*var(--rl))!important}
+html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+.apage{padding:calc(var(--safe-top) + 72px) 20px 60px}
+.aprev{pointer-events:none;margin:0 -2px 8px;border-radius:var(--radius-lg);background:var(--surface);padding:6px 16px 4px;overflow:hidden}
+.aprev .card{border-bottom:0;padding-bottom:12px}
+.apage .group{margin-top:22px}
+.apage .seg{width:100%}
+.apage .seg button{flex:1;min-width:0;padding:0 6px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -1339,7 +1358,13 @@ const GOOGLE='<svg class="brand" viewBox="0 0 24 24"><path fill="#4285F4" d="M22
 const FADE='<div class="statusfade"></div>';
 
 /* ---------- State ---------- */
-let appearance='dark',cardStyle='text';
+let appearance='dark';
+const PREF0={images:true,size:1,font:'serif',lh:1,rm:false};
+const prefs={...PREF0};
+const SIZES=[['Small',.9],['Default',1],['Large',1.12],['Extra large',1.25]];
+const FONTS={serif:['Serif','"Kaisei Tokumin",Georgia,serif'],classic:['Classic','"Source Serif 4",Georgia,"Times New Roman",serif'],sans:['Sans','Inter,-apple-system,system-ui,"Segoe UI",sans-serif']};
+const LHS=[['Tight',.93],['Default',1],['Relaxed',1.1]];
+function applyPrefs(){const r=document.documentElement,st=r.style;st.setProperty('--rs',prefs.size);st.setProperty('--rl',prefs.lh);st.setProperty('--font-read',FONTS[prefs.font][1]);r.classList.toggle('rm',prefs.rm)}
 let S;
 function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],name:'',company:'',photo:null,dobD:'',dobM:'',dobY:'',industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
@@ -1568,7 +1593,7 @@ function cardHTML(s,pos,n){
   return `<article class="card ${read?'card--read':''}" role="button" tabindex="0" data-a="${pos==null?'openmore':'open'}" data-id="${s.id}" style="--n:${n}">
    <div class="card__top">${pos==null?'':`<span class="card__idx">${pos+1}</span>`}${read?`<span class="card__tick">${ic('check','sm')}</span>`:''}<span class="card__tags">${esc(tagLine(s,false,S.filter!=='all'&&S.filter!=='ix'))}</span></div>
    <h3>${esc(s.h)}</h3>
-   ${cardStyle==='photo'?`<div class="photo">${art(s.id)}</div>`:''}
+   ${prefs.images?`<div class="photo">${art(s.id)}</div>`:''}
    <p>${esc(s.s)}</p>
    <div class="card__foot"><span class="meta">${esc(s.src[0][0])} · ${s.age} · ${s.min} min</span><button class="iconbtn" data-a="save" data-id="${s.id}" aria-pressed="${isSaved(s.id)}" aria-label="Save story">${ic('bookmark')}</button></div></article>`;
 }
@@ -1758,6 +1783,26 @@ function proSheet(why){
 }
 
 /* ---------- Profile ---------- */
+const appearSummary=()=>appearance[0].toUpperCase()+appearance.slice(1)+' · '+(SIZES.find(x=>x[1]===prefs.size)||SIZES[1])[0]+' text'+(prefs.images?'':' · No images');
+function openAppearance(){
+  const L=newLayer('appearance');
+  L.innerHTML=`<div class="scroll"><div class="apage" id="ap-page"></div></div>${FADE}<div class="s-top glass" style="overflow:hidden"><button class="iconbtn" data-a="back" aria-label="Back" style="color:var(--ink)">${ic('chevL')}</button><div class="where" style="color:var(--ink)">Appearance</div><span style="width:44px"></span></div>`;
+  push(L);attachGestures(L);drawAppearance();
+}
+function prefChanged(){drawAppearance();if(S.phase==='main'){renderProfile();renderToday()}syncSide()}
+function drawAppearance(){
+  const pg=$('#ap-page');if(!pg)return;
+  const seg=(id,opts,cur,p)=>`<div class="seg" id="${id}" role="group">${opts.map(([k,l])=>`<button data-a="pref" data-p="${p}" data-v="${k}" aria-pressed="${String(cur)===String(k)}">${l}</button>`).join('')}</div>`;
+  const sw=(label,p,on,sub)=>`<button class="row" role="switch" aria-checked="${on}" data-a="preftoggle" data-p="${p}"><span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left">${label}${sub?`<span class="meta">${sub}</span>`:''}</span><span class="tg" style="margin-left:auto"></span></button>`;
+  const id=briefIds()[0];
+  pg.innerHTML=`<div class="aprev" id="ap-prev"><div class="feed">${cardHTML(byId[id],null,0).replace('data-a="openmore"','').replace(/<button class="iconbtn"[^>]*data-a="save"[^>]*>.*?<\/button>/,'')}</div></div>
+   <div class="group"><span class="label">Theme</span>${seg('ap-th',[['dark','Dark'],['light','Light'],['system','System']],appearance,'theme')}</div>
+   <div class="group"><span class="label">Text size</span>${seg('ap-sz',SIZES.map(([l,v])=>[v,l]),prefs.size,'size')}</div>
+   <div class="group"><span class="label">Reading font</span>${seg('ap-ft',Object.entries(FONTS).map(([k,v])=>[k,v[0]]),prefs.font,'font')}<p class="note" style="margin:8px 4px 0">Applies to story text, summaries and opinion pieces. Headlines keep the FomoTech typeface.</p></div>
+   <div class="group"><span class="label">Line spacing</span>${seg('ap-lh',LHS.map(([l,v])=>[v,l]),prefs.lh,'lh')}</div>
+   <div class="group"><div class="rows">${sw('Article images','images',prefs.images)}${sw('Reduce motion','rm',prefs.rm,'Fewer animations and slides')}</div></div>
+   <div class="group"><button class="btn btn--text" data-a="prefreset" style="padding:0 4px">Reset to default</button></div>`;
+}
 function prow(icon,label,val,act,k){return `<button class="row" data-a="${act}" ${k!=null?`data-k="${k}"`:''}><span class="ic">${ic(icon)}</span>${label}<span class="val">${val}</span>${ic('chevR','chev')}</button>`}
 function renderProfile(){
   const el=$('#tab-profile'),old=$('.scroll',el),top=old?old.scrollTop:0;
@@ -1773,7 +1818,7 @@ function renderProfile(){
     ${prow('user','Name',esc(S.name||'Not set'),'edit','name')}${prow('user','Date of birth',esc(dobText()||'Not set'),'edit','dob')}${prow('brief','Company',esc(S.company||'Not set'),'edit','company')}${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
     ${lensOn?'<p class=\"note\" style="margin:8px 4px 0">Used to tailor Industry lens.</p>':''}</div>
    <div class="group"><span class="label">Topic view</span><div class="seg" id="tn-seg">${[['tabs','Theme tabs'],['menu','Logo menu']].map(([k,l])=>`<button data-a="topicnav" data-k="${k}" aria-pressed="${(S.topicNav||'tabs')===k}">${l}</button>`).join('')}</div></div>
-   <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
+   <div class="group"><div class="rows">${prow('sliders','Appearance',esc(appearSummary()),'openappearance')}</div></div>
    <div class="group"><div class="rows">${prow('users','Invite your team','Share FomoTech','invite')}</div></div>
    <div class="group" style="margin-top:22px"><div class="rows"><button class="row" data-a="signout"><span class="ic">${ic('logout')}</span>Sign out</button><button class="row" data-a="delete" style="color:var(--new-dot)"><span class="ic" style="color:inherit">${ic('trash')}</span>Delete account</button></div></div>
    <p class="footnote">FomoTech by Netscribes</p>
@@ -2184,7 +2229,6 @@ function buildSide(){
   <div><h2>Sharing</h2><div class="jump">${SHARE_APPS.map(a=>`<button data-sh="${a[0]}">${a[1]}</button>`).join('')}</div><p class="note" style="margin-top:8px">How a story, opinion or team invite looks in each app.</p></div>
   <div><h2>Possible integrations</h2><div class="jump"><button data-demo="pro">Pro tier</button><button data-demo="lens" id="o-lens">Industry lens</button><button data-demo="hype" id="o-hype">Hype check</button><button data-demo="ix" id="o-ix">Custom filters</button></div><p class="note" style="margin-top:8px">Not part of the launch app. Pro tier opens the comparison sheet. Industry lens and Hype check add a tool to every story while switched on. Custom filters adds the industry x technology step to setup, plus Your interests and its Profile row.</p></div>
   <div><h2>Topic view</h2><div class="opt" id="o-tn"><button data-tn="tabs">Theme tabs</button><button data-tn="menu">Logo menu</button></div><p class="note" style="margin-top:8px">Also in Profile, under Topic view.</p></div>
-  <div><h2>Card style</h2><div class="opt" id="o-card"><button data-cs="text">Text-led</button><button data-cs="photo">Photo-led</button></div></div>
   <div><h2>Appearance</h2><div class="opt" id="o-app"><button data-ap="dark">Dark</button><button data-ap="light">Light</button><button data-ap="system">System</button></div></div>
   <div><h2>Try these</h2><p class="note">Tap a story. Swipe up at the bottom for the next one, swipe right to go back. Open the tools row. Tap Listen to your brief. Save a story, then organise it into a collection.</p></div>
   <button class="btn btn--secondary" id="reset" style="min-height:40px;font-size:13px;align-self:flex-start">Restart from the welcome screen</button>`;
@@ -2195,7 +2239,6 @@ function buildSide(){
     if(d==='ix'){ixOn=!ixOn;if(!ixOn){S.others=[];S.ixSel='all';if(S.filter==='ix')S.filter='all'}syncSide();renderToday();if(S.tab==='profile')renderProfile();return toast(ixOn?'Custom filters added to setup':'Custom filters removed')}
     if(d==='hype')hypeOn=!hypeOn;else lensOn=!lensOn;syncSide();const L=storyLayer();if(L)refreshStoryTools(L);if(S.tab==='profile')renderProfile();toast(d==='hype'?(hypeOn?'Hype check added to the story tools':'Hype check removed'):(lensOn?'Industry lens added to the story tools':'Industry lens removed'))});
   $$('[data-tn]').forEach(b=>b.onclick=()=>setTopicNav(b.dataset.tn));
-  $$('[data-cs]').forEach(b=>b.onclick=()=>{cardStyle=b.dataset.cs;syncSide();if(S.phase==='main')renderToday()});
   $$('[data-ap]').forEach(b=>b.onclick=()=>{appearance=b.dataset.ap;applyTheme();if(S.phase==='main'&&S.tab==='profile')renderProfile()});
   $('#reset').onclick=resetAll;
 }
@@ -2281,6 +2324,10 @@ const ACT={
   clearlinkedin:()=>{S.linkedin='';closeSheet();renderProfile()},
   togglenotif:()=>{S.notif=!S.notif;S.notifAsked=true;renderProfile();toast(S.notif?`Daily brief on for ${S.briefTime}`:'Daily notification off')},
   appear:t=>{appearance=t.dataset.k;applyTheme();renderProfile()},
+  openappearance:()=>openAppearance(),
+  pref:t=>{const p=t.dataset.p,v=t.dataset.v;if(p==='theme'){appearance=v;applyTheme()}else if(p==='size')prefs.size=+v;else if(p==='lh')prefs.lh=+v;else if(p==='font')prefs.font=v;applyPrefs();prefChanged()},
+  preftoggle:t=>{const p=t.dataset.p;prefs[p]=!prefs[p];applyPrefs();prefChanged()},
+  prefreset:()=>{Object.assign(prefs,PREF0);appearance='dark';applyTheme();applyPrefs();prefChanged()},
   signout:()=>alertBox('Sign out?','You can sign back in any time.',[{t:'Cancel'},{t:'Sign out',fn:resetAll}]),
   delete:()=>alertBox('Delete account?','This removes your themes, saved stories and collections. This can’t be undone.',[{t:'Cancel'},{t:'Delete',cls:'red',fn:()=>{resetAll();setTimeout(()=>toast('Account deleted'),400)}}]),
   /* audio */
@@ -2315,7 +2362,7 @@ function fit(){
   const sc=Math.min(1,(innerHeight-56)/844);d.style.transform=`scale(${sc})`;w.style.width=390*sc+'px';w.style.height=844*sc+'px';
 }
 addEventListener('resize',fit);
-applyTheme();buildSide();syncSide();fit();viewWelcome();
+applyTheme();applyPrefs();buildSide();syncSide();fit();viewWelcome();
 window.__fomo={jump,get S(){return S},A};
 })();
 
