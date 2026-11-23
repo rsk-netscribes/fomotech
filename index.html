@@ -999,6 +999,30 @@ button{font-family:inherit;color:inherit}
 .fl{display:block;font:500 13px/18px var(--font-sans);color:var(--ink-secondary);margin:24px 4px 8px}
 .setup h2+.sub+.fl{margin-top:22px}
 #ab-body .chips{margin:0}
+
+/* about-you steps */
+.setup__top .abbar{display:flex;gap:6px;flex:1;max-width:150px;margin:0 auto}
+.abbar i{height:3px;flex:1;border-radius:2px;background:var(--hairline-strong);transition:background .25s ease}
+.abbar i.on{background:var(--accent)}
+.setup__top{gap:8px}
+.abphoto{display:flex;flex-direction:column;align-items:center;gap:14px;margin:26px 0 8px}
+.abav,.acct__av{overflow:hidden;border:0;cursor:pointer;padding:0}
+.abav{width:104px;height:104px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font:400 34px/1 var(--font-head)}
+.abav img,.acct__av img{width:100%;height:100%;object-fit:cover;display:block}
+.abph-actions{display:flex;align-items:center;gap:6px}
+.abph-actions .btn{min-height:44px;padding:0 18px}
+select.field.sel{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A91A0' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer;text-overflow:ellipsis}
+.dob{display:grid;grid-template-columns:.8fr 1.4fr 1fr;gap:8px}
+.dob .field{padding-left:12px}
+.sheet .dob{margin-top:4px}
+
+.abbar i{transition:background .3s ease}
+#ab-back{transition:opacity .2s ease}
+#ab-back.off{opacity:0;pointer-events:none}
+.setup__body{will-change:transform,opacity}
+.abav.pop,#ab-av.pop{animation:avpop .34s cubic-bezier(.32,.72,0,1)}
+@keyframes avpop{from{transform:scale(.92);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.abav.pop,#ab-av.pop{animation:none}}
 </style>
 </head>
 <body>
@@ -1317,7 +1341,7 @@ const FADE='<div class="statusfade"></div>';
 /* ---------- State ---------- */
 let appearance='dark',cardStyle='text';
 let S;
-function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],name:'',company:'',industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
+function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],name:'',company:'',photo:null,dobD:'',dobM:'',dobY:'',industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
  others:[],ixSel:'all',opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
@@ -1463,24 +1487,46 @@ function othersPaint(q){
   $('#oth-h').textContent=ql?'Matches':'Suggested combinations';
   $('#oth-list').innerHTML=`<div class="chips">${sug.map(x=>`<button class="chip" data-a="addother" data-v="${esc(x)}">${ic('plus')}${comboHTML(x)}</button>`).join('')||(ql?'':'<span class="note">All suggestions added.</span>')}</div>${ql&&!exact?`<button class="addreq" data-a="addother" data-v="${esc(q)}">${ic('plus')}<span>Add “${esc(q)}” as a request</span></button>`:''}`;
 }
-function viewAbout(){
-  S.phase='auth';
-  if(!S.name&&(S.method==='Apple'||S.method==='LinkedIn'))S.name='Aarav Sharma';
-  const chips=(f,list,a)=>`<div class="chips" id="ab-${f}">${list.map(o=>`<button class="chip" data-a="${a}" data-v="${esc(o)}" aria-pressed="${S[f]===o}">${esc(o)}</button>`).join('')}</div>`;
-  showAuth(`<div class="setup fade">
-  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>About you</span><button class="btn btn--text" data-a="aboutdone" data-skip="1" style="padding:0 4px">Skip</button></div>
-  <div class="setup__body" id="ab-body">
-   <h2>Tell us about you</h2><p class="sub">All optional. You can change these later in Profile.</p>
-   <label class="fl" for="ab-name">Your name</label><input class="field" id="ab-name" data-f="name" value="${esc(S.name)}" placeholder="Full name" autocomplete="name" enterkeyhint="next">
-   ${S.method==='Apple'||S.method==='LinkedIn'?`<p class="note" style="margin:6px 4px 0">From your ${esc(S.method)} account.</p>`:''}
-   <label class="fl" for="ab-company">Company</label><input class="field" id="ab-company" data-f="company" value="${esc(S.company)}" placeholder="Where you work" autocomplete="organization" enterkeyhint="done">
-   <span class="fl">Your role</span>${chips('role',ROLES,'abrole')}
-   <span class="fl">Your industry</span>${chips('industry',INDUSTRIES,'abind')}
-  </div>
-  <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="aboutdone" id="ab-go"></button></div></div>`);
-  updAbout();
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const YEARS=Array.from({length:69},(_,k)=>2008-k);
+const dobText=()=>S.dobY&&S.dobM!==''&&S.dobD?`${S.dobD} ${MONTHS[+S.dobM].slice(0,3)} ${S.dobY}`:'';
+const opts=(arr,cur,ph,val)=>`<option value="">${ph}</option>`+arr.map((o,k)=>{const v=val?val(o,k):o;return `<option value="${esc(String(v))}" ${String(cur)===String(v)?'selected':''}>${esc(String(o))}</option>`}).join('');
+const dobSelects=(pre)=>`<div class="dob"><select class="field sel" id="${pre}d" data-f="dobD" aria-label="Day">${opts(Array.from({length:31},(_,k)=>k+1),S.dobD,'Day')}</select><select class="field sel" id="${pre}m" data-f="dobM" aria-label="Month">${opts(MONTHS,S.dobM,'Month',(o,k)=>k)}</select><select class="field sel" id="${pre}y" data-f="dobY" aria-label="Year">${opts(YEARS,S.dobY,'Year')}</select></div>`;
+const avatarHTML=()=>S.photo?`<img src="${S.photo}" alt="">`:(S.name.trim()?esc(initials(S.name)):ic('user','lg'));
+let abStep=1,abBusy=false;
+const abPhotoHTML=()=>`<button class="abav" data-a="abphoto" id="ab-av" aria-label="Add a profile photo">${avatarHTML()}</button><div class="abph-actions"><button class="btn btn--secondary" data-a="abphoto" id="ab-phbtn">${S.photo?'Change photo':'Add a photo'}</button>${S.photo?'<button class="btn btn--text" data-a="abphotorm">Remove</button>':''}</div><input type="file" id="ab-photo" accept="image/*" hidden>`;
+function abPhotoRefresh(){const b=$('.abphoto');if(b){b.innerHTML=abPhotoHTML();const av=$('#ab-av');if(av){av.classList.add('pop')}}updAbout()}
+const AB_HEADS={1:['What should we call you?','Add a photo if you like.'],2:['When were you born?','Optional.'],3:['Tell us about your work','Optional.']};
+function aboutBody(step){
+  const body=step===1?`<div class="abphoto">${abPhotoHTML()}</div>
+    <label class="fl" for="ab-name">Your name</label><input class="field" id="ab-name" data-f="name" value="${esc(S.name)}" placeholder="Full name" autocomplete="name" enterkeyhint="done">${S.method==='Apple'||S.method==='LinkedIn'?`<p class="note" style="margin:6px 4px 0">From your ${esc(S.method)} account.</p>`:''}`
+   :step===2?`<span class="fl" style="margin-top:22px">Date of birth</span>${dobSelects('ab-dob')}`
+   :`<label class="fl" for="ab-role" style="margin-top:22px">What do you do?</label><select class="field sel" id="ab-role" data-f="role" aria-label="What do you do?">${opts(ROLES,S.role,'Select')}</select>
+    <label class="fl" for="ab-industry">Which industry?</label><select class="field sel" id="ab-industry" data-f="industry" aria-label="Which industry?">${opts(INDUSTRIES,S.industry,'Select')}</select>`;
+  return `<h2>${AB_HEADS[step][0]}</h2><p class="sub">${AB_HEADS[step][1]}</p>${body}`;
 }
-function updAbout(){const go=$('#ab-go');if(!go)return;const any=S.name.trim()||S.company.trim()||S.role||S.industry;go.innerHTML=any?'Continue '+ic('arrowR'):'Skip for now'}
+function abChrome(){$$('#ab-bars i').forEach((e,k)=>e.classList.toggle('on',k+1<=abStep));const bk=$('#ab-back');if(bk){bk.classList.toggle('off',abStep<2);bk.tabIndex=abStep<2?-1:0}const sk=$('#ab-skip');if(sk)sk.textContent='Skip';updAbout()}
+function viewAbout(){
+  S.phase='auth';abStep=1;abBusy=false;
+  if(!S.name&&(S.method==='Apple'||S.method==='LinkedIn'))S.name='Aarav Sharma';
+  showAuth(`<div class="setup fade">
+  <div class="setup__top"><button class="iconbtn off" id="ab-back" data-a="abback" aria-label="Back" style="margin-left:-12px;color:var(--ink)">${ic('chevL')}</button><div class="abbar" id="ab-bars" aria-label="Progress">${[1,2,3].map(k=>`<i class="${k<=abStep?'on':''}"></i>`).join('')}</div><button class="btn btn--text" id="ab-skip" data-a="abnext" style="padding:0 4px">Skip</button></div>
+  <div class="setup__body" id="ab-body">${aboutBody(1)}</div>
+  <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="abnext" id="ab-go"></button></div></div>`);
+  abChrome();
+}
+async function abGo(step){
+  const body=$('#ab-body');if(!body||abBusy)return;abBusy=true;
+  const dir=step>abStep?1:-1,rm=matchMedia('(prefers-reduced-motion: reduce)').matches,fo=rm?0:150,fi=rm?0:340;
+  const ae=document.activeElement;if(ae&&ae.blur)ae.blur();
+  body.style.transition=`transform ${fo}ms cubic-bezier(.4,0,1,1),opacity ${fo}ms linear`;body.style.transform=`translate3d(${-28*dir}px,0,0)`;body.style.opacity='0';
+  await wait(fo);
+  abStep=step;body.innerHTML=aboutBody(step);body.scrollTop=0;abChrome();
+  body.style.transition='none';body.style.transform=`translate3d(${28*dir}px,0,0)`;void body.offsetWidth;
+  body.style.transition=`transform ${fi}ms cubic-bezier(.32,.72,0,1),opacity ${Math.round(fi*.8)}ms ease-out`;body.style.transform='';body.style.opacity='';
+  await wait(fi);body.style.transition='';abBusy=false;
+}
+function updAbout(){const go=$('#ab-go');if(!go)return;const any=abStep===1?(S.name.trim()||S.photo):abStep===2?(S.dobD||S.dobM!==''||S.dobY):(S.role||S.industry);go.innerHTML=any?(abStep===3?'Continue':'Continue')+' '+ic('arrowR'):'Skip for now'}
 function viewThemes(){
   S.phase='auth';
   showAuth(`<div class="setup fade">
@@ -1719,12 +1765,12 @@ function renderProfile(){
   const wh=S.where.length?S.where.length+' selected':'Everywhere';
   const li=S.linkedin?S.linkedin.replace(/^https?:\/\/(www\.)?/,''):'Add link';
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
-   <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>${esc(S.name||'Your account')}</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
+   <div class="acct"><button class="avatar acct__av" data-a="profphoto" aria-label="Change profile photo">${avatarHTML()}</button><input type="file" id="pf-photo" accept="image/*" hidden><div><b>${esc(S.name||'Your account')}</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
    <div class="group"><span class="label">Your brief</span><div class="rows">
     ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${ixOn?prow('search','Industry x technology',S.others.length?S.others.length+' added'+(S.others.some(x=>!isKnownIx(x))?' · '+S.others.filter(x=>!isKnownIx(x)).length+' requested':''):'None','edit','others'):''}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
-    ${prow('user','Name',esc(S.name||'Not set'),'edit','name')}${prow('brief','Company',esc(S.company||'Not set'),'edit','company')}${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
+    ${prow('user','Name',esc(S.name||'Not set'),'edit','name')}${prow('user','Date of birth',esc(dobText()||'Not set'),'edit','dob')}${prow('brief','Company',esc(S.company||'Not set'),'edit','company')}${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
     ${lensOn?'<p class=\"note\" style="margin:8px 4px 0">Used to tailor Industry lens.</p>':''}</div>
    <div class="group"><span class="label">Topic view</span><div class="seg" id="tn-seg">${[['tabs','Theme tabs'],['menu','Logo menu']].map(([k,l])=>`<button data-a="topicnav" data-k="${k}" aria-pressed="${(S.topicNav||'tabs')===k}">${l}</button>`).join('')}</div></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
@@ -2054,6 +2100,7 @@ function editSheet(k){
   if(k==='others')return openSheet({title:'Industry x technology',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='where')return openSheet({title:'Where you want to see it',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='time')return openSheet({title:'Brief time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div>`});
+  if(k==='dob')return openSheet({title:'Date of birth',body:dobSelects('dob-'),foot:'<button class="btn btn--primary" data-a="savedob" style="flex:1">Save</button>'});
   if(k==='name'||k==='company')return openSheet({title:k==='name'?'Name':'Company',body:`<input class="field" id="tx-in" value="${esc(S[k])}" placeholder="${k==='name'?'Full name':'Where you work'}" autocomplete="off">`,foot:`<button class="btn btn--primary" data-a="savetext" data-f="${k}" style="flex:1">Save</button>`});
   if(k==='industry'||k==='role'){
     const list=k==='industry'?INDUSTRIES:ROLES,cur=S[k];
@@ -2219,9 +2266,12 @@ const ACT={
     if(t.dataset.id){const id=+t.dataset.id;c.ids.push(id);if(!isSaved(id)){S.saved.unshift(id);$$(`[data-a="save"][data-id="${id}"]`).forEach(b=>b.setAttribute('aria-pressed','true'))}organiseSheet.draw(sheetEl)}
     else{S.fyColl=c.id;closeSheet();renderForYou()}},
   edit:t=>editSheet(t.dataset.k),
-  aboutdone:()=>viewThemes(),
-  abrole:t=>{S.role=S.role===t.dataset.v?null:t.dataset.v;$$('#ab-role .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===S.role));updAbout()},
-  abind:t=>{S.industry=S.industry===t.dataset.v?null:t.dataset.v;$$('#ab-industry .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===S.industry));updAbout()},
+  abnext:()=>{if(abBusy)return;if(abStep<3)abGo(abStep+1);else viewThemes()},
+  abback:()=>{if(abStep>1)abGo(abStep-1)},
+  abphoto:()=>{const f=$('#ab-photo')||$('#pf-photo');f&&f.click()},
+  abphotorm:()=>{S.photo=null;abPhotoRefresh()},
+  profphoto:()=>{const f=$('#pf-photo');f&&f.click()},
+  savedob:()=>{S.dobD=$('#dob-d').value;S.dobM=$('#dob-m').value;S.dobY=$('#dob-y').value;closeSheet();renderProfile()},
   savetext:t=>{const f=t.dataset.f,v=$('#tx-in').value.trim();S[f]=v;closeSheet();renderProfile()},
   pickt1:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5)return toast('Pick up to five themes');else S.themes.push(i);t.setAttribute('aria-pressed',S.themes.includes(i));$('#t1n').textContent=S.themes.length+' of 5 selected. Your brief leads with these.';renderProfile()},
   pickt2:t=>{const i=+t.dataset.i;S.where=S.where.includes(i)?S.where.filter(x=>x!==i):[...S.where,i];t.setAttribute('aria-pressed',S.where.includes(i));renderProfile()},
@@ -2248,7 +2298,8 @@ const ACT={
   seek:(t,e)=>seek(e)
 };
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||!$('#phone').contains(t))return;const f=ACT[t.dataset.a];if(f){e.stopPropagation();f(t,e)}});
-document.addEventListener('input',e=>{if(e.target.dataset&&e.target.dataset.f&&e.target.id.startsWith('ab-')){S[e.target.dataset.f]=e.target.value;updAbout();return}if(e.target.id==='oth-q')othersPaint(e.target.value)});
+document.addEventListener('change',e=>{const el=e.target;if(!(el.id==='ab-photo'||el.id==='pf-photo')||!el.files||!el.files[0])return;const fr=new FileReader();fr.onload=()=>{S.photo=fr.result;if(el.id==='ab-photo')abPhotoRefresh();else renderProfile()};fr.readAsDataURL(el.files[0])});
+document.addEventListener('input',e=>{if(e.target.dataset&&e.target.dataset.f&&e.target.id.startsWith('ab-')){const f=e.target.dataset.f,v=e.target.value;S[f]=(f==='role'||f==='industry')?(v||null):v;updAbout();return}if(e.target.id==='oth-q')othersPaint(e.target.value)});
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='oth-q'){e.preventDefault();const b=$('#oth-list [data-a=addother]');b&&b.click();return}
   if(e.key==='Enter'&&e.target.id==='cm-in'){e.preventDefault();const b=$('[data-a=postcomment]');b&&b.click();return}
