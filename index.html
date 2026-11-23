@@ -994,6 +994,11 @@ button{font-family:inherit;color:inherit}
 .keepc{align-self:stretch;display:flex;flex-direction:column;gap:10px;text-align:left;margin-top:6px}
 .keepc .label{font:400 17px/22px var(--font-head);letter-spacing:0;text-transform:none;color:var(--ink)}
 .srchead.static .num{margin-left:6px}
+
+/* about-you step */
+.fl{display:block;font:500 13px/18px var(--font-sans);color:var(--ink-secondary);margin:24px 4px 8px}
+.setup h2+.sub+.fl{margin-top:22px}
+#ab-body .chips{margin:0}
 </style>
 </head>
 <body>
@@ -1312,7 +1317,7 @@ const FADE='<div class="statusfade"></div>';
 /* ---------- State ---------- */
 let appearance='dark',cardStyle='text';
 let S;
-function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
+function fresh(){const _p=(typeof S!=='undefined'&&S)||{};return{topicNav:_p.topicNav||'tabs',coach:!!_p.coach,method:null,themes:[],where:[],name:'',company:'',industry:null,role:null,linkedin:'',briefTime:'8:00 AM',notif:false,notifAsked:false,pro:false,
  read:new Set(),saved:[],colls:[{id:1,name:'Board prep',ids:[]},{id:2,name:'Vendor watch',ids:[]}],nextColl:3,
  others:[],ixSel:'all',opFilter:'all',filter:'all',tab:'today',fySeg:'saved',fyColl:'all',ctx:null,i:0,phase:'auth',anim:true}}
 const A={active:false,playing:false,id:null,pos:0,speed:1,auto:true,list:[],timer:null};
@@ -1429,7 +1434,7 @@ function viewWelcome(){
 function doSignin(method,btn){
   S.method=method;
   if(btn){btn.innerHTML='<span class="spin"></span>';btn.style.pointerEvents='none'}
-  setTimeout(()=>{closeSheet(true);viewThemes()},btn?750:150);
+  setTimeout(()=>{closeSheet(true);viewAbout()},btn?750:150);
 }
 function openEmail(){
   let step=1;
@@ -1439,7 +1444,7 @@ function openEmail(){
     if(step!==1)return;
     $('#em-go',sh).onclick=async()=>{step=2;$('.sheet__body',sh).innerHTML=body();const boxes=$$('#em-code i',sh);
       for(let i=0;i<4;i++){await wait(320);if(!sheetEl)return;boxes[i].textContent='1234'[i];boxes[i].classList.remove('cur');if(boxes[i+1])boxes[i+1].classList.add('cur')}
-      await wait(350);if(!sheetEl)return;S.method='work email';closeSheet(true);viewThemes()};
+      await wait(350);if(!sheetEl)return;S.method='work email';closeSheet(true);viewAbout()};
   };
   openSheet({title:'Continue with work email',body:body(),init:wire});
 }
@@ -1458,6 +1463,24 @@ function othersPaint(q){
   $('#oth-h').textContent=ql?'Matches':'Suggested combinations';
   $('#oth-list').innerHTML=`<div class="chips">${sug.map(x=>`<button class="chip" data-a="addother" data-v="${esc(x)}">${ic('plus')}${comboHTML(x)}</button>`).join('')||(ql?'':'<span class="note">All suggestions added.</span>')}</div>${ql&&!exact?`<button class="addreq" data-a="addother" data-v="${esc(q)}">${ic('plus')}<span>Add “${esc(q)}” as a request</span></button>`:''}`;
 }
+function viewAbout(){
+  S.phase='auth';
+  if(!S.name&&(S.method==='Apple'||S.method==='LinkedIn'))S.name='Aarav Sharma';
+  const chips=(f,list,a)=>`<div class="chips" id="ab-${f}">${list.map(o=>`<button class="chip" data-a="${a}" data-v="${esc(o)}" aria-pressed="${S[f]===o}">${esc(o)}</button>`).join('')}</div>`;
+  showAuth(`<div class="setup fade">
+  <div class="setup__top"><span class="stepcap"><i class="dot" style="background:var(--accent)"></i>About you</span><button class="btn btn--text" data-a="aboutdone" data-skip="1" style="padding:0 4px">Skip</button></div>
+  <div class="setup__body" id="ab-body">
+   <h2>Tell us about you</h2><p class="sub">All optional. You can change these later in Profile.</p>
+   <label class="fl" for="ab-name">Your name</label><input class="field" id="ab-name" data-f="name" value="${esc(S.name)}" placeholder="Full name" autocomplete="name" enterkeyhint="next">
+   ${S.method==='Apple'||S.method==='LinkedIn'?`<p class="note" style="margin:6px 4px 0">From your ${esc(S.method)} account.</p>`:''}
+   <label class="fl" for="ab-company">Company</label><input class="field" id="ab-company" data-f="company" value="${esc(S.company)}" placeholder="Where you work" autocomplete="organization" enterkeyhint="done">
+   <span class="fl">Your role</span>${chips('role',ROLES,'abrole')}
+   <span class="fl">Your industry</span>${chips('industry',INDUSTRIES,'abind')}
+  </div>
+  <div class="setup__foot"><button class="btn btn--primary btn--block" data-a="aboutdone" id="ab-go"></button></div></div>`);
+  updAbout();
+}
+function updAbout(){const go=$('#ab-go');if(!go)return;const any=S.name.trim()||S.company.trim()||S.role||S.industry;go.innerHTML=any?'Continue '+ic('arrowR'):'Skip for now'}
 function viewThemes(){
   S.phase='auth';
   showAuth(`<div class="setup fade">
@@ -1696,12 +1719,12 @@ function renderProfile(){
   const wh=S.where.length?S.where.length+' selected':'Everywhere';
   const li=S.linkedin?S.linkedin.replace(/^https?:\/\/(www\.)?/,''):'Add link';
   el.innerHTML=FADE+`<div class="scroll"><div class="pad t0"><h1 class="pagehead">Profile</h1>
-   <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>Your account</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
+   <div class="acct"><div class="avatar">${ic('user','lg')}</div><div><b>${esc(S.name||'Your account')}</b><span>${S.method?'Signed in with '+esc(S.method):'Signed in'}</span></div></div>
    <div class="group"><span class="label">Your brief</span><div class="rows">
     ${prow('sliders','Themes',esc(th),'edit','themes')}${prow('foryou','Where you want to see it',esc(wh),'edit','where')}${ixOn?prow('search','Industry x technology',S.others.length?S.others.length+' added'+(S.others.some(x=>!isKnownIx(x))?' · '+S.others.filter(x=>!isKnownIx(x)).length+' requested':''):'None','edit','others'):''}${prow('clock','Brief time',esc(S.briefTime),'edit','time')}
     <button class="row" role="switch" aria-checked="${S.notif}" data-a="togglenotif"><span class="ic">${ic('bell')}</span>Daily notification<span class="tg" style="margin-left:auto"></span></button>${prow('phones','Preview notifications','Lock screen','lockpreview')}</div></div>
    <div class="group"><span class="label">About you · optional</span><div class="rows">
-    ${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
+    ${prow('user','Name',esc(S.name||'Not set'),'edit','name')}${prow('brief','Company',esc(S.company||'Not set'),'edit','company')}${prow('brief','Industry',esc(S.industry||'Not set'),'edit','industry')}${prow('user','Role',esc(S.role||'Not set'),'edit','role')}${S.method==='LinkedIn'?`<div class="row static"><span class="ic">${ic('linkedin')}</span>LinkedIn<span class="val">Connected</span></div>`:prow('linkedin','LinkedIn profile link',esc(li),'edit','linkedin')}</div>
     ${lensOn?'<p class=\"note\" style="margin:8px 4px 0">Used to tailor Industry lens.</p>':''}</div>
    <div class="group"><span class="label">Topic view</span><div class="seg" id="tn-seg">${[['tabs','Theme tabs'],['menu','Logo menu']].map(([k,l])=>`<button data-a="topicnav" data-k="${k}" aria-pressed="${(S.topicNav||'tabs')===k}">${l}</button>`).join('')}</div></div>
    <div class="group"><span class="label">Appearance</span><div class="seg" id="ap-seg">${['dark','light','system'].map(k=>`<button data-a="appear" data-k="${k}" aria-pressed="${appearance===k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div></div>
@@ -2031,6 +2054,7 @@ function editSheet(k){
   if(k==='others')return openSheet({title:'Industry x technology',body:'<div id="oth"></div>',init:sh=>othersMount($('#oth',sh)),foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='where')return openSheet({title:'Where you want to see it',body:`<div class="chips">${T2.map((t,i)=>`<button class="chip" data-a="pickt2" data-i="${i}" aria-pressed="${S.where.includes(i)}">${esc(t)}</button>`).join('')}</div>`,foot:'<button class="btn btn--primary" data-a="closesheet" style="flex:1">Done</button>',onClose:refreshTabs});
   if(k==='time')return openSheet({title:'Brief time',body:`<div class="times">${TIMES.map(t=>`<button class="chip" data-a="pickTime" data-t="${t}" aria-pressed="${S.briefTime===t}">${t}</button>`).join('')}</div>`});
+  if(k==='name'||k==='company')return openSheet({title:k==='name'?'Name':'Company',body:`<input class="field" id="tx-in" value="${esc(S[k])}" placeholder="${k==='name'?'Full name':'Where you work'}" autocomplete="off">`,foot:`<button class="btn btn--primary" data-a="savetext" data-f="${k}" style="flex:1">Save</button>`});
   if(k==='industry'||k==='role'){
     const list=k==='industry'?INDUSTRIES:ROLES,cur=S[k];
     return openSheet({title:k==='industry'?'Industry':'Role',body:`<div class="list">${['Not set',...list].map(o=>`<button class="opt-row" data-a="pickopt" data-f="${k}" data-v="${esc(o)}" aria-pressed="${(cur||'Not set')===o}">${esc(o)}<span class="ck">${ic('check')}</span></button>`).join('')}</div>`});
@@ -2085,6 +2109,7 @@ function resetAll(){resetUI();S=fresh();clearTabs();syncChrome();viewWelcome()}
 async function jump(name){
   resetUI();clearTabs();S=fresh();$('#auth').hidden=true;
   if(name==='welcome'){return viewWelcome()}
+  if(name==='about'){S.method='LinkedIn';return viewAbout()}
   if(name==='themes'){S.method='LinkedIn';return viewThemes()}
   if(name==='others'){ixOn=true;syncSide();S.method='LinkedIn';S.themes=[0,1];viewThemes();await wait(900);const o=$('#oth');o.scrollIntoView({block:'center'});return}
   if(name==='hype'){hypeOn=true;syncSide()}
@@ -2104,7 +2129,7 @@ async function jump(name){
   if(name==='audio'){await wait(80);audioStart(ids[0],ids);A.pos=22;openPlayer()}
   if(name==='caught'){await wait(80);openCaught()}
 }
-const JUMPS=[['welcome','Welcome'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile']];
+const JUMPS=[['welcome','Welcome'],['about','About you'],['themes','Choose themes'],['today','Today'],['more','More in a theme'],['opinion','Opinion'],['opinion-read','Opinion piece'],['comments','Discussion'],['others','Others search'],['story','Story'],['wim','Why it matters'],['hype','Hype check'],['bias','Bias checker'],['reader','Source reader'],['audio','Audio player'],['share','Share card'],['caught','All caught up'],['foryou-empty','For You · empty'],['foryou-saved','For You · saved'],['profile','Profile']];
 function buildSide(){
   $('#side').innerHTML=`<div><h1><b>Fomo</b><em>Tech</em></h1><p style="margin-top:6px">Interactive prototype of the iOS app. Everything on the phone is tappable. Content is sample text.</p></div>
   <div><h2>Jump to a screen</h2><div class="jump">${JUMPS.map(j=>`<button data-j="${j[0]}">${j[1]}</button>`).join('')}</div></div>
@@ -2194,6 +2219,10 @@ const ACT={
     if(t.dataset.id){const id=+t.dataset.id;c.ids.push(id);if(!isSaved(id)){S.saved.unshift(id);$$(`[data-a="save"][data-id="${id}"]`).forEach(b=>b.setAttribute('aria-pressed','true'))}organiseSheet.draw(sheetEl)}
     else{S.fyColl=c.id;closeSheet();renderForYou()}},
   edit:t=>editSheet(t.dataset.k),
+  aboutdone:()=>viewThemes(),
+  abrole:t=>{S.role=S.role===t.dataset.v?null:t.dataset.v;$$('#ab-role .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===S.role));updAbout()},
+  abind:t=>{S.industry=S.industry===t.dataset.v?null:t.dataset.v;$$('#ab-industry .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===S.industry));updAbout()},
+  savetext:t=>{const f=t.dataset.f,v=$('#tx-in').value.trim();S[f]=v;closeSheet();renderProfile()},
   pickt1:t=>{const i=+t.dataset.i;if(S.themes.includes(i))S.themes=S.themes.filter(x=>x!==i);else if(S.themes.length>=5)return toast('Pick up to five themes');else S.themes.push(i);t.setAttribute('aria-pressed',S.themes.includes(i));$('#t1n').textContent=S.themes.length+' of 5 selected. Your brief leads with these.';renderProfile()},
   pickt2:t=>{const i=+t.dataset.i;S.where=S.where.includes(i)?S.where.filter(x=>x!==i):[...S.where,i];t.setAttribute('aria-pressed',S.where.includes(i));renderProfile()},
   pickTime:t=>{S.briefTime=t.dataset.t;$$('#overlay .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.t===S.briefTime));renderProfile();setTimeout(()=>closeSheet(),220)},
@@ -2219,7 +2248,7 @@ const ACT={
   seek:(t,e)=>seek(e)
 };
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||!$('#phone').contains(t))return;const f=ACT[t.dataset.a];if(f){e.stopPropagation();f(t,e)}});
-document.addEventListener('input',e=>{if(e.target.id==='oth-q')othersPaint(e.target.value)});
+document.addEventListener('input',e=>{if(e.target.dataset&&e.target.dataset.f&&e.target.id.startsWith('ab-')){S[e.target.dataset.f]=e.target.value;updAbout();return}if(e.target.id==='oth-q')othersPaint(e.target.value)});
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='oth-q'){e.preventDefault();const b=$('#oth-list [data-a=addother]');b&&b.click();return}
   if(e.key==='Enter'&&e.target.id==='cm-in'){e.preventDefault();const b=$('[data-a=postcomment]');b&&b.click();return}
